@@ -1,0 +1,34 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.10, pytest-8.4.2, pluggy-1.6.0
+rootdir: /private/tmp/4A1EF7D9-F0F8-48EC-AC7D-A260FD30BA49
+configfile: pyproject.toml
+testpaths: tests
+plugins: asyncio-1.2.0, anyio-4.11.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 24 items
+
+tests/test_database.py ....                                              [ 16%]
+tests/test_users.py ....................                                 [100%]
+
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.11.10-final-0 _______________
+
+Name                                   Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------------------------
+src/neodyme/__init__.py                    2      0      0      0   100%
+src/neodyme/core/__init__.py               3      0      0      0   100%
+src/neodyme/core/config.py                26      2      2      1    89%   45, 55
+src/neodyme/core/database.py              24      0      0      0   100%
+src/neodyme/core/exceptions.py            28      6      6      1    74%   31-34, 45, 52, 59
+src/neodyme/main.py                       25      2      0      0    92%   22-23
+src/neodyme/models/__init__.py             3      0      0      0   100%
+src/neodyme/models/base.py                16      0      0      0   100%
+src/neodyme/models/user.py                24      0      0      0   100%
+src/neodyme/repositories/__init__.py       3      0      0      0   100%
+src/neodyme/repositories/base.py          45      8      6      2    80%   40-45, 57, 70
+src/neodyme/repositories/user.py          22      0      0      0   100%
+src/neodyme/routes/__init__.py             2      0      0      0   100%
+src/neodyme/routes/users.py               44     17     14      0    47%   18-19, 22, 31-34, 54-57, 59-64, 71, 80-81
+----------------------------------------------------------------------------------
+TOTAL                                    267     35     28      4    81%
+============================== 24 passed in 0.24s ==============================
