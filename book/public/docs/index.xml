@@ -77,5 +77,19 @@
       <guid>https://mi-skam.github.io/neodyme/docs/chapter-10/</guid>
       <description>&lt;h1 id=&#34;chapter-10-i-need-deployment-that-actually-works&#34;&gt;Chapter 10: &amp;ldquo;I Need Deployment That Actually Works&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-10-i-need-deployment-that-actually-works&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Your neodyme application is secure, well-tested, and properly configured. But now comes the moment of truth: getting it running reliably in production. You&amp;rsquo;ve probably deployed applications before, only to discover they work perfectly on your laptop but fail mysteriously in production.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;&amp;ldquo;It works on my machine&amp;rdquo; becomes &amp;ldquo;why does the container keep crashing?&amp;rdquo; Database connections fail, environment variables are missing, health checks timeout, and the application that passed all tests can&amp;rsquo;t even start in production.&lt;/em&gt;&lt;/p&gt;</description>
     </item>
+    <item>
+      <title>Chapter 11</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-11/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-11/</guid>
+      <description>&lt;h1 id=&#34;chapter-11-i-need-to-monitor-and-debug-production-like-a-professional&#34;&gt;Chapter 11: &amp;ldquo;I Need to Monitor and Debug Production Like a Professional&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-11-i-need-to-monitor-and-debug-production-like-a-professional&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Your neodyme application is running beautifully in production. Clean architecture, comprehensive error handling, secure authentication—everything you&amp;rsquo;ve built is working exactly as designed. Then at 3 AM, you get the call: &amp;ldquo;The application is down, users can&amp;rsquo;t register, and we have no idea why.&amp;rdquo;&lt;/p&gt;&#xA;&lt;p&gt;You frantically check the server. The application is running. Database connections look fine. No obvious errors in the basic logs. But users are still reporting problems, and you&amp;rsquo;re debugging blind with nothing but basic HTTP access logs and generic error messages.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 12</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-12/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-12/</guid>
+      <description>&lt;h1 id=&#34;chapter-12-i-need-to-scale-beyond-one-machine-like-a-pro&#34;&gt;Chapter 12: &amp;ldquo;I Need to Scale Beyond One Machine Like a Pro&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-12-i-need-to-scale-beyond-one-machine-like-a-pro&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Your neodyme application is a success. Clean architecture, comprehensive observability, robust error handling—everything is working perfectly. Then the good problem arrives: traffic is growing exponentially. What started as 100 users per day is now 10,000. Response times are climbing from 100ms to 2 seconds. Your single server is gasping under the load.&lt;/p&gt;&#xA;&lt;p&gt;You try the obvious fix: upgrade to a bigger server. It helps for a week, then the problem returns. You upgrade again. And again. Until you realize that &lt;strong&gt;throwing more hardware at the problem isn&amp;rsquo;t sustainable&lt;/strong&gt;. You need to scale horizontally, not just vertically.&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>

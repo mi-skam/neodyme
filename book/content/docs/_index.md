@@ -90,3 +90,15 @@ Intermediate Python developers who want to build professional backends using mod
 - **Pain Point**: "Works on my machine" syndrome
 - **Theory**: Containerization, process management, health checks
 - **What You Learn**: Docker patterns, deployment strategies, production configuration
+
+### Chapter 11: "I Need to Monitor and Debug Production"
+**Problem**: Understanding what's happening in production
+- **Pain Point**: Black box deployments are impossible to debug
+- **Theory**: Observability, logging, metrics, health monitoring
+- **What You Learn**: Production monitoring, debugging strategies, performance optimization
+
+### Chapter 12: "I Need to Scale Beyond One Machine"
+**Problem**: Handling growth and performance requirements
+- **Pain Point**: Simple solutions don't scale
+- **Theory**: Caching, database optimization, async patterns, load balancing
+- **What You Learn**: Scaling strategies, performance optimization, production architecture
