@@ -2,9 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://mi-skam.github.io/neodyme/docs/</loc>
-  </url><url>
     <loc>https://mi-skam.github.io/neodyme/docs/chapter-1/</loc>
+  </url><url>
+    <loc>https://mi-skam.github.io/neodyme/docs/</loc>
   </url><url>
     <loc>https://mi-skam.github.io/neodyme/docs/chapter-2/</loc>
   </url><url>
@@ -28,9 +28,9 @@
   </url><url>
     <loc>https://mi-skam.github.io/neodyme/docs/chapter-12/</loc>
   </url><url>
-    <loc>https://mi-skam.github.io/neodyme/categories/</loc>
-  </url><url>
     <loc>https://mi-skam.github.io/neodyme/</loc>
+  </url><url>
+    <loc>https://mi-skam.github.io/neodyme/categories/</loc>
   </url><url>
     <loc>https://mi-skam.github.io/neodyme/tags/</loc>
   </url>

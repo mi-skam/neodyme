@@ -9,27 +9,18 @@ https://github.com/alex-shpak/hugo-book
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Building Neodyme: A Modern Python Backend Journey#
-Problem-Solution &#43; Progressive Complexity Structure
-Book Overview#
-This book teaches modern Python backend development by building &ldquo;Neodyme&rdquo; - a production-ready FastAPI application. Each chapter solves real problems developers face, building complexity progressively while maintaining practical focus.
-Target Audience#
-Intermediate Python developers who want to build professional backends using modern tools and patterns.
-
-Part I: Foundation Problems (Core Backend Basics)#
-Chapter 1: &ldquo;I Need a Web API That Actually Works&rdquo;#
-Problem: Creating a reliable HTTP API that handles requests properly">
+Welcome to the complete guide for building production-ready Python backends. Each chapter solves real problems developers face while building &ldquo;Neodyme&rdquo; - a FastAPI application that scales from prototype to production.
+Navigate through the chapters using the sidebar to learn modern Python backend development patterns.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/">
   <meta property="og:site_name" content="Neodyme Documentation">
-  <meta property="og:title" content="Building Neodyme: A Modern Python Backend Journey">
-  <meta property="og:description" content="Building Neodyme: A Modern Python Backend Journey# Problem-Solution &#43; Progressive Complexity Structure
-Book Overview# This book teaches modern Python backend development by building “Neodyme” - a production-ready FastAPI application. Each chapter solves real problems developers face, building complexity progressively while maintaining practical focus.
-Target Audience# Intermediate Python developers who want to build professional backends using modern tools and patterns.
-Part I: Foundation Problems (Core Backend Basics)# Chapter 1: “I Need a Web API That Actually Works”# Problem: Creating a reliable HTTP API that handles requests properly">
+  <meta property="og:title" content="Chapters">
+  <meta property="og:description" content="Building Neodyme: A Modern Python Backend Journey# Welcome to the complete guide for building production-ready Python backends. Each chapter solves real problems developers face while building “Neodyme” - a FastAPI application that scales from prototype to production.
+Navigate through the chapters using the sidebar to learn modern Python backend development patterns.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="website">
-<title>Building Neodyme: A Modern Python Backend Journey | Neodyme Documentation</title>
+<title>Chapters | Neodyme Documentation</title>
 <link rel="icon" href="/neodyme/favicon.png" >
 <link rel="manifest" href="/neodyme/manifest.json">
 <link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/">
@@ -37,7 +28,7 @@ Part I: Foundation Problems (Core Backend Basics)# Chapter 1: “I Need a Web AP
 
 
   <script defer src="/neodyme/fuse.min.js"></script>
-  <script defer src="/neodyme/en.search.min.04d5bcdbbecca89239ba280801e173492bd5eb5605da624b9b4f15f0fa6262f2.js" integrity="sha256-BNW8277MqJI5uigIAeFzSSvV61YF2mJLm08V8PpiYvI=" crossorigin="anonymous"></script>
+  <script defer src="/neodyme/en.search.min.9726ea1c28841eefeac987196088c6e49c015a9ce33e32ae3903bd2d95f00e0e.js" integrity="sha256-lybqHCiEHu/qyYcZYIjG5JwBWpzjPjKuOQO9LZXwDg4=" crossorigin="anonymous"></script>
 <link rel="alternate" type="application/rss+xml" href="https://mi-skam.github.io/neodyme/docs/index.xml" title="Neodyme Documentation" />
 
   
@@ -283,14 +274,25 @@ Part I: Foundation Problems (Core Backend Basics)# Chapter 1: “I Need a Web AP
     <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>Building Neodyme: A Modern Python Backend Journey</h3>
+  <h3>Chapters</h3>
 
   <label for="toc-control">
+    
+    <img src="/neodyme/icons/toc.svg" class="book-icon" alt="Table of Contents" />
     
   </label>
 </div>
 
 
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
   
  
       </header>
@@ -298,162 +300,8 @@ Part I: Foundation Problems (Core Backend Basics)# Chapter 1: “I Need a Web AP
       
       
   <article class="markdown book-article"><h1 id="building-neodyme-a-modern-python-backend-journey">Building Neodyme: A Modern Python Backend Journey<a class="anchor" href="#building-neodyme-a-modern-python-backend-journey">#</a></h1>
-<p><em>Problem-Solution + Progressive Complexity Structure</em></p>
-<h2 id="book-overview">Book Overview<a class="anchor" href="#book-overview">#</a></h2>
-<p>This book teaches modern Python backend development by building &ldquo;Neodyme&rdquo; - a production-ready FastAPI application. Each chapter solves real problems developers face, building complexity progressively while maintaining practical focus.</p>
-<h2 id="target-audience">Target Audience<a class="anchor" href="#target-audience">#</a></h2>
-<p>Intermediate Python developers who want to build professional backends using modern tools and patterns.</p>
-<hr>
-<h2 id="part-i-foundation-problems-core-backend-basics"><strong>Part I: Foundation Problems (Core Backend Basics)</strong><a class="anchor" href="#part-i-foundation-problems-core-backend-basics">#</a></h2>
-<h3 id="chapter-1-i-need-a-web-api-that-actually-works">Chapter 1: &ldquo;I Need a Web API That Actually Works&rdquo;<a class="anchor" href="#chapter-1-i-need-a-web-api-that-actually-works">#</a></h3>
-<p><strong>Problem</strong>: Creating a reliable HTTP API that handles requests properly</p>
-<ul>
-<li><strong>Pain Point</strong>: Basic Flask/Django tutorials don&rsquo;t teach production patterns</li>
-<li><strong>Theory</strong>: HTTP fundamentals, ASGI vs WSGI, automatic documentation</li>
-<li><strong>Simple Solution</strong>: Single FastAPI endpoint with proper response models</li>
-<li><strong>What You Learn</strong>: FastAPI basics, app structure, automatic documentation</li>
-</ul>
-<h3 id="chapter-2-i-need-to-store-data-that-persists">Chapter 2: &ldquo;I Need to Store Data That Persists&rdquo;<a class="anchor" href="#chapter-2-i-need-to-store-data-that-persists">#</a></h3>
-<p><strong>Problem</strong>: Moving beyond in-memory storage to real databases</p>
-<ul>
-<li><strong>Pain Point</strong>: Raw SQL is tedious, ORMs are confusing, async is hard</li>
-<li><strong>Theory</strong>: ORM patterns, async database operations, SQLModel benefits</li>
-<li><strong>Simple Solution</strong>: Single User model with basic CRUD</li>
-<li><strong>What You Learn</strong>: SQLModel basics, database connections, async patterns</li>
-</ul>
-<h3 id="chapter-3-i-need-to-validate-data-without-going-crazy">Chapter 3: &ldquo;I Need to Validate Data Without Going Crazy&rdquo;<a class="anchor" href="#chapter-3-i-need-to-validate-data-without-going-crazy">#</a></h3>
-<p><strong>Problem</strong>: Ensuring data integrity without writing endless validation code</p>
-<ul>
-<li><strong>Pain Point</strong>: Manual validation is error-prone and repetitive</li>
-<li><strong>Theory</strong>: Schema validation, serialization, type safety</li>
-<li><strong>Simple Solution</strong>: Pydantic models for request/response validation</li>
-<li><strong>What You Learn</strong>: Pydantic integration, request/response models, automatic validation</li>
-</ul>
-<h3 id="chapter-4-i-need-my-database-to-evolve-over-time">Chapter 4: &ldquo;I Need My Database to Evolve Over Time&rdquo;<a class="anchor" href="#chapter-4-i-need-my-database-to-evolve-over-time">#</a></h3>
-<p><strong>Problem</strong>: Managing database schema changes without losing data</p>
-<ul>
-<li><strong>Pain Point</strong>: Manual schema changes break in production</li>
-<li><strong>Theory</strong>: Database migrations, version control for schemas</li>
-<li><strong>Simple Solution</strong>: Alembic integration with SQLModel</li>
-<li><strong>What You Learn</strong>: Migration patterns, Alembic workflow, schema evolution</li>
-</ul>
-<hr>
-<h2 id="part-ii-integration-problems-system-design"><strong>Part II: Integration Problems (System Design)</strong><a class="anchor" href="#part-ii-integration-problems-system-design">#</a></h2>
-<h3 id="chapter-5-i-need-clean-architecture-that-scales">Chapter 5: &ldquo;I Need Clean Architecture That Scales&rdquo;<a class="anchor" href="#chapter-5-i-need-clean-architecture-that-scales">#</a></h3>
-<p><strong>Problem</strong>: Organizing code so it doesn&rsquo;t become a mess</p>
-<ul>
-<li><strong>Pain Point</strong>: Everything in one file doesn&rsquo;t work long-term</li>
-<li><strong>Theory</strong>: Repository pattern, dependency injection, layered architecture</li>
-<li><strong>What You Learn</strong>: Repository pattern, clean architecture, dependency management</li>
-</ul>
-<h3 id="chapter-6-i-need-to-handle-errors-like-a-professional">Chapter 6: &ldquo;I Need to Handle Errors Like a Professional&rdquo;<a class="anchor" href="#chapter-6-i-need-to-handle-errors-like-a-professional">#</a></h3>
-<p><strong>Problem</strong>: Graceful error handling and debugging</p>
-<ul>
-<li><strong>Pain Point</strong>: Cryptic 500 errors and poor error messages</li>
-<li><strong>Theory</strong>: Exception hierarchies, structured logging, error standardization</li>
-<li><strong>What You Learn</strong>: Exception design, error middleware, debugging strategies</li>
-</ul>
-<h3 id="chapter-7-i-need-security-that-actually-protects">Chapter 7: &ldquo;I Need Security That Actually Protects&rdquo;<a class="anchor" href="#chapter-7-i-need-security-that-actually-protects">#</a></h3>
-<p><strong>Problem</strong>: Authentication and authorization without security holes</p>
-<ul>
-<li><strong>Pain Point</strong>: Rolling your own auth is dangerous</li>
-<li><strong>Theory</strong>: Password hashing, JWT tokens, security best practices</li>
-<li><strong>What You Learn</strong>: Security fundamentals, hashing, token management</li>
-</ul>
-<h3 id="chapter-8-i-need-configuration-that-works-everywhere">Chapter 8: &ldquo;I Need Configuration That Works Everywhere&rdquo;<a class="anchor" href="#chapter-8-i-need-configuration-that-works-everywhere">#</a></h3>
-<p><strong>Problem</strong>: Managing settings across development, testing, and production</p>
-<ul>
-<li><strong>Pain Point</strong>: Hard-coded values break deployments</li>
-<li><strong>Theory</strong>: 12-factor configuration, environment management</li>
-<li><strong>What You Learn</strong>: Configuration patterns, environment management, deployment prep</li>
-</ul>
-<hr>
-<h2 id="part-iii-real-world-problems-production-concerns"><strong>Part III: Real-World Problems (Production Concerns)</strong><a class="anchor" href="#part-iii-real-world-problems-production-concerns">#</a></h2>
-<h3 id="chapter-9-i-need-tests-that-give-me-confidence">Chapter 9: &ldquo;I Need Tests That Give Me Confidence&rdquo;<a class="anchor" href="#chapter-9-i-need-tests-that-give-me-confidence">#</a></h3>
-<p><strong>Problem</strong>: Testing async code and database operations</p>
-<ul>
-<li><strong>Pain Point</strong>: Testing databases and HTTP endpoints is complex</li>
-<li><strong>Theory</strong>: Test strategies, fixtures, mocking, async testing</li>
-<li><strong>What You Learn</strong>: pytest patterns, async testing, test databases</li>
-</ul>
-<h3 id="chapter-10-i-need-deployment-that-actually-works">Chapter 10: &ldquo;I Need Deployment That Actually Works&rdquo;<a class="anchor" href="#chapter-10-i-need-deployment-that-actually-works">#</a></h3>
-<p><strong>Problem</strong>: Getting from laptop to production</p>
-<ul>
-<li><strong>Pain Point</strong>: &ldquo;Works on my machine&rdquo; syndrome</li>
-<li><strong>Theory</strong>: Containerization, process management, health checks</li>
-<li><strong>What You Learn</strong>: Docker patterns, deployment strategies, production configuration</li>
-</ul>
-<h3 id="chapter-11-i-need-to-monitor-and-debug-production">Chapter 11: &ldquo;I Need to Monitor and Debug Production&rdquo;<a class="anchor" href="#chapter-11-i-need-to-monitor-and-debug-production">#</a></h3>
-<p><strong>Problem</strong>: Understanding what&rsquo;s happening in production</p>
-<ul>
-<li><strong>Pain Point</strong>: Black box deployments are impossible to debug</li>
-<li><strong>Theory</strong>: Observability, logging, metrics, health monitoring</li>
-<li><strong>What You Learn</strong>: Production monitoring, debugging strategies, performance optimization</li>
-</ul>
-<h3 id="chapter-12-i-need-to-scale-beyond-one-machine">Chapter 12: &ldquo;I Need to Scale Beyond One Machine&rdquo;<a class="anchor" href="#chapter-12-i-need-to-scale-beyond-one-machine">#</a></h3>
-<p><strong>Problem</strong>: Handling growth and performance requirements</p>
-<ul>
-<li><strong>Pain Point</strong>: Simple solutions don&rsquo;t scale</li>
-<li><strong>Theory</strong>: Caching, database optimization, async patterns, load balancing</li>
-<li><strong>What You Learn</strong>: Scaling strategies, performance optimization, production architecture</li>
-</ul>
-<hr>
-<h2 id="connecting-elements-throughout-the-book"><strong>Connecting Elements Throughout the Book</strong><a class="anchor" href="#connecting-elements-throughout-the-book">#</a></h2>
-<h3 id="progressive-code-evolution"><strong>Progressive Code Evolution</strong><a class="anchor" href="#progressive-code-evolution">#</a></h3>
-<ul>
-<li><strong>Chapter 1-4</strong>: Single file → Structured modules</li>
-<li><strong>Chapter 5-8</strong>: Basic features → Production patterns</li>
-<li><strong>Chapter 9-12</strong>: Working code → Scalable system</li>
-</ul>
-<h3 id="running-example-evolution"><strong>Running Example Evolution</strong><a class="anchor" href="#running-example-evolution">#</a></h3>
-<ul>
-<li><strong>Foundation</strong>: Simple user management</li>
-<li><strong>Integration</strong>: Complete user lifecycle with validation and errors</li>
-<li><strong>Production</strong>: Full-featured user system with auth, monitoring, and scaling</li>
-</ul>
-<h3 id="cross-chapter-connections"><strong>Cross-Chapter Connections</strong><a class="anchor" href="#cross-chapter-connections">#</a></h3>
-<ul>
-<li><strong>&ldquo;Building Blocks&rdquo; Sidebars</strong>: How each chapter builds on previous concepts</li>
-<li><strong>&ldquo;Production Impact&rdquo; Notes</strong>: Real-world implications of each decision</li>
-<li><strong>&ldquo;Refactoring Moments&rdquo;</strong>: Showing evolution from simple to sophisticated</li>
-</ul>
-<h3 id="practical-reinforcement"><strong>Practical Reinforcement</strong><a class="anchor" href="#practical-reinforcement">#</a></h3>
-<ul>
-<li><strong>Code Downloads</strong>: Complete neodyme codebase for each chapter</li>
-<li><strong>Exercises</strong>: &ldquo;Add feature X to your neodyme&rdquo; challenges</li>
-<li><strong>Reference Sections</strong>: Quick lookup for patterns and code snippets</li>
-</ul>
-<hr>
-<h2 id="appendices"><strong>Appendices</strong><a class="anchor" href="#appendices">#</a></h2>
-<h3 id="a-complete-neodyme-codebase-reference"><strong>A: Complete neodyme Codebase Reference</strong><a class="anchor" href="#a-complete-neodyme-codebase-reference">#</a></h3>
-<ul>
-<li>Full source code with annotations</li>
-<li>Architecture decision explanations</li>
-<li>Performance benchmarks</li>
-</ul>
-<h3 id="b-production-deployment-guide"><strong>B: Production Deployment Guide</strong><a class="anchor" href="#b-production-deployment-guide">#</a></h3>
-<ul>
-<li>Cloud deployment options</li>
-<li>CI/CD pipeline setup</li>
-<li>Security checklists</li>
-</ul>
-<h3 id="c-troubleshooting-guide"><strong>C: Troubleshooting Guide</strong><a class="anchor" href="#c-troubleshooting-guide">#</a></h3>
-<ul>
-<li>Common errors and solutions</li>
-<li>Debugging strategies</li>
-<li>Performance optimization tips</li>
-</ul>
-<hr>
-<h2 id="why-this-structure-works-for-neodyme"><strong>Why This Structure Works for neodyme</strong><a class="anchor" href="#why-this-structure-works-for-neodyme">#</a></h2>
-<ol>
-<li><strong>Real Problems</strong>: Each chapter solves actual backend development challenges</li>
-<li><strong>Progressive Complexity</strong>: From single endpoint to production system</li>
-<li><strong>Practical Focus</strong>: Uses actual neodyme code, not toy examples</li>
-<li><strong>Modern Stack</strong>: FastAPI, SQLModel, async patterns - what professionals use</li>
-<li><strong>Production Ready</strong>: Ends with deployable, scalable system</li>
-<li><strong>Teaching Progression</strong>: Concepts build naturally without overwhelming</li>
-</ol>
-<p>This structure takes developers from &ldquo;I can make an API&rdquo; to &ldquo;I can build production backends&rdquo; using neodyme as the practical vehicle for learning.</p>
+<p>Welcome to the complete guide for building production-ready Python backends. Each chapter solves real problems developers face while building &ldquo;Neodyme&rdquo; - a FastAPI application that scales from prototype to production.</p>
+<p>Navigate through the chapters using the sidebar to learn modern Python backend development patterns.</p>
 </article>
  
       
@@ -504,6 +352,17 @@ Part I: Foundation Problems (Core Backend Basics)# Chapter 1: “I Need a Web AP
     </div>
 
     
+
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </div>
+</aside>
 
  
   </main>
