@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chapter 3: &ldquo;I Need to Validate Data Without Going Crazy&rdquo;#
+You can store users in a database now, but there&rsquo;s a problem lurking beneath the surface. Users are creative, malicious, or simply make mistakes. They&rsquo;ll send you emails like &ldquo;not-an-email&rdquo;, names that are 10,000 characters long, passwords that are empty strings, or JSON that&rsquo;s completely malformed.
+Without proper validation, these inputs will crash your server, corrupt your data, or worse—give attackers a way to exploit your system. The question isn&rsquo;t whether bad data will come in; it&rsquo;s how gracefully your API handles it when it does.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/chapter-3/">
+  <meta property="og:site_name" content="Neodyme Documentation">
+  <meta property="og:title" content="Chapter 3">
+  <meta property="og:description" content="Chapter 3: “I Need to Validate Data Without Going Crazy”# You can store users in a database now, but there’s a problem lurking beneath the surface. Users are creative, malicious, or simply make mistakes. They’ll send you emails like “not-an-email”, names that are 10,000 characters long, passwords that are empty strings, or JSON that’s completely malformed.
+Without proper validation, these inputs will crash your server, corrupt your data, or worse—give attackers a way to exploit your system. The question isn’t whether bad data will come in; it’s how gracefully your API handles it when it does.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Chapter 3 | Neodyme Documentation</title>
+<link rel="icon" href="/neodyme/favicon.png" >
+<link rel="manifest" href="/neodyme/manifest.json">
+<link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/chapter-3/">
+<link rel="stylesheet" href="/neodyme/book.min.c098be6fdb8410d437a0799e694b206fa639685582089c583ae6ac07afec1ff8.css" integrity="sha256-wJi&#43;b9uEENQ3oHmeaUsgb6Y5aFWCCJxYOuasB6/sH/g=" crossorigin="anonymous">
+
+
+  <script defer src="/neodyme/fuse.min.js"></script>
+  <script defer src="/neodyme/en.search.min.f64f4d2b3193917ebd07e82190bf6e6a2f23d6e670fb678260875bd442e5cf4d.js" integrity="sha256-9k9NKzGTkX69B&#43;ghkL9uai8j1uZw&#43;2eCYIdb1ELlz00=" crossorigin="anonymous"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/neodyme/"><span>Neodyme Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-1/" class="">
+      Chapter 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-2/" class="">
+      Chapter 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-3/" class="active">
+      Chapter 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-4/" class="">
+      Chapter 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-5/" class="">
+      Chapter 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-6/" class="">
+      Chapter 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-7/" class="">
+      Chapter 7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-8/" class="">
+      Chapter 8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-9/" class="">
+      Chapter 9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-10/" class="">
+      Chapter 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Chapter 3</h3>
+
+  <label for="toc-control">
+    
+    <img src="/neodyme/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-users-send-terrible-data">The Problem: Users Send Terrible Data</a></li>
+    <li><a href="#why-manual-validation-is-a-nightmare">Why Manual Validation is a Nightmare</a></li>
+    <li><a href="#the-pydantic-solution-type-driven-validation">The Pydantic Solution: Type-Driven Validation</a></li>
+    <li><a href="#building-complete-user-workflows-with-validation">Building Complete User Workflows with Validation</a>
+      <ul>
+        <li><a href="#step-1-comprehensive-user-models">Step 1: Comprehensive User Models</a></li>
+        <li><a href="#step-2-user-registration-with-complete-validation">Step 2: User Registration with Complete Validation</a></li>
+        <li><a href="#step-3-user-retrieval-with-not-found-handling">Step 3: User Retrieval with Not Found Handling</a></li>
+        <li><a href="#step-4-user-updates-with-partial-validation">Step 4: User Updates with Partial Validation</a></li>
+        <li><a href="#step-5-user-deletion-with-safety-checks">Step 5: User Deletion with Safety Checks</a></li>
+      </ul>
+    </li>
+    <li><a href="#error-handling-making-failures-helpful">Error Handling: Making Failures Helpful</a>
+      <ul>
+        <li><a href="#validation-error-examples">Validation Error Examples</a></li>
+      </ul>
+    </li>
+    <li><a href="#hands-on-building-a-complete-user-api">Hands-On: Building a Complete User API</a>
+      <ul>
+        <li><a href="#step-1-set-up-your-models-with-comprehensive-validation">Step 1: Set Up Your Models with Comprehensive Validation</a></li>
+        <li><a href="#step-2-implement-the-complete-crud-api">Step 2: Implement the Complete CRUD API</a></li>
+        <li><a href="#step-3-test-your-validation">Step 3: Test Your Validation</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-validation-architecture">The Validation Architecture</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#pydantic-and-data-validation">Pydantic and Data Validation</a></li>
+        <li><a href="#error-handling-and-api-design">Error Handling and API Design</a></li>
+        <li><a href="#security-and-input-validation">Security and Input Validation</a></li>
+        <li><a href="#testing-and-quality-assurance">Testing and Quality Assurance</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-building-clean-architecture-that-scales">Next: Building Clean Architecture That Scales</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="chapter-3-i-need-to-validate-data-without-going-crazy">Chapter 3: &ldquo;I Need to Validate Data Without Going Crazy&rdquo;<a class="anchor" href="#chapter-3-i-need-to-validate-data-without-going-crazy">#</a></h1>
+<p>You can store users in a database now, but there&rsquo;s a problem lurking beneath the surface. Users are creative, malicious, or simply make mistakes. They&rsquo;ll send you emails like &ldquo;not-an-email&rdquo;, names that are 10,000 characters long, passwords that are empty strings, or JSON that&rsquo;s completely malformed.</p>
+<p>Without proper validation, these inputs will crash your server, corrupt your data, or worse—give attackers a way to exploit your system. The question isn&rsquo;t whether bad data will come in; it&rsquo;s how gracefully your API handles it when it does.</p>
+<h2 id="the-problem-users-send-terrible-data">The Problem: Users Send Terrible Data<a class="anchor" href="#the-problem-users-send-terrible-data">#</a></h2>
+<p>Let me ask you: Have you ever built a form and assumed users would fill it out correctly? If so, you&rsquo;ve learned the hard way that this assumption is always wrong.</p>
+<p>Here&rsquo;s what happens in the real world:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># What you hope users send:</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;user@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;full_name&#34;</span>: <span style="color:#e6db74">&#34;John Doe&#34;</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;securePassword123&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># What users actually send:</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;definitely-not-an-email&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;full_name&#34;</span>: <span style="color:#e6db74">&#34;A&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">50000</span>,  <span style="color:#75715e"># 50,000 character name</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,            <span style="color:#75715e"># Empty password</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;extra_field&#34;</span>: <span style="color:#e6db74">&#34;hack attempt&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Without validation, this malformed data will:</p>
+<ul>
+<li><strong>Crash your database</strong> - A 50,000 character string inserted into a VARCHAR(255) field generates database errors that bring down your entire API</li>
+<li><strong>Break your business logic</strong> - Empty passwords get hashed and stored, creating accounts that nobody can log into</li>
+<li><strong>Consume excessive memory</strong> - Massive strings eat up RAM and can trigger out-of-memory crashes</li>
+<li><strong>Enable security attacks</strong> - Extra fields might be processed by vulnerable code paths you didn&rsquo;t expect</li>
+<li><strong>Create inconsistent data</strong> - Some records have valid emails, others have garbage, making queries and user communication impossible</li>
+</ul>
+<p>The real question isn&rsquo;t &ldquo;How do I validate input?&rdquo; It&rsquo;s &ldquo;How do I validate input without writing thousands of lines of repetitive checking code that I&rsquo;ll inevitably get wrong?&rdquo;</p>
+<h2 id="why-manual-validation-is-a-nightmare">Why Manual Validation is a Nightmare<a class="anchor" href="#why-manual-validation-is-a-nightmare">#</a></h2>
+<p>Traditional input validation looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Manual validation - tedious and error-prone</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(data):
+</span></span><span style="display:flex;"><span>    errors <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Email validation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> data<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;email&#34;</span>):
+</span></span><span style="display:flex;"><span>        errors<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Email is required&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> <span style="color:#f92672">not</span> re<span style="color:#f92672">.</span><span style="color:#66d9ef">match</span>(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;^[^@]+@[^@]+\.[^@]+$&#39;</span>, data[<span style="color:#e6db74">&#34;email&#34;</span>]):
+</span></span><span style="display:flex;"><span>        errors<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Invalid email format&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> len(data[<span style="color:#e6db74">&#34;email&#34;</span>]) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">255</span>:
+</span></span><span style="display:flex;"><span>        errors<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Email too long&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Name validation  </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> data<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;full_name&#34;</span>):
+</span></span><span style="display:flex;"><span>        errors<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Full name is required&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> len(data[<span style="color:#e6db74">&#34;full_name&#34;</span>]) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">255</span>:
+</span></span><span style="display:flex;"><span>        errors<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Name too long&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> len(data[<span style="color:#e6db74">&#34;full_name&#34;</span>]) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        errors<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Name too short&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Password validation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> data<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;password&#34;</span>):
+</span></span><span style="display:flex;"><span>        errors<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Password is required&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> len(data[<span style="color:#e6db74">&#34;password&#34;</span>]) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>:
+</span></span><span style="display:flex;"><span>        errors<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Password too short&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> len(data[<span style="color:#e6db74">&#34;password&#34;</span>]) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>:
+</span></span><span style="display:flex;"><span>        errors<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Password too long&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Handle extra fields</span>
+</span></span><span style="display:flex;"><span>    allowed_fields <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;email&#34;</span>, <span style="color:#e6db74">&#34;full_name&#34;</span>, <span style="color:#e6db74">&#34;password&#34;</span>}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> data<span style="color:#f92672">.</span>keys():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> key <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> allowed_fields:
+</span></span><span style="display:flex;"><span>            errors<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unknown field: </span><span style="color:#e6db74">{</span>key<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> errors:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> ValidationError(errors)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> data</span></span></code></pre></div><p><strong>What&rsquo;s wrong with this approach?</strong></p>
+<ul>
+<li><strong>Massive code duplication</strong> - Every endpoint needs similar validation logic, leading to thousands of lines of repetitive code</li>
+<li><strong>Inconsistent rules</strong> - Email validation in the registration endpoint might be different from the profile update endpoint, creating user confusion</li>
+<li><strong>Hard to maintain</strong> - Change the password length requirement and you need to update validation code in multiple places</li>
+<li><strong>Easy to forget</strong> - New endpoints often skip validation because developers forget or are in a hurry</li>
+<li><strong>Poor error messages</strong> - Manual error handling rarely provides the detailed, user-friendly messages that modern applications require</li>
+<li><strong>No type safety</strong> - Typos in field names (<code>data[&quot;emial&quot;]</code>) cause runtime errors in production</li>
+<li><strong>No automatic documentation</strong> - API documentation has to be written separately and often gets out of sync</li>
+</ul>
+<p>This approach scales poorly and becomes unmaintainable as your API grows.</p>
+<h2 id="the-pydantic-solution-type-driven-validation">The Pydantic Solution: Type-Driven Validation<a class="anchor" href="#the-pydantic-solution-type-driven-validation">#</a></h2>
+<p>What if validation could happen automatically based on type hints you already write? Pydantic (which powers FastAPI) makes this possible:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Automatic validation with Pydantic models</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> BaseModel, EmailStr, Field
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserCreate</span>(BaseModel):
+</span></span><span style="display:flex;"><span>    email: EmailStr <span style="color:#f92672">=</span> Field(<span style="color:#f92672">...</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    full_name: str <span style="color:#f92672">=</span> Field(<span style="color:#f92672">...</span>, min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    password: str <span style="color:#f92672">=</span> Field(<span style="color:#f92672">...</span>, min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)</span></span></code></pre></div><p>This single model definition automatically:</p>
+<ul>
+<li><strong>Validates email format</strong> - Rejects malformed emails before they reach your business logic</li>
+<li><strong>Enforces length limits</strong> - Prevents database overflow errors and excessive memory usage</li>
+<li><strong>Requires all fields</strong> - Catches missing data with helpful error messages</li>
+<li><strong>Rejects extra fields</strong> - Blocks potential attack vectors from unexpected input</li>
+<li><strong>Generates documentation</strong> - API docs show exactly what&rsquo;s required and what&rsquo;s optional</li>
+<li><strong>Provides type safety</strong> - IDEs catch typos and type mismatches during development</li>
+</ul>
+<p>But the real power comes from integration with FastAPI, which applies this validation automatically to every request.</p>
+<h2 id="building-complete-user-workflows-with-validation">Building Complete User Workflows with Validation<a class="anchor" href="#building-complete-user-workflows-with-validation">#</a></h2>
+<p>Let&rsquo;s see how neodyme implements complete user management with bulletproof validation. We&rsquo;ll build the full CRUD (Create, Read, Update, Delete) workflow that real applications need.</p>
+<h3 id="step-1-comprehensive-user-models">Step 1: Comprehensive User Models<a class="anchor" href="#step-1-comprehensive-user-models">#</a></h3>
+<p>First, let&rsquo;s understand why neodyme defines multiple user models:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s models/user.py - comprehensive model set</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> Field, SQLModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserBase</span>(SQLModel):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Shared fields that appear in multiple contexts.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    email: str <span style="color:#f92672">=</span> Field(unique<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    full_name: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    is_active: bool <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(UserBase, table<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Database model with all fields including sensitive ones.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    id: int <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    hashed_password: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    created_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow, nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    updated_at: datetime <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow,
+</span></span><span style="display:flex;"><span>        nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>        sa_column_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;onupdate&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow},
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserCreate</span>(UserBase):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Input model for user registration.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    password: str <span style="color:#f92672">=</span> Field(min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserUpdate</span>(SQLModel):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Input model for profile updates - all fields optional.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    email: str <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    full_name: str <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    password: str <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>    is_active: bool <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserPublic</span>(UserBase):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Output model that excludes sensitive information.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    id: int
+</span></span><span style="display:flex;"><span>    created_at: datetime
+</span></span><span style="display:flex;"><span>    updated_at: datetime
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Note: no hashed_password field!</span></span></span></code></pre></div><p><strong>Why this model structure solves critical problems:</strong></p>
+<ul>
+<li><strong>UserCreate requires all fields</strong> - Registration must provide complete information, preventing accounts with missing data that break the application</li>
+<li><strong>UserUpdate makes fields optional</strong> - Users can update just their name without providing their password again, matching real-world usage patterns</li>
+<li><strong>UserPublic excludes passwords</strong> - API responses never contain sensitive data, even if the database query accidentally includes it</li>
+<li><strong>Shared UserBase</strong> - Common fields are defined once, preventing bugs where registration and updates have different validation rules</li>
+</ul>
+<h3 id="step-2-user-registration-with-complete-validation">Step 2: User Registration with Complete Validation<a class="anchor" href="#step-2-user-registration-with-complete-validation">#</a></h3>
+<p>Here&rsquo;s how neodyme implements user creation with comprehensive error handling:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s routes/users.py - production-ready user creation</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> APIRouter, Depends, status
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel.ext.asyncio.session <span style="color:#f92672">import</span> AsyncSession
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core <span style="color:#f92672">import</span> get_async_session
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> ConflictError
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> UserCreate, UserPublic
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.repositories <span style="color:#f92672">import</span> user_repository
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> APIRouter(prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/users&#34;</span>, tags<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;users&#34;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.post</span>(<span style="color:#e6db74">&#34;/&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic, status_code<span style="color:#f92672">=</span>status<span style="color:#f92672">.</span>HTTP_201_CREATED)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(
+</span></span><span style="display:flex;"><span>    user_in: UserCreate,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Check for duplicate email before attempting creation</span>
+</span></span><span style="display:flex;"><span>    existing_user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>get_by_email(session, email<span style="color:#f92672">=</span>user_in<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> existing_user:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> ConflictError(<span style="color:#e6db74">&#34;Email already registered&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create user (password hashing happens in repository)</span>
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>create(session, obj_in<span style="color:#f92672">=</span>user_in)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(user)</span></span></code></pre></div><p><strong>Let&rsquo;s trace what happens when someone tries to register:</strong></p>
+<ol>
+<li>
+<p><strong>FastAPI validates the request</strong> - Before your code runs, FastAPI checks that the JSON matches UserCreate requirements:</p>
+<ul>
+<li>Email is present and properly formatted</li>
+<li>Full name is present and within length limits</li>
+<li>Password meets length requirements</li>
+<li>No extra fields are present</li>
+</ul>
+</li>
+<li>
+<p><strong>Business logic validation</strong> - Your code checks application-specific rules:</p>
+<ul>
+<li>Email uniqueness (preventing duplicate accounts)</li>
+<li>Any custom business rules specific to your application</li>
+</ul>
+</li>
+<li>
+<p><strong>Database constraints</strong> - Even if application validation fails, database constraints provide a final safety net:</p>
+<ul>
+<li>Unique indexes prevent duplicate emails at the database level</li>
+<li>Column length limits prevent data truncation</li>
+</ul>
+</li>
+<li>
+<p><strong>Error handling</strong> - Different types of errors get appropriate HTTP status codes:</p>
+<ul>
+<li>400 for malformed requests (handled by FastAPI automatically)</li>
+<li>409 for business rule violations (duplicate email)</li>
+<li>500 for unexpected system errors</li>
+</ul>
+</li>
+</ol>
+<p>This layered approach means validation failures are caught early and users get helpful error messages instead of cryptic database errors.</p>
+<h3 id="step-3-user-retrieval-with-not-found-handling">Step 3: User Retrieval with Not Found Handling<a class="anchor" href="#step-3-user-retrieval-with-not-found-handling">#</a></h3>
+<p>Reading users requires different validation patterns:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@router.get</span>(<span style="color:#e6db74">&#34;/</span><span style="color:#e6db74">{user_id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user</span>(
+</span></span><span style="display:flex;"><span>    user_id: int,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>get(session, id<span style="color:#f92672">=</span>user_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> NotFoundError(<span style="color:#e6db74">&#34;User not found&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(user)</span></span></code></pre></div><p><strong>Why this simple-looking endpoint is more robust than it appears:</strong></p>
+<ul>
+<li><strong>Path parameter validation</strong> - FastAPI automatically validates that <code>user_id</code> is an integer, rejecting requests like <code>/users/abc</code> with helpful error messages</li>
+<li><strong>Database safety</strong> - The repository pattern prevents SQL injection even if someone bypasses FastAPI validation</li>
+<li><strong>Consistent error format</strong> - NotFoundError generates a standard 404 response that client applications can handle reliably</li>
+<li><strong>Data sanitization</strong> - UserPublic.model_validate ensures sensitive fields are never accidentally included in responses</li>
+</ul>
+<h3 id="step-4-user-updates-with-partial-validation">Step 4: User Updates with Partial Validation<a class="anchor" href="#step-4-user-updates-with-partial-validation">#</a></h3>
+<p>User profile updates are more complex because they need to handle partial data:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@router.put</span>(<span style="color:#e6db74">&#34;/</span><span style="color:#e6db74">{user_id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_user</span>(
+</span></span><span style="display:flex;"><span>    user_id: int,
+</span></span><span style="display:flex;"><span>    user_in: UserUpdate,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># First, verify the user exists</span>
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>get(session, id<span style="color:#f92672">=</span>user_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> NotFoundError(<span style="color:#e6db74">&#34;User not found&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Check email uniqueness only if email is being changed</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> user_in<span style="color:#f92672">.</span>email:
+</span></span><span style="display:flex;"><span>        existing_user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>get_by_email(session, email<span style="color:#f92672">=</span>user_in<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> existing_user <span style="color:#f92672">and</span> existing_user<span style="color:#f92672">.</span>id <span style="color:#f92672">!=</span> user_id:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> ConflictError(<span style="color:#e6db74">&#34;Email already registered&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Extract only the fields that were actually provided</span>
+</span></span><span style="display:flex;"><span>    update_data <span style="color:#f92672">=</span> user_in<span style="color:#f92672">.</span>model_dump(exclude_unset<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Handle password hashing if password is being changed</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#f92672">in</span> update_data:
+</span></span><span style="display:flex;"><span>        update_data[<span style="color:#e6db74">&#34;hashed_password&#34;</span>] <span style="color:#f92672">=</span> user_repository<span style="color:#f92672">.</span>_hash_password(
+</span></span><span style="display:flex;"><span>            update_data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#34;password&#34;</span>)
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Apply updates</span>
+</span></span><span style="display:flex;"><span>    updated_user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>update(
+</span></span><span style="display:flex;"><span>        session, db_obj<span style="color:#f92672">=</span>user, obj_in<span style="color:#f92672">=</span>update_data
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(updated_user)</span></span></code></pre></div><p><strong>This endpoint demonstrates several advanced validation patterns:</strong></p>
+<ul>
+<li><strong>Existence validation</strong> - Ensures you can&rsquo;t update users that don&rsquo;t exist, preventing silent failures</li>
+<li><strong>Conditional uniqueness checking</strong> - Only validates email uniqueness if the email is actually being changed, avoiding unnecessary database queries</li>
+<li><strong>Exclude unset pattern</strong> - <code>model_dump(exclude_unset=True)</code> only includes fields that were explicitly provided in the request, allowing partial updates without overwriting existing data with None values</li>
+<li><strong>Security transformation</strong> - Plain text passwords are automatically hashed and the original is discarded, ensuring passwords are never stored in plain text even if the hashing logic is accidentally bypassed elsewhere</li>
+</ul>
+<h3 id="step-5-user-deletion-with-safety-checks">Step 5: User Deletion with Safety Checks<a class="anchor" href="#step-5-user-deletion-with-safety-checks">#</a></h3>
+<p>Even deletion needs validation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@router.delete</span>(<span style="color:#e6db74">&#34;/</span><span style="color:#e6db74">{user_id}</span><span style="color:#e6db74">&#34;</span>, status_code<span style="color:#f92672">=</span>status<span style="color:#f92672">.</span>HTTP_204_NO_CONTENT)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete_user</span>(
+</span></span><span style="display:flex;"><span>    user_id: int,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>get(session, id<span style="color:#f92672">=</span>user_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> NotFoundError(<span style="color:#e6db74">&#34;User not found&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>delete(session, id<span style="color:#f92672">=</span>user_id)</span></span></code></pre></div><p><strong>Why deletion validation matters:</strong></p>
+<ul>
+<li><strong>Idempotent behavior</strong> - Attempting to delete a non-existent user returns a clear error instead of silently succeeding, making client applications more reliable</li>
+<li><strong>Audit trail</strong> - The existence check creates a log entry showing that a valid user was deleted, not just that a delete operation was attempted</li>
+<li><strong>Cascade safety</strong> - Future versions can add checks for related data (user&rsquo;s posts, orders, etc.) before allowing deletion</li>
+</ul>
+<h2 id="error-handling-making-failures-helpful">Error Handling: Making Failures Helpful<a class="anchor" href="#error-handling-making-failures-helpful">#</a></h2>
+<p>Bad data is inevitable, so good error handling is essential. Neodyme implements a comprehensive error handling system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s core/exceptions.py - structured error handling</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> HTTPException, Request, status
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.responses <span style="color:#f92672">import</span> JSONResponse
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> ValidationError <span style="color:#66d9ef">as</span> PydanticValidationError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NeodymeException</span>(<span style="color:#a6e22e">Exception</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Base exception for application-specific errors.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, message: str) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>message <span style="color:#f92672">=</span> message
+</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>(self<span style="color:#f92672">.</span>message)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NotFoundError</span>(NeodymeException):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Raised when a requested resource doesn&#39;t exist.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConflictError</span>(NeodymeException):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Raised when a request conflicts with existing data.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">neodyme_exception_handler</span>(
+</span></span><span style="display:flex;"><span>    request: Request, exc: NeodymeException
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> JSONResponse:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Convert application exceptions to appropriate HTTP responses.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> isinstance(exc, NotFoundError):
+</span></span><span style="display:flex;"><span>        status_code <span style="color:#f92672">=</span> status<span style="color:#f92672">.</span>HTTP_404_NOT_FOUND
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> isinstance(exc, ConflictError):
+</span></span><span style="display:flex;"><span>        status_code <span style="color:#f92672">=</span> status<span style="color:#f92672">.</span>HTTP_409_CONFLICT
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        status_code <span style="color:#f92672">=</span> status<span style="color:#f92672">.</span>HTTP_400_BAD_REQUEST
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> JSONResponse(
+</span></span><span style="display:flex;"><span>        status_code<span style="color:#f92672">=</span>status_code,
+</span></span><span style="display:flex;"><span>        content<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;detail&#34;</span>: exc<span style="color:#f92672">.</span>message},
+</span></span><span style="display:flex;"><span>    )</span></span></code></pre></div><p><strong>Why structured error handling is crucial for user experience:</strong></p>
+<ul>
+<li><strong>Consistent error format</strong> - All errors follow the same JSON structure, making client applications easier to write and debug</li>
+<li><strong>Appropriate HTTP status codes</strong> - Different error types get correct status codes (404 for not found, 409 for conflicts), allowing client applications to handle errors appropriately</li>
+<li><strong>User-friendly messages</strong> - Error messages are written for end users, not developers, improving the overall application experience</li>
+<li><strong>Security considerations</strong> - Error messages don&rsquo;t expose sensitive information like database schema details or internal file paths</li>
+</ul>
+<h3 id="validation-error-examples">Validation Error Examples<a class="anchor" href="#validation-error-examples">#</a></h3>
+<p>Let&rsquo;s see what happens when users send bad data:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Request with validation errors:</span>
+</span></span><span style="display:flex;"><span>POST <span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;not-an-email&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;full_name&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;123&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Automatic FastAPI response:</span>
+</span></span><span style="display:flex;"><span>HTTP <span style="color:#ae81ff">422</span> Unprocessable Entity
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;detail&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;value_error&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;loc&#34;</span>: [<span style="color:#e6db74">&#34;body&#34;</span>, <span style="color:#e6db74">&#34;email&#34;</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;msg&#34;</span>: <span style="color:#e6db74">&#34;value is not a valid email address&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;input&#34;</span>: <span style="color:#e6db74">&#34;not-an-email&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string_too_short&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;loc&#34;</span>: [<span style="color:#e6db74">&#34;body&#34;</span>, <span style="color:#e6db74">&#34;full_name&#34;</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;msg&#34;</span>: <span style="color:#e6db74">&#34;String should have at least 1 character&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;input&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string_too_short&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;loc&#34;</span>: [<span style="color:#e6db74">&#34;body&#34;</span>, <span style="color:#e6db74">&#34;password&#34;</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;msg&#34;</span>: <span style="color:#e6db74">&#34;String should have at least 8 characters&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;input&#34;</span>: <span style="color:#e6db74">&#34;123&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>This detailed error response helps users fix their input:</strong></p>
+<ul>
+<li><strong>Field-specific errors</strong> - Each field gets its own error message, so users know exactly what to fix</li>
+<li><strong>Clear error types</strong> - Error types like &ldquo;string_too_short&rdquo; are self-explanatory and can be handled programmatically by client applications</li>
+<li><strong>Input echoing</strong> - The actual input value is included (safely) so users can see what was problematic</li>
+<li><strong>Location information</strong> - The <code>loc</code> field shows exactly where in the request the error occurred</li>
+</ul>
+<h2 id="hands-on-building-a-complete-user-api">Hands-On: Building a Complete User API<a class="anchor" href="#hands-on-building-a-complete-user-api">#</a></h2>
+<p>Let&rsquo;s combine everything into a working user management system:</p>
+<h3 id="step-1-set-up-your-models-with-comprehensive-validation">Step 1: Set Up Your Models with Comprehensive Validation<a class="anchor" href="#step-1-set-up-your-models-with-comprehensive-validation">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># models.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Optional
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> EmailStr, Field
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> SQLModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserBase</span>(SQLModel):
+</span></span><span style="display:flex;"><span>    email: EmailStr <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>, description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;User&#39;s email address&#34;</span>)
+</span></span><span style="display:flex;"><span>    full_name: str <span style="color:#f92672">=</span> Field(min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>, description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;User&#39;s full name&#34;</span>)
+</span></span><span style="display:flex;"><span>    is_active: bool <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Whether the user account is active&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(UserBase, table<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    id: Optional[int] <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    hashed_password: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    created_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow)
+</span></span><span style="display:flex;"><span>    updated_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserCreate</span>(UserBase):
+</span></span><span style="display:flex;"><span>    password: str <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, 
+</span></span><span style="display:flex;"><span>        max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>, 
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Password must be 8-100 characters&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserUpdate</span>(SQLModel):
+</span></span><span style="display:flex;"><span>    email: Optional[EmailStr] <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    full_name: Optional[str] <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    password: Optional[str] <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>    is_active: Optional[bool] <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserPublic</span>(UserBase):
+</span></span><span style="display:flex;"><span>    id: int
+</span></span><span style="display:flex;"><span>    created_at: datetime
+</span></span><span style="display:flex;"><span>    updated_at: datetime</span></span></code></pre></div><p><strong>Notice the validation details:</strong></p>
+<ul>
+<li><strong>EmailStr type</strong> - Automatically validates email format and provides better error messages than regex patterns</li>
+<li><strong>Field descriptions</strong> - These appear in the automatic API documentation, helping frontend developers understand requirements</li>
+<li><strong>Consistent length limits</strong> - Same validation rules across create and update operations prevent confusion</li>
+</ul>
+<h3 id="step-2-implement-the-complete-crud-api">Step 2: Implement the Complete CRUD API<a class="anchor" href="#step-2-implement-the-complete-crud-api">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># main.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, Depends, HTTPException, status
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel.ext.asyncio.session <span style="color:#f92672">import</span> AsyncSession
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> List
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;User Management API&#34;</span>, version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.0.0&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Custom exceptions</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NotFoundError</span>(HTTPException):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, detail: str):
+</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">404</span>, detail<span style="color:#f92672">=</span>detail)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConflictError</span>(HTTPException):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, detail: str):
+</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">409</span>, detail<span style="color:#f92672">=</span>detail)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># CRUD endpoints</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/users/&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic, status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">201</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(
+</span></span><span style="display:flex;"><span>    user_in: UserCreate,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_session)
+</span></span><span style="display:flex;"><span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Create a new user account.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Check for existing email</span>
+</span></span><span style="display:flex;"><span>    existing <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> get_user_by_email(session, user_in<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> existing:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> ConflictError(<span style="color:#e6db74">&#34;Email already registered&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create user</span>
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> create_user_in_db(session, user_in)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> user
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/users/</span><span style="color:#e6db74">{user_id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user</span>(
+</span></span><span style="display:flex;"><span>    user_id: int,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_session)
+</span></span><span style="display:flex;"><span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Get a user by ID.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> get_user_by_id(session, user_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> NotFoundError(<span style="color:#e6db74">&#34;User not found&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> user
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/users/&#34;</span>, response_model<span style="color:#f92672">=</span>List[UserPublic])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">list_users</span>(
+</span></span><span style="display:flex;"><span>    skip: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    limit: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_session)
+</span></span><span style="display:flex;"><span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;List users with pagination.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    users <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> get_users(session, skip<span style="color:#f92672">=</span>skip, limit<span style="color:#f92672">=</span>limit)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> users
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.put</span>(<span style="color:#e6db74">&#34;/users/</span><span style="color:#e6db74">{user_id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_user</span>(
+</span></span><span style="display:flex;"><span>    user_id: int,
+</span></span><span style="display:flex;"><span>    user_in: UserUpdate,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_session)
+</span></span><span style="display:flex;"><span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Update a user&#39;s profile.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> get_user_by_id(session, user_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> NotFoundError(<span style="color:#e6db74">&#34;User not found&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Check email uniqueness if email is being changed</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> user_in<span style="color:#f92672">.</span>email <span style="color:#f92672">and</span> user_in<span style="color:#f92672">.</span>email <span style="color:#f92672">!=</span> user<span style="color:#f92672">.</span>email:
+</span></span><span style="display:flex;"><span>        existing <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> get_user_by_email(session, user_in<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> existing:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> ConflictError(<span style="color:#e6db74">&#34;Email already registered&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    updated_user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> update_user_in_db(session, user, user_in)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> updated_user
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.delete</span>(<span style="color:#e6db74">&#34;/users/</span><span style="color:#e6db74">{user_id}</span><span style="color:#e6db74">&#34;</span>, status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">204</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete_user</span>(
+</span></span><span style="display:flex;"><span>    user_id: int,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_session)
+</span></span><span style="display:flex;"><span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Delete a user account.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> get_user_by_id(session, user_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> NotFoundError(<span style="color:#e6db74">&#34;User not found&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> delete_user_from_db(session, user_id)</span></span></code></pre></div><h3 id="step-3-test-your-validation">Step 3: Test Your Validation<a class="anchor" href="#step-3-test-your-validation">#</a></h3>
+<p>Visit <code>http://localhost:8000/docs</code> and try these test cases:</p>
+<p><strong>Valid user creation:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;user@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;full_name&#34;</span>: <span style="color:#e6db74">&#34;John Doe&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;securePassword123&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Invalid email:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;not-an-email&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;full_name&#34;</span>: <span style="color:#e6db74">&#34;John Doe&#34;</span>, 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;securePassword123&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Password too short:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;user@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;full_name&#34;</span>: <span style="color:#e6db74">&#34;John Doe&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;123&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Extra fields (rejected automatically):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;user@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;full_name&#34;</span>: <span style="color:#e6db74">&#34;John Doe&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;securePassword123&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;hacker_field&#34;</span>: <span style="color:#e6db74">&#34;malicious_content&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Observe how FastAPI provides detailed, helpful error messages for each validation failure.</strong></p>
+<h2 id="the-validation-architecture">The Validation Architecture<a class="anchor" href="#the-validation-architecture">#</a></h2>
+<p>Here&rsquo;s how validation flows through neodyme&rsquo;s architecture:</p>
+<pre tabindex="0"><code>    HTTP Request
+         │
+         ▼
+   FastAPI Router
+         │
+         ▼
+   Pydantic Model ────► Field Validation
+         │                 ├─ Type checking
+         ▼                 ├─ Length limits  
+   Route Handler           ├─ Format validation
+         │                 └─ Required fields
+         ▼
+   Business Logic ────► Application Rules
+         │                 ├─ Uniqueness checks
+         ▼                 ├─ Authorization
+   Repository Layer        └─ Business constraints
+         │
+         ▼
+   Database Layer ────► Final Safety Net
+         │                 ├─ Column constraints
+         ▼                 ├─ Foreign keys
+   Persistent Storage      └─ Database rules</code></pre><p><strong>Each layer catches different types of problems:</strong></p>
+<ul>
+<li><strong>Pydantic Layer</strong>: Format, type, and basic constraint validation</li>
+<li><strong>Business Layer</strong>: Application-specific rules like uniqueness and authorization</li>
+<li><strong>Database Layer</strong>: Final enforcement of data integrity constraints</li>
+</ul>
+<p>This defensive approach means bugs in one layer don&rsquo;t cause system-wide failures.</p>
+<h2 id="what-youve-learned">What You&rsquo;ve Learned<a class="anchor" href="#what-youve-learned">#</a></h2>
+<p>By the end of this chapter, you understand:</p>
+<p>✅ <strong>Why manual validation is unmaintainable</strong> - and leads to security vulnerabilities and inconsistent user experiences<br>
+✅ <strong>How Pydantic automates validation</strong> - using type hints to generate comprehensive input checking<br>
+✅ <strong>The model separation strategy</strong> - and why Create, Update, and Public models solve different validation needs<br>
+✅ <strong>Layered validation architecture</strong> - and how multiple validation layers provide defense in depth<br>
+✅ <strong>Complete CRUD workflows</strong> - with proper error handling and user-friendly error messages<br>
+✅ <strong>Error handling patterns</strong> - that provide helpful feedback while maintaining security</p>
+<p>More importantly, you&rsquo;ve built a complete user management system that handles bad input gracefully and provides excellent developer and user experiences.</p>
+<h2 id="building-blocks-for-next-chapters">Building Blocks for Next Chapters<a class="anchor" href="#building-blocks-for-next-chapters">#</a></h2>
+<p>This validation foundation gives us:</p>
+<ul>
+<li><strong>HTTP handling</strong> ← Chapter 1: FastAPI basics</li>
+<li><strong>Data persistence</strong> ← Chapter 2: Database integration</li>
+<li><strong>Input validation</strong> ← You are here</li>
+<li><strong>Complete user workflows</strong> ← You are here</li>
+<li><strong>Error handling</strong> ← Chapter 6: Professional error management (expanding on what we started)</li>
+</ul>
+<h2 id="exercises">Exercises<a class="anchor" href="#exercises">#</a></h2>
+<ol>
+<li><strong>Test validation edge cases</strong>: What happens with Unicode characters, very long strings, or special email formats?</li>
+<li><strong>Add custom validation</strong>: Create a validator that ensures passwords contain at least one uppercase letter</li>
+<li><strong>Test error responses</strong>: Send malformed JSON and observe how FastAPI handles it</li>
+<li><strong>Implement soft delete</strong>: Modify user deletion to set <code>is_active = False</code> instead of removing records</li>
+<li><strong>Add pagination</strong>: Implement proper pagination with next/previous links in the user list endpoint</li>
+</ol>
+<h2 id="resources-for-deeper-learning">Resources for Deeper Learning<a class="anchor" href="#resources-for-deeper-learning">#</a></h2>
+<h3 id="pydantic-and-data-validation">Pydantic and Data Validation<a class="anchor" href="#pydantic-and-data-validation">#</a></h3>
+<ul>
+<li><strong>Pydantic Official Documentation</strong>: Comprehensive guide to validation features - <a href="https://docs.pydantic.dev/">https://docs.pydantic.dev/</a></li>
+<li><strong>FastAPI Request Validation</strong>: How FastAPI integrates with Pydantic - <a href="https://fastapi.tiangolo.com/tutorial/body/">https://fastapi.tiangolo.com/tutorial/body/</a></li>
+<li><strong>Field Validation</strong>: Advanced validation patterns and custom validators - <a href="https://docs.pydantic.dev/usage/validators/">https://docs.pydantic.dev/usage/validators/</a></li>
+</ul>
+<h3 id="error-handling-and-api-design">Error Handling and API Design<a class="anchor" href="#error-handling-and-api-design">#</a></h3>
+<ul>
+<li><strong>HTTP Status Codes Guide</strong>: When to use which status codes - <a href="https://httpstatuses.com/">https://httpstatuses.com/</a></li>
+<li><strong>RESTful API Design</strong>: Best practices for API endpoints and error responses - <a href="https://restfulapi.net/">https://restfulapi.net/</a></li>
+<li><strong>Problem Details Specification</strong>: Standard format for API error responses - <a href="https://tools.ietf.org/html/rfc7807">https://tools.ietf.org/html/rfc7807</a></li>
+</ul>
+<h3 id="security-and-input-validation">Security and Input Validation<a class="anchor" href="#security-and-input-validation">#</a></h3>
+<ul>
+<li><strong>OWASP Input Validation</strong>: Security considerations for data validation - <a href="https://owasp.org/www-community/vulnerabilities/Input_validation">https://owasp.org/www-community/vulnerabilities/Input_validation</a></li>
+<li><strong>SQL Injection Prevention</strong>: How ORMs protect against attacks - <a href="https://owasp.org/www-community/attacks/SQL_Injection">https://owasp.org/www-community/attacks/SQL_Injection</a></li>
+<li><strong>Email Validation Best Practices</strong>: Why email validation is more complex than it seems - <a href="https://emailregex.com/">https://emailregex.com/</a></li>
+</ul>
+<h3 id="testing-and-quality-assurance">Testing and Quality Assurance<a class="anchor" href="#testing-and-quality-assurance">#</a></h3>
+<ul>
+<li><strong>Property-Based Testing</strong>: Using Hypothesis to test validation logic - <a href="https://hypothesis.readthedocs.io/">https://hypothesis.readthedocs.io/</a></li>
+<li><strong>API Testing with pytest</strong>: Comprehensive testing strategies - <a href="https://pytest-with-eric.com/api-testing/">https://pytest-with-eric.com/api-testing/</a></li>
+<li><strong>Fuzzing for Input Validation</strong>: Finding edge cases in validation logic - <a href="https://owasp.org/www-community/Fuzzing">https://owasp.org/www-community/Fuzzing</a></li>
+</ul>
+<h3 id="why-these-resources-matter">Why These Resources Matter<a class="anchor" href="#why-these-resources-matter">#</a></h3>
+<ul>
+<li><strong>Pydantic mastery</strong>: Understanding the validation framework deeply helps you write more robust applications</li>
+<li><strong>Error handling standards</strong>: Following HTTP conventions makes your API easier for others to integrate with</li>
+<li><strong>Security awareness</strong>: Understanding attack vectors helps you design safer validation rules</li>
+<li><strong>Testing strategies</strong>: Comprehensive testing prevents validation bugs from reaching production</li>
+</ul>
+<p><strong>Pro Tip</strong>: Focus on the Pydantic documentation first to understand the full range of validation options available, then explore testing strategies to ensure your validation logic works correctly under all conditions.</p>
+<h2 id="next-building-clean-architecture-that-scales">Next: Building Clean Architecture That Scales<a class="anchor" href="#next-building-clean-architecture-that-scales">#</a></h2>
+<p>You have a working user management system with solid validation, but as your API grows, you&rsquo;ll face new challenges: How do you organize code so new features don&rsquo;t break existing ones? How do you handle complex business logic? How do you make your code testable and maintainable?</p>
+<p>In Chapter 5, we&rsquo;ll explore the architectural patterns that keep large applications organized and maintainable.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Preview of Chapter 5</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Business logic layer that coordinates between repositories and external services.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register_user</span>(self, user_data: UserCreate) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Complex workflow: validation, creation, welcome email, analytics</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">authenticate_user</span>(self, credentials: LoginRequest) <span style="color:#f92672">-&gt;</span> TokenResponse:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Multi-step authentication with rate limiting and logging</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span></span></span></code></pre></div><p>We&rsquo;ll explore how neodyme&rsquo;s service layer manages complex workflows while keeping individual components simple and testable.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/neodyme/docs/chapter-2/" class="flex align-center">
+        <img src="/neodyme/icons/backward.svg" class="book-icon" alt="Previous" title="Chapter 2" />
+        <span>Chapter 2</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/neodyme/docs/chapter-4/" class="flex align-center">
+        <span>Chapter 4</span>
+        <img src="/neodyme/icons/forward.svg" class="book-icon" alt="Next" title="Chapter 4" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+
+ 
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-users-send-terrible-data">The Problem: Users Send Terrible Data</a></li>
+    <li><a href="#why-manual-validation-is-a-nightmare">Why Manual Validation is a Nightmare</a></li>
+    <li><a href="#the-pydantic-solution-type-driven-validation">The Pydantic Solution: Type-Driven Validation</a></li>
+    <li><a href="#building-complete-user-workflows-with-validation">Building Complete User Workflows with Validation</a>
+      <ul>
+        <li><a href="#step-1-comprehensive-user-models">Step 1: Comprehensive User Models</a></li>
+        <li><a href="#step-2-user-registration-with-complete-validation">Step 2: User Registration with Complete Validation</a></li>
+        <li><a href="#step-3-user-retrieval-with-not-found-handling">Step 3: User Retrieval with Not Found Handling</a></li>
+        <li><a href="#step-4-user-updates-with-partial-validation">Step 4: User Updates with Partial Validation</a></li>
+        <li><a href="#step-5-user-deletion-with-safety-checks">Step 5: User Deletion with Safety Checks</a></li>
+      </ul>
+    </li>
+    <li><a href="#error-handling-making-failures-helpful">Error Handling: Making Failures Helpful</a>
+      <ul>
+        <li><a href="#validation-error-examples">Validation Error Examples</a></li>
+      </ul>
+    </li>
+    <li><a href="#hands-on-building-a-complete-user-api">Hands-On: Building a Complete User API</a>
+      <ul>
+        <li><a href="#step-1-set-up-your-models-with-comprehensive-validation">Step 1: Set Up Your Models with Comprehensive Validation</a></li>
+        <li><a href="#step-2-implement-the-complete-crud-api">Step 2: Implement the Complete CRUD API</a></li>
+        <li><a href="#step-3-test-your-validation">Step 3: Test Your Validation</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-validation-architecture">The Validation Architecture</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#pydantic-and-data-validation">Pydantic and Data Validation</a></li>
+        <li><a href="#error-handling-and-api-design">Error Handling and API Design</a></li>
+        <li><a href="#security-and-input-validation">Security and Input Validation</a></li>
+        <li><a href="#testing-and-quality-assurance">Testing and Quality Assurance</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-building-clean-architecture-that-scales">Next: Building Clean Architecture That Scales</a></li>
+  </ul>
+</nav>
+
+
+
+  </div>
+</aside>
+
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

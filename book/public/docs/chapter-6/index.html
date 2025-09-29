@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chapter 6: &ldquo;I Need to Handle Errors Like a Professional&rdquo;#
+Your service layer architecture is working beautifully. Complex workflows are organized, dependencies are injected cleanly, and testing is straightforward. But then users start reporting mysterious 500 errors, customer support can&rsquo;t explain what went wrong, and you spend hours debugging issues that should have been caught immediately.
+The harsh reality of production systems is that everything that can go wrong, will go wrong—and usually at the worst possible moment. The question isn&rsquo;t whether errors will occur; it&rsquo;s whether your error handling will help or hinder you when they do.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/chapter-6/">
+  <meta property="og:site_name" content="Neodyme Documentation">
+  <meta property="og:title" content="Chapter 6">
+  <meta property="og:description" content="Chapter 6: “I Need to Handle Errors Like a Professional”# Your service layer architecture is working beautifully. Complex workflows are organized, dependencies are injected cleanly, and testing is straightforward. But then users start reporting mysterious 500 errors, customer support can’t explain what went wrong, and you spend hours debugging issues that should have been caught immediately.
+The harsh reality of production systems is that everything that can go wrong, will go wrong—and usually at the worst possible moment. The question isn’t whether errors will occur; it’s whether your error handling will help or hinder you when they do.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Chapter 6 | Neodyme Documentation</title>
+<link rel="icon" href="/neodyme/favicon.png" >
+<link rel="manifest" href="/neodyme/manifest.json">
+<link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/chapter-6/">
+<link rel="stylesheet" href="/neodyme/book.min.c098be6fdb8410d437a0799e694b206fa639685582089c583ae6ac07afec1ff8.css" integrity="sha256-wJi&#43;b9uEENQ3oHmeaUsgb6Y5aFWCCJxYOuasB6/sH/g=" crossorigin="anonymous">
+
+
+  <script defer src="/neodyme/fuse.min.js"></script>
+  <script defer src="/neodyme/en.search.min.f64f4d2b3193917ebd07e82190bf6e6a2f23d6e670fb678260875bd442e5cf4d.js" integrity="sha256-9k9NKzGTkX69B&#43;ghkL9uai8j1uZw&#43;2eCYIdb1ELlz00=" crossorigin="anonymous"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/neodyme/"><span>Neodyme Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-1/" class="">
+      Chapter 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-2/" class="">
+      Chapter 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-3/" class="">
+      Chapter 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-4/" class="">
+      Chapter 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-5/" class="">
+      Chapter 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-6/" class="active">
+      Chapter 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-7/" class="">
+      Chapter 7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-8/" class="">
+      Chapter 8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-9/" class="">
+      Chapter 9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-10/" class="">
+      Chapter 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Chapter 6</h3>
+
+  <label for="toc-control">
+    
+    <img src="/neodyme/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-errors-that-dont-help-anyone">The Problem: Errors That Don&rsquo;t Help Anyone</a></li>
+    <li><a href="#why-generic-error-messages-fail-everyone">Why Generic Error Messages Fail Everyone</a></li>
+    <li><a href="#the-professional-error-handling-solution">The Professional Error Handling Solution</a></li>
+    <li><a href="#implementing-error-context-and-logging">Implementing Error Context and Logging</a></li>
+    <li><a href="#service-layer-error-propagation">Service Layer Error Propagation</a></li>
+    <li><a href="#repository-layer-error-handling">Repository Layer Error Handling</a></li>
+    <li><a href="#testing-error-handling">Testing Error Handling</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#error-handling-patterns">Error Handling Patterns</a></li>
+        <li><a href="#logging-and-observability">Logging and Observability</a></li>
+        <li><a href="#http-status-codes-and-api-design">HTTP Status Codes and API Design</a></li>
+        <li><a href="#production-error-management">Production Error Management</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-authentication-and-authorization">Next: Authentication and Authorization</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="chapter-6-i-need-to-handle-errors-like-a-professional">Chapter 6: &ldquo;I Need to Handle Errors Like a Professional&rdquo;<a class="anchor" href="#chapter-6-i-need-to-handle-errors-like-a-professional">#</a></h1>
+<p>Your service layer architecture is working beautifully. Complex workflows are organized, dependencies are injected cleanly, and testing is straightforward. But then users start reporting mysterious 500 errors, customer support can&rsquo;t explain what went wrong, and you spend hours debugging issues that should have been caught immediately.</p>
+<p>The harsh reality of production systems is that <strong>everything that can go wrong, will go wrong</strong>—and usually at the worst possible moment. The question isn&rsquo;t whether errors will occur; it&rsquo;s whether your error handling will help or hinder you when they do.</p>
+<h2 id="the-problem-errors-that-dont-help-anyone">The Problem: Errors That Don&rsquo;t Help Anyone<a class="anchor" href="#the-problem-errors-that-dont-help-anyone">#</a></h2>
+<p>Let me ask you: Have you ever seen an error message that made you more confused than before you read it? If so, you&rsquo;ve experienced the pain of poor error handling.</p>
+<p>Here&rsquo;s what typically happens when error handling is an afterthought:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># What users see when things go wrong</span>
+</span></span><span style="display:flex;"><span>HTTP <span style="color:#ae81ff">500</span> Internal Server Error
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;detail&#34;</span>: <span style="color:#e6db74">&#34;Internal server error&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># What developers see in logs (if they&#39;re lucky)</span>
+</span></span><span style="display:flex;"><span>ERROR: <span style="color:#a6e22e">Exception</span> occurred
+</span></span><span style="display:flex;"><span>Traceback (most recent call last):
+</span></span><span style="display:flex;"><span>  File <span style="color:#e6db74">&#34;some_file.py&#34;</span>, line <span style="color:#ae81ff">42</span>, <span style="color:#f92672">in</span> create_user
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> email_service<span style="color:#f92672">.</span>send_welcome_email(user)
+</span></span><span style="display:flex;"><span>  File <span style="color:#e6db74">&#34;email_service.py&#34;</span>, line <span style="color:#ae81ff">15</span>, <span style="color:#f92672">in</span> send_welcome_email
+</span></span><span style="display:flex;"><span>    server<span style="color:#f92672">.</span>login(username, password)
+</span></span><span style="display:flex;"><span>smtplib<span style="color:#f92672">.</span>SMTPAuthenticationError: <span style="color:#ae81ff">535</span> Authentication failed
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># What customer support sees</span>
+</span></span><span style="display:flex;"><span>Customer: <span style="color:#e6db74">&#34;I can&#39;t register, it says internal server error&#34;</span>
+</span></span><span style="display:flex;"><span>Support: <span style="color:#e6db74">&#34;Let me check... I have no idea what went wrong&#34;</span></span></span></code></pre></div><p><strong>Why this approach creates systematic problems:</strong></p>
+<ul>
+<li><strong>User frustration</strong> - Generic error messages provide no guidance on how to fix problems, leading to support tickets and abandoned workflows</li>
+<li><strong>Support team helplessness</strong> - Customer service can&rsquo;t help users without understanding what actually went wrong</li>
+<li><strong>Developer investigation nightmares</strong> - Vague error messages require hours of log diving to understand simple issues</li>
+<li><strong>Security leaks</strong> - Poor error handling either exposes sensitive information or hides it so well that debugging becomes impossible</li>
+<li><strong>Business impact</strong> - Users abandon processes instead of completing them, directly affecting revenue and conversion rates</li>
+<li><strong>Operational overhead</strong> - Every error becomes a debugging session instead of a quick fix</li>
+</ul>
+<p>The fundamental problem is that <strong>different audiences need different information</strong> from the same error, but most applications only provide one error message for everyone.</p>
+<h2 id="why-generic-error-messages-fail-everyone">Why Generic Error Messages Fail Everyone<a class="anchor" href="#why-generic-error-messages-fail-everyone">#</a></h2>
+<p>Traditional error handling treats all errors the same way:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># The &#34;handle everything the same&#34; approach</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.exception_handler</span>(<span style="color:#a6e22e">Exception</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">catch_all_handler</span>(request: Request, exc: <span style="color:#a6e22e">Exception</span>):
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;An error occurred: </span><span style="color:#e6db74">{</span>exc<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> JSONResponse(
+</span></span><span style="display:flex;"><span>        status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>        content<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;detail&#34;</span>: <span style="color:#e6db74">&#34;Internal server error&#34;</span>}
+</span></span><span style="display:flex;"><span>    )</span></span></code></pre></div><p><strong>This approach fails because:</strong></p>
+<ul>
+<li><strong>Users get no actionable information</strong> - &ldquo;Internal server error&rdquo; doesn&rsquo;t help them understand if they should retry, change their input, or contact support</li>
+<li><strong>Developers lose critical context</strong> - Knowing that &ldquo;an error occurred&rdquo; doesn&rsquo;t help identify the root cause or fix the underlying issue</li>
+<li><strong>Support teams can&rsquo;t triage</strong> - Without error context, every issue requires escalation to developers</li>
+<li><strong>Monitoring becomes impossible</strong> - All errors look the same, making it impossible to identify patterns or prioritize fixes</li>
+<li><strong>User experience degrades</strong> - Users assume the application is broken rather than understanding they made a correctable mistake</li>
+</ul>
+<h2 id="the-professional-error-handling-solution">The Professional Error Handling Solution<a class="anchor" href="#the-professional-error-handling-solution">#</a></h2>
+<p>Professional error handling provides the right information to the right audience at the right time. Here&rsquo;s how neodyme implements this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># core/exceptions.py - Structured error hierarchy</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> enum <span style="color:#f92672">import</span> Enum
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Dict, Any, Optional
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> HTTPException, Request
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.responses <span style="color:#f92672">import</span> JSONResponse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ErrorCode</span>(Enum):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Standardized error codes for consistent handling.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    USER_NOT_FOUND <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;USER_NOT_FOUND&#34;</span>
+</span></span><span style="display:flex;"><span>    EMAIL_ALREADY_EXISTS <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;EMAIL_ALREADY_EXISTS&#34;</span>
+</span></span><span style="display:flex;"><span>    INVALID_CREDENTIALS <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;INVALID_CREDENTIALS&#34;</span>
+</span></span><span style="display:flex;"><span>    EMAIL_SERVICE_UNAVAILABLE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;EMAIL_SERVICE_UNAVAILABLE&#34;</span>
+</span></span><span style="display:flex;"><span>    RATE_LIMIT_EXCEEDED <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;RATE_LIMIT_EXCEEDED&#34;</span>
+</span></span><span style="display:flex;"><span>    VALIDATION_FAILED <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;VALIDATION_FAILED&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NeodymeError</span>(<span style="color:#a6e22e">Exception</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Base exception with rich error context.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(
+</span></span><span style="display:flex;"><span>        self,
+</span></span><span style="display:flex;"><span>        message: str,
+</span></span><span style="display:flex;"><span>        error_code: ErrorCode,
+</span></span><span style="display:flex;"><span>        user_message: Optional[str] <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        context: Optional[Dict[str, Any]] <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        http_status: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">400</span>
+</span></span><span style="display:flex;"><span>    ):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>message <span style="color:#f92672">=</span> message  <span style="color:#75715e"># For developers</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>error_code <span style="color:#f92672">=</span> error_code  <span style="color:#75715e"># For programmatic handling</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>user_message <span style="color:#f92672">=</span> user_message <span style="color:#f92672">or</span> message  <span style="color:#75715e"># For end users</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>context <span style="color:#f92672">=</span> context <span style="color:#f92672">or</span> {}  <span style="color:#75715e"># For debugging</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>http_status <span style="color:#f92672">=</span> http_status
+</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>(message)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserNotFoundError</span>(NeodymeError):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Raised when a requested user doesn&#39;t exist.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, user_id: Any, context: Optional[Dict[str, Any]] <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>(
+</span></span><span style="display:flex;"><span>            message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;User with ID </span><span style="color:#e6db74">{</span>user_id<span style="color:#e6db74">}</span><span style="color:#e6db74"> not found&#34;</span>,
+</span></span><span style="display:flex;"><span>            error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>USER_NOT_FOUND,
+</span></span><span style="display:flex;"><span>            user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;The requested user account could not be found&#34;</span>,
+</span></span><span style="display:flex;"><span>            context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;user_id&#34;</span>: user_id, <span style="color:#f92672">**</span>(context <span style="color:#f92672">or</span> {})},
+</span></span><span style="display:flex;"><span>            http_status<span style="color:#f92672">=</span><span style="color:#ae81ff">404</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EmailAlreadyExistsError</span>(NeodymeError):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Raised when attempting to register with existing email.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, email: str, context: Optional[Dict[str, Any]] <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>(
+</span></span><span style="display:flex;"><span>            message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Email </span><span style="color:#e6db74">{</span>email<span style="color:#e6db74">}</span><span style="color:#e6db74"> already registered&#34;</span>,
+</span></span><span style="display:flex;"><span>            error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>EMAIL_ALREADY_EXISTS,
+</span></span><span style="display:flex;"><span>            user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;An account with this email address already exists. Try logging in instead.&#34;</span>,
+</span></span><span style="display:flex;"><span>            context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;email&#34;</span>: email, <span style="color:#f92672">**</span>(context <span style="color:#f92672">or</span> {})},
+</span></span><span style="display:flex;"><span>            http_status<span style="color:#f92672">=</span><span style="color:#ae81ff">409</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EmailServiceError</span>(NeodymeError):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Raised when email service is unavailable.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, operation: str, underlying_error: str, context: Optional[Dict[str, Any]] <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>(
+</span></span><span style="display:flex;"><span>            message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Email service failed during </span><span style="color:#e6db74">{</span>operation<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>underlying_error<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>            error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>EMAIL_SERVICE_UNAVAILABLE,
+</span></span><span style="display:flex;"><span>            user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;We&#39;re having trouble sending emails right now. Your account was created successfully, but you may not receive confirmation emails.&#34;</span>,
+</span></span><span style="display:flex;"><span>            context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;operation&#34;</span>: operation, <span style="color:#e6db74">&#34;underlying_error&#34;</span>: underlying_error, <span style="color:#f92672">**</span>(context <span style="color:#f92672">or</span> {})},
+</span></span><span style="display:flex;"><span>            http_status<span style="color:#f92672">=</span><span style="color:#ae81ff">503</span>
+</span></span><span style="display:flex;"><span>        )</span></span></code></pre></div><p><strong>Why this structured approach solves the error handling problems:</strong></p>
+<ul>
+<li><strong>Multiple audiences served</strong> - Each error provides both technical details for developers and user-friendly messages for end users</li>
+<li><strong>Programmatic error handling</strong> - Error codes allow client applications to handle specific error types appropriately</li>
+<li><strong>Rich debugging context</strong> - Context dictionaries provide all relevant information for investigation without exposing sensitive data</li>
+<li><strong>Appropriate HTTP status codes</strong> - Different error types get correct status codes, enabling proper client behavior</li>
+<li><strong>Consistent error structure</strong> - All errors follow the same pattern, making them predictable and easy to handle</li>
+</ul>
+<h2 id="implementing-error-context-and-logging">Implementing Error Context and Logging<a class="anchor" href="#implementing-error-context-and-logging">#</a></h2>
+<p>Professional error handling requires rich context for debugging. Here&rsquo;s how neodyme captures and logs error information:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># core/error_handler.py - Centralized error processing</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> logging
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> traceback
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Any, Dict
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> Request
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.responses <span style="color:#f92672">import</span> JSONResponse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>logger <span style="color:#f92672">=</span> logging<span style="color:#f92672">.</span>getLogger(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ErrorHandler</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Centralized error handling with context and logging.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>error_metrics <span style="color:#f92672">=</span> {}  <span style="color:#75715e"># In production, use proper metrics service</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_neodyme_error</span>(
+</span></span><span style="display:flex;"><span>        self, 
+</span></span><span style="display:flex;"><span>        request: Request, 
+</span></span><span style="display:flex;"><span>        error: NeodymeError
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> JSONResponse:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Handle application-specific errors with full context.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Build request context for debugging</span>
+</span></span><span style="display:flex;"><span>        request_context <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>_build_request_context(request)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Combine error context with request context</span>
+</span></span><span style="display:flex;"><span>        full_context <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">**</span>error<span style="color:#f92672">.</span>context,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">**</span>request_context,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;error_code&#34;</span>: error<span style="color:#f92672">.</span>error_code<span style="color:#f92672">.</span>value,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Log with appropriate level based on error type</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> error<span style="color:#f92672">.</span>http_status <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">500</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Server error: </span><span style="color:#e6db74">{</span>error<span style="color:#f92672">.</span>message<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                extra<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;context&#34;</span>: full_context},
+</span></span><span style="display:flex;"><span>                exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> error<span style="color:#f92672">.</span>http_status <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">400</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Client error: </span><span style="color:#e6db74">{</span>error<span style="color:#f92672">.</span>message<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                extra<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;context&#34;</span>: full_context}
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Track error metrics</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_track_error_metrics(error, full_context)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Return appropriate response for users</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> JSONResponse(
+</span></span><span style="display:flex;"><span>            status_code<span style="color:#f92672">=</span>error<span style="color:#f92672">.</span>http_status,
+</span></span><span style="display:flex;"><span>            content<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;error&#34;</span>: {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;code&#34;</span>: error<span style="color:#f92672">.</span>error_code<span style="color:#f92672">.</span>value,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;message&#34;</span>: error<span style="color:#f92672">.</span>user_message,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;request_id&#34;</span>: request_context<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;request_id&#34;</span>)
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_unexpected_error</span>(
+</span></span><span style="display:flex;"><span>        self,
+</span></span><span style="display:flex;"><span>        request: Request,
+</span></span><span style="display:flex;"><span>        error: <span style="color:#a6e22e">Exception</span>
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> JSONResponse:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Handle unexpected errors with security and debugging balance.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        request_context <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>_build_request_context(request)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Log full technical details for developers</span>
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unexpected error: </span><span style="color:#e6db74">{</span>type(error)<span style="color:#f92672">.</span>__name__<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>str(error)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>            extra<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;context&#34;</span>: request_context},
+</span></span><span style="display:flex;"><span>            exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Track critical error metrics</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_track_critical_error(error, request_context)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Return generic message to users (security)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> JSONResponse(
+</span></span><span style="display:flex;"><span>            status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>            content<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;error&#34;</span>: {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;code&#34;</span>: <span style="color:#e6db74">&#34;INTERNAL_ERROR&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;An unexpected error occurred. Please try again later.&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;request_id&#34;</span>: request_context<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;request_id&#34;</span>)
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_build_request_context</span>(self, request: Request) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Build comprehensive request context for debugging.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;request_id&#34;</span>: getattr(request<span style="color:#f92672">.</span>state, <span style="color:#e6db74">&#34;request_id&#34;</span>, <span style="color:#e6db74">&#34;unknown&#34;</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;method&#34;</span>: request<span style="color:#f92672">.</span>method,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;url&#34;</span>: str(request<span style="color:#f92672">.</span>url),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;client_ip&#34;</span>: request<span style="color:#f92672">.</span>client<span style="color:#f92672">.</span>host <span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>client <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;unknown&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;user_agent&#34;</span>: request<span style="color:#f92672">.</span>headers<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;user-agent&#34;</span>, <span style="color:#e6db74">&#34;unknown&#34;</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;endpoint&#34;</span>: request<span style="color:#f92672">.</span>url<span style="color:#f92672">.</span>path,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;query_params&#34;</span>: dict(request<span style="color:#f92672">.</span>query_params),
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Don&#39;t log sensitive headers like Authorization</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;headers&#34;</span>: {
+</span></span><span style="display:flex;"><span>                k: v <span style="color:#66d9ef">for</span> k, v <span style="color:#f92672">in</span> request<span style="color:#f92672">.</span>headers<span style="color:#f92672">.</span>items() 
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> k<span style="color:#f92672">.</span>lower() <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> {<span style="color:#e6db74">&#34;authorization&#34;</span>, <span style="color:#e6db74">&#34;cookie&#34;</span>, <span style="color:#e6db74">&#34;x-api-key&#34;</span>}
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_track_error_metrics</span>(self, error: NeodymeError, context: Dict[str, Any]) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Track error metrics for monitoring and alerting.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        error_key <span style="color:#f92672">=</span> error<span style="color:#f92672">.</span>error_code<span style="color:#f92672">.</span>value
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> error_key <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>error_metrics:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>error_metrics[error_key] <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;count&#34;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;last_seen&#34;</span>: <span style="color:#66d9ef">None</span>}
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>error_metrics[error_key][<span style="color:#e6db74">&#34;count&#34;</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>error_metrics[error_key][<span style="color:#e6db74">&#34;last_seen&#34;</span>] <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># In production, send to metrics service like Prometheus or DataDog</span>
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error metric tracked: </span><span style="color:#e6db74">{</span>error_key<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_track_critical_error</span>(self, error: <span style="color:#a6e22e">Exception</span>, context: Dict[str, Any]) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Track unexpected errors that need immediate attention.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># In production, trigger alerts for 5xx errors</span>
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>critical(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Critical error requiring investigation: </span><span style="color:#e6db74">{</span>type(error)<span style="color:#f92672">.</span>__name__<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>            extra<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;context&#34;</span>: context}
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set up global error handlers</span>
+</span></span><span style="display:flex;"><span>error_handler <span style="color:#f92672">=</span> ErrorHandler()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">neodyme_exception_handler</span>(request: Request, exc: NeodymeError) <span style="color:#f92672">-&gt;</span> JSONResponse:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Global handler for application-specific errors.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> error_handler<span style="color:#f92672">.</span>handle_neodyme_error(request, exc)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">general_exception_handler</span>(request: Request, exc: <span style="color:#a6e22e">Exception</span>) <span style="color:#f92672">-&gt;</span> JSONResponse:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Global handler for unexpected errors.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> error_handler<span style="color:#f92672">.</span>handle_unexpected_error(request, exc)</span></span></code></pre></div><p><strong>Why comprehensive error context is essential:</strong></p>
+<ul>
+<li><strong>Faster debugging</strong> - Request context helps developers reproduce issues quickly without asking users for details</li>
+<li><strong>User correlation</strong> - Request IDs allow support teams to find the exact error in logs when users report problems</li>
+<li><strong>Security balance</strong> - Technical details are logged for developers while users see only safe, helpful messages</li>
+<li><strong>Metrics foundation</strong> - Error tracking enables monitoring trends and identifying systemic issues before they become critical</li>
+</ul>
+<h2 id="service-layer-error-propagation">Service Layer Error Propagation<a class="anchor" href="#service-layer-error-propagation">#</a></h2>
+<p>Errors from the service layer need careful handling to maintain the separation of concerns:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># services/user_service.py - Service layer error handling</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> UserNotFoundError, EmailAlreadyExistsError, EmailServiceError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;User service with comprehensive error handling.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register_user</span>(
+</span></span><span style="display:flex;"><span>        self, 
+</span></span><span style="display:flex;"><span>        session: AsyncSession, 
+</span></span><span style="display:flex;"><span>        user_data: UserCreate,
+</span></span><span style="display:flex;"><span>        ip_address: str
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Register user with detailed error handling.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Check for existing user</span>
+</span></span><span style="display:flex;"><span>            existing_user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>get_by_email(
+</span></span><span style="display:flex;"><span>                session, email<span style="color:#f92672">=</span>user_data<span style="color:#f92672">.</span>email
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> existing_user:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> EmailAlreadyExistsError(
+</span></span><span style="display:flex;"><span>                    email<span style="color:#f92672">=</span>user_data<span style="color:#f92672">.</span>email,
+</span></span><span style="display:flex;"><span>                    context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;attempted_registration_ip&#34;</span>: ip_address}
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Create user (core operation that should not fail)</span>
+</span></span><span style="display:flex;"><span>            user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>create(session, obj_in<span style="color:#f92672">=</span>user_data)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Handle side effects with graceful error handling</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>_handle_registration_side_effects(user, ip_address)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(user)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> NeodymeError:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Re-raise application errors as-is</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Wrap unexpected errors with context</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unexpected error during user registration: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> NeodymeError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;User registration failed due to unexpected error: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INTERNAL_ERROR,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Registration failed due to a system error. Please try again.&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;email&#34;</span>: user_data<span style="color:#f92672">.</span>email,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;ip_address&#34;</span>: ip_address,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;underlying_error&#34;</span>: str(e)
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            ) <span style="color:#f92672">from</span> e
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_handle_registration_side_effects</span>(self, user: User, ip_address: str) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Handle registration side effects with appropriate error handling.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Email sending - warn but don&#39;t fail registration</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>email_service<span style="color:#f92672">.</span>send_welcome_email(user)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Failed to send welcome email to </span><span style="color:#e6db74">{</span>user<span style="color:#f92672">.</span>email<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Continue - email failure shouldn&#39;t prevent registration</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Analytics tracking - warn but don&#39;t fail registration</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>analytics_service<span style="color:#f92672">.</span>track_user_registration(user)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Failed to track registration analytics for user </span><span style="color:#e6db74">{</span>user<span style="color:#f92672">.</span>id<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Continue - analytics failure shouldn&#39;t prevent registration</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Audit logging - this might be more critical</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>audit_service<span style="color:#f92672">.</span>log_user_creation(user, ip_address)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Failed to log user creation audit for user </span><span style="color:#e6db74">{</span>user<span style="color:#f92672">.</span>id<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Decision point: fail registration if audit logging fails?</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># For compliance reasons, you might want to fail here</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user_by_id</span>(self, session: AsyncSession, user_id: int) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Get user with proper error handling.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>get(session, id<span style="color:#f92672">=</span>user_id)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> UserNotFoundError(
+</span></span><span style="display:flex;"><span>                    user_id<span style="color:#f92672">=</span>user_id,
+</span></span><span style="display:flex;"><span>                    context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;operation&#34;</span>: <span style="color:#e6db74">&#34;get_user_by_id&#34;</span>}
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(user)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> NeodymeError:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Re-raise application errors</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Wrap database or other unexpected errors</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unexpected error retrieving user </span><span style="color:#e6db74">{</span>user_id<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> NeodymeError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Failed to retrieve user </span><span style="color:#e6db74">{</span>user_id<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INTERNAL_ERROR,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Unable to retrieve user information. Please try again.&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;user_id&#34;</span>: user_id, <span style="color:#e6db74">&#34;underlying_error&#34;</span>: str(e)}
+</span></span><span style="display:flex;"><span>            ) <span style="color:#f92672">from</span> e</span></span></code></pre></div><p><strong>Why service layer error handling is crucial:</strong></p>
+<ul>
+<li><strong>Business logic errors</strong> - Services understand business rules and can provide meaningful error messages for rule violations</li>
+<li><strong>Context preservation</strong> - Services have access to business context that repositories don&rsquo;t understand</li>
+<li><strong>Error classification</strong> - Services can distinguish between expected business errors and unexpected system failures</li>
+<li><strong>Graceful degradation</strong> - Services can handle partial failures in complex workflows appropriately</li>
+</ul>
+<h2 id="repository-layer-error-handling">Repository Layer Error Handling<a class="anchor" href="#repository-layer-error-handling">#</a></h2>
+<p>The repository layer needs to handle database-specific errors and translate them to business errors:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># repositories/user_repository.py - Repository error handling</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.exc <span style="color:#f92672">import</span> IntegrityError, DatabaseError
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> EmailAlreadyExistsError, NeodymeError, ErrorCode
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepository</span>(BaseRepository[User, UserCreate, UserUpdate]):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;User repository with database error handling.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, session: AsyncSession, <span style="color:#f92672">*</span>, obj_in: UserCreate) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Create user with database error handling.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Hash password</span>
+</span></span><span style="display:flex;"><span>            obj_data <span style="color:#f92672">=</span> obj_in<span style="color:#f92672">.</span>model_dump()
+</span></span><span style="display:flex;"><span>            hashed_password <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_hash_password(obj_data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#34;password&#34;</span>))
+</span></span><span style="display:flex;"><span>            obj_data[<span style="color:#e6db74">&#34;hashed_password&#34;</span>] <span style="color:#f92672">=</span> hashed_password
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Create user</span>
+</span></span><span style="display:flex;"><span>            db_obj <span style="color:#f92672">=</span> User(<span style="color:#f92672">**</span>obj_data)
+</span></span><span style="display:flex;"><span>            session<span style="color:#f92672">.</span>add(db_obj)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>refresh(db_obj)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> db_obj
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> IntegrityError <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>rollback()
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Handle specific constraint violations</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;users_email_key&#34;</span> <span style="color:#f92672">in</span> str(e<span style="color:#f92672">.</span>orig):
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Email uniqueness constraint violated</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> EmailAlreadyExistsError(
+</span></span><span style="display:flex;"><span>                    email<span style="color:#f92672">=</span>obj_in<span style="color:#f92672">.</span>email,
+</span></span><span style="display:flex;"><span>                    context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;constraint&#34;</span>: <span style="color:#e6db74">&#34;email_unique&#34;</span>, <span style="color:#e6db74">&#34;database_error&#34;</span>: str(e<span style="color:#f92672">.</span>orig)}
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Other integrity constraint violations</span>
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Integrity constraint violation creating user: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> NeodymeError(
+</span></span><span style="display:flex;"><span>                    message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Database constraint violation: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                    error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>VALIDATION_FAILED,
+</span></span><span style="display:flex;"><span>                    user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;The provided data violates system constraints. Please check your input.&#34;</span>,
+</span></span><span style="display:flex;"><span>                    context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;email&#34;</span>: obj_in<span style="color:#f92672">.</span>email, <span style="color:#e6db74">&#34;constraint_error&#34;</span>: str(e)}
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> DatabaseError <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>rollback()
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Database error creating user: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> NeodymeError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Database error during user creation: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>DATABASE_ERROR,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;A database error occurred. Please try again later.&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;email&#34;</span>: obj_in<span style="color:#f92672">.</span>email, <span style="color:#e6db74">&#34;database_error&#34;</span>: str(e)}
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>rollback()
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unexpected error creating user: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> NeodymeError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unexpected error during user creation: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INTERNAL_ERROR,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;An unexpected error occurred during registration.&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;email&#34;</span>: obj_in<span style="color:#f92672">.</span>email, <span style="color:#e6db74">&#34;unexpected_error&#34;</span>: str(e)}
+</span></span><span style="display:flex;"><span>            ) <span style="color:#f92672">from</span> e
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_by_email</span>(self, session: AsyncSession, <span style="color:#f92672">*</span>, email: str) <span style="color:#f92672">-&gt;</span> User <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Get user by email with error handling.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            statement <span style="color:#f92672">=</span> select(User)<span style="color:#f92672">.</span>where(User<span style="color:#f92672">.</span>email <span style="color:#f92672">==</span> email)
+</span></span><span style="display:flex;"><span>            result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>exec(statement)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> result<span style="color:#f92672">.</span>first()
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> DatabaseError <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Database error querying user by email: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> NeodymeError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Database error querying user: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>DATABASE_ERROR,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Unable to search for user. Please try again later.&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;email&#34;</span>: email, <span style="color:#e6db74">&#34;database_error&#34;</span>: str(e)}
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unexpected error querying user by email: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> NeodymeError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unexpected error querying user: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INTERNAL_ERROR,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;An unexpected error occurred while searching for the user.&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;email&#34;</span>: email, <span style="color:#e6db74">&#34;unexpected_error&#34;</span>: str(e)}
+</span></span><span style="display:flex;"><span>            ) <span style="color:#f92672">from</span> e</span></span></code></pre></div><p><strong>Why repository error handling is important:</strong></p>
+<ul>
+<li><strong>Database abstraction</strong> - Business logic shouldn&rsquo;t need to understand SQLAlchemy exceptions</li>
+<li><strong>Constraint translation</strong> - Database constraint violations are converted to meaningful business errors</li>
+<li><strong>Recovery opportunities</strong> - Transaction rollbacks ensure database consistency when errors occur</li>
+<li><strong>Context preservation</strong> - Database errors include relevant business context for debugging</li>
+</ul>
+<h2 id="testing-error-handling">Testing Error Handling<a class="anchor" href="#testing-error-handling">#</a></h2>
+<p>Comprehensive error handling requires comprehensive testing:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># tests/test_error_handling.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pytest
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> unittest.mock <span style="color:#f92672">import</span> AsyncMock, patch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.exc <span style="color:#f92672">import</span> IntegrityError
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> EmailAlreadyExistsError, UserNotFoundError
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.services.user_service <span style="color:#f92672">import</span> UserService
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_user_registration_duplicate_email_error</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test that duplicate email registration raises proper error.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Setup mocks</span>
+</span></span><span style="display:flex;"><span>    user_repository <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    email_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    analytics_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Mock existing user</span>
+</span></span><span style="display:flex;"><span>    existing_user <span style="color:#f92672">=</span> User(id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>, full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Existing User&#34;</span>)
+</span></span><span style="display:flex;"><span>    user_repository<span style="color:#f92672">.</span>get_by_email<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> existing_user
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create service</span>
+</span></span><span style="display:flex;"><span>    user_service <span style="color:#f92672">=</span> UserService(
+</span></span><span style="display:flex;"><span>        user_repository<span style="color:#f92672">=</span>user_repository,
+</span></span><span style="display:flex;"><span>        email_service<span style="color:#f92672">=</span>email_service,
+</span></span><span style="display:flex;"><span>        analytics_service<span style="color:#f92672">=</span>analytics_service
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Test data</span>
+</span></span><span style="display:flex;"><span>    user_data <span style="color:#f92672">=</span> UserCreate(
+</span></span><span style="display:flex;"><span>        email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>        full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;New User&#34;</span>,
+</span></span><span style="display:flex;"><span>        password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password123&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    session <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Test that proper error is raised</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(EmailAlreadyExistsError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> user_service<span style="color:#f92672">.</span>register_user(session, user_data, <span style="color:#e6db74">&#34;192.168.1.1&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Verify error details</span>
+</span></span><span style="display:flex;"><span>    error <span style="color:#f92672">=</span> exc_info<span style="color:#f92672">.</span>value
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> error<span style="color:#f92672">.</span>error_code <span style="color:#f92672">==</span> ErrorCode<span style="color:#f92672">.</span>EMAIL_ALREADY_EXISTS
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;test@example.com&#34;</span> <span style="color:#f92672">in</span> error<span style="color:#f92672">.</span>user_message
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> error<span style="color:#f92672">.</span>context[<span style="color:#e6db74">&#34;email&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;test@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> error<span style="color:#f92672">.</span>http_status <span style="color:#f92672">==</span> <span style="color:#ae81ff">409</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_email_service_failure_doesnt_fail_registration</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test that email service failures don&#39;t prevent user registration.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Setup mocks</span>
+</span></span><span style="display:flex;"><span>    user_repository <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    email_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    analytics_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Mock no existing user</span>
+</span></span><span style="display:flex;"><span>    user_repository<span style="color:#f92672">.</span>get_by_email<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Mock successful user creation</span>
+</span></span><span style="display:flex;"><span>    created_user <span style="color:#f92672">=</span> User(
+</span></span><span style="display:flex;"><span>        id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, 
+</span></span><span style="display:flex;"><span>        email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>, 
+</span></span><span style="display:flex;"><span>        full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Test User&#34;</span>,
+</span></span><span style="display:flex;"><span>        hashed_password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hashed&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    user_repository<span style="color:#f92672">.</span>create<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> created_user
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Mock email service failure</span>
+</span></span><span style="display:flex;"><span>    email_service<span style="color:#f92672">.</span>send_welcome_email<span style="color:#f92672">.</span>side_effect <span style="color:#f92672">=</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#34;SMTP Error&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create service</span>
+</span></span><span style="display:flex;"><span>    user_service <span style="color:#f92672">=</span> UserService(
+</span></span><span style="display:flex;"><span>        user_repository<span style="color:#f92672">=</span>user_repository,
+</span></span><span style="display:flex;"><span>        email_service<span style="color:#f92672">=</span>email_service,
+</span></span><span style="display:flex;"><span>        analytics_service<span style="color:#f92672">=</span>analytics_service
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Test data</span>
+</span></span><span style="display:flex;"><span>    user_data <span style="color:#f92672">=</span> UserCreate(
+</span></span><span style="display:flex;"><span>        email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>        full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Test User&#34;</span>,
+</span></span><span style="display:flex;"><span>        password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password123&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    session <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Registration should succeed despite email failure</span>
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_service<span style="color:#f92672">.</span>register_user(session, user_data, <span style="color:#e6db74">&#34;192.168.1.1&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Verify registration succeeded</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> result<span style="color:#f92672">.</span>email <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;test@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> result<span style="color:#f92672">.</span>full_name <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;Test User&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Verify email was attempted</span>
+</span></span><span style="display:flex;"><span>    email_service<span style="color:#f92672">.</span>send_welcome_email<span style="color:#f92672">.</span>assert_called_once_with(created_user)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_database_integrity_error_handling</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test that database integrity errors are properly handled.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Setup mocks</span>
+</span></span><span style="display:flex;"><span>    user_repository <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Mock integrity error (email constraint violation)</span>
+</span></span><span style="display:flex;"><span>    integrity_error <span style="color:#f92672">=</span> IntegrityError(
+</span></span><span style="display:flex;"><span>        statement<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;INSERT INTO users...&#34;</span>,
+</span></span><span style="display:flex;"><span>        params<span style="color:#f92672">=</span>{},
+</span></span><span style="display:flex;"><span>        orig<span style="color:#f92672">=</span><span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#34;duplicate key value violates unique constraint </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">users_email_key</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    user_repository<span style="color:#f92672">.</span>create<span style="color:#f92672">.</span>side_effect <span style="color:#f92672">=</span> integrity_error
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Mock no existing user (race condition scenario)</span>
+</span></span><span style="display:flex;"><span>    user_repository<span style="color:#f92672">.</span>get_by_email<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    email_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    analytics_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create service</span>
+</span></span><span style="display:flex;"><span>    user_service <span style="color:#f92672">=</span> UserService(
+</span></span><span style="display:flex;"><span>        user_repository<span style="color:#f92672">=</span>user_repository,
+</span></span><span style="display:flex;"><span>        email_service<span style="color:#f92672">=</span>email_service,
+</span></span><span style="display:flex;"><span>        analytics_service<span style="color:#f92672">=</span>analytics_service
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Test data</span>
+</span></span><span style="display:flex;"><span>    user_data <span style="color:#f92672">=</span> UserCreate(
+</span></span><span style="display:flex;"><span>        email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>        full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Test User&#34;</span>,
+</span></span><span style="display:flex;"><span>        password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password123&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    session <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Should raise EmailAlreadyExistsError</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(EmailAlreadyExistsError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> user_service<span style="color:#f92672">.</span>register_user(session, user_data, <span style="color:#e6db74">&#34;192.168.1.1&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Verify proper error conversion</span>
+</span></span><span style="display:flex;"><span>    error <span style="color:#f92672">=</span> exc_info<span style="color:#f92672">.</span>value
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> error<span style="color:#f92672">.</span>error_code <span style="color:#f92672">==</span> ErrorCode<span style="color:#f92672">.</span>EMAIL_ALREADY_EXISTS
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;test@example.com&#34;</span> <span style="color:#f92672">in</span> error<span style="color:#f92672">.</span>context[<span style="color:#e6db74">&#34;email&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_user_not_found_error</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test user not found error handling.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Setup mocks</span>
+</span></span><span style="display:flex;"><span>    user_repository <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    user_repository<span style="color:#f92672">.</span>get<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>  <span style="color:#75715e"># User not found</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    email_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    analytics_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create service</span>
+</span></span><span style="display:flex;"><span>    user_service <span style="color:#f92672">=</span> UserService(
+</span></span><span style="display:flex;"><span>        user_repository<span style="color:#f92672">=</span>user_repository,
+</span></span><span style="display:flex;"><span>        email_service<span style="color:#f92672">=</span>email_service,
+</span></span><span style="display:flex;"><span>        analytics_service<span style="color:#f92672">=</span>analytics_service
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    session <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Test that proper error is raised</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(UserNotFoundError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> user_service<span style="color:#f92672">.</span>get_user_by_id(session, <span style="color:#ae81ff">999</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Verify error details</span>
+</span></span><span style="display:flex;"><span>    error <span style="color:#f92672">=</span> exc_info<span style="color:#f92672">.</span>value
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> error<span style="color:#f92672">.</span>error_code <span style="color:#f92672">==</span> ErrorCode<span style="color:#f92672">.</span>USER_NOT_FOUND
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> error<span style="color:#f92672">.</span>context[<span style="color:#e6db74">&#34;user_id&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">999</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> error<span style="color:#f92672">.</span>http_status <span style="color:#f92672">==</span> <span style="color:#ae81ff">404</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;user account could not be found&#34;</span> <span style="color:#f92672">in</span> error<span style="color:#f92672">.</span>user_message</span></span></code></pre></div><p><strong>Why comprehensive error testing is essential:</strong></p>
+<ul>
+<li><strong>Error path coverage</strong> - Error handling code paths need testing just like happy path scenarios</li>
+<li><strong>Error message validation</strong> - Tests ensure error messages are helpful and don&rsquo;t expose sensitive information</li>
+<li><strong>Context verification</strong> - Tests confirm that error context includes all necessary debugging information</li>
+<li><strong>Recovery testing</strong> - Tests verify that systems recover properly from various failure scenarios</li>
+</ul>
+<h2 id="what-youve-learned">What You&rsquo;ve Learned<a class="anchor" href="#what-youve-learned">#</a></h2>
+<p>By the end of this chapter, you understand:</p>
+<p>✅ <strong>Why generic error messages fail everyone</strong> - and how different audiences need different information from the same error<br>
+✅ <strong>Structured error hierarchies</strong> - providing appropriate HTTP status codes, error codes, and context for each audience<br>
+✅ <strong>Error propagation patterns</strong> - how errors should flow from repositories through services to API responses<br>
+✅ <strong>External service error handling</strong> - managing failures in services you don&rsquo;t control without breaking core functionality<br>
+✅ <strong>Error context and logging</strong> - capturing the right information for debugging while maintaining security<br>
+✅ <strong>Testing error scenarios</strong> - ensuring error handling works correctly under various failure conditions</p>
+<p>More importantly, you&rsquo;ve built error handling that helps users solve their problems while giving developers the information they need to fix issues quickly.</p>
+<h2 id="building-blocks-for-next-chapters">Building Blocks for Next Chapters<a class="anchor" href="#building-blocks-for-next-chapters">#</a></h2>
+<p>This error handling foundation gives us:</p>
+<ul>
+<li><strong>HTTP handling</strong> ← Chapter 1: FastAPI basics</li>
+<li><strong>Data persistence</strong> ← Chapter 2: Database integration</li>
+<li><strong>Input validation</strong> ← Chapter 3: Request/response validation</li>
+<li><strong>Schema evolution</strong> ← Chapter 4: Database migrations</li>
+<li><strong>Clean architecture</strong> ← Chapter 5: Service layer organization</li>
+<li><strong>Error handling</strong> ← You are here</li>
+<li><strong>Security</strong> ← Chapter 7: Authentication and authorization</li>
+</ul>
+<h2 id="exercises">Exercises<a class="anchor" href="#exercises">#</a></h2>
+<ol>
+<li><strong>Add error metrics</strong> - Implement error tracking that counts different error types over time</li>
+<li><strong>Create error alerts</strong> - Build a system that alerts when error rates exceed thresholds</li>
+<li><strong>Test error recovery</strong> - Add retry logic for transient external service failures</li>
+<li><strong>Implement circuit breakers</strong> - Prevent cascading failures when external services are down</li>
+<li><strong>Add error correlation</strong> - Implement request IDs that track errors across service boundaries</li>
+</ol>
+<h2 id="resources-for-deeper-learning">Resources for Deeper Learning<a class="anchor" href="#resources-for-deeper-learning">#</a></h2>
+<h3 id="error-handling-patterns">Error Handling Patterns<a class="anchor" href="#error-handling-patterns">#</a></h3>
+<ul>
+<li><strong>Effective Error Handling</strong>: Patterns for robust error management - <a href="https://www.joelonsoftware.com/2003/10/13/13/">https://www.joelonsoftware.com/2003/10/13/13/</a></li>
+<li><strong>Exception Handling Best Practices</strong>: Language-agnostic error handling principles - <a href="https://docs.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions">https://docs.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions</a></li>
+<li><strong>Circuit Breaker Pattern</strong>: Preventing cascading failures - <a href="https://martinfowler.com/bliki/CircuitBreaker.html">https://martinfowler.com/bliki/CircuitBreaker.html</a></li>
+</ul>
+<h3 id="logging-and-observability">Logging and Observability<a class="anchor" href="#logging-and-observability">#</a></h3>
+<ul>
+<li><strong>Structured Logging</strong>: Best practices for machine-readable logs - <a href="https://www.honeycomb.io/blog/structured-logging-and-your-team/">https://www.honeycomb.io/blog/structured-logging-and-your-team/</a></li>
+<li><strong>Python Logging Best Practices</strong>: Effective logging in Python applications - <a href="https://realpython.com/python-logging/">https://realpython.com/python-logging/</a></li>
+<li><strong>Observability vs Monitoring</strong>: Understanding the difference - <a href="https://www.honeycomb.io/blog/observability-vs-monitoring/">https://www.honeycomb.io/blog/observability-vs-monitoring/</a></li>
+</ul>
+<h3 id="http-status-codes-and-api-design">HTTP Status Codes and API Design<a class="anchor" href="#http-status-codes-and-api-design">#</a></h3>
+<ul>
+<li><strong>HTTP Status Code Guide</strong>: When to use which status codes - <a href="https://httpstatuses.com/">https://httpstatuses.com/</a></li>
+<li><strong>API Error Design</strong>: Designing user-friendly API errors - <a href="https://blog.restcase.com/rest-api-error-codes-101/">https://blog.restcase.com/rest-api-error-codes-101/</a></li>
+<li><strong>Problem Details Specification</strong>: Standard format for HTTP API errors - <a href="https://tools.ietf.org/html/rfc7807">https://tools.ietf.org/html/rfc7807</a></li>
+</ul>
+<h3 id="production-error-management">Production Error Management<a class="anchor" href="#production-error-management">#</a></h3>
+<ul>
+<li><strong>Error Budgets and SLI/SLO</strong>: Managing reliability in production - <a href="https://sre.google/sre-book/embracing-risk/">https://sre.google/sre-book/embracing-risk/</a></li>
+<li><strong>Incident Response</strong>: Handling production errors effectively - <a href="https://response.pagerduty.com/">https://response.pagerduty.com/</a></li>
+<li><strong>Error Tracking Tools</strong>: Sentry, Rollbar, and Bugsnag comparison - <a href="https://sentry.io/vs/rollbar/">https://sentry.io/vs/rollbar/</a></li>
+</ul>
+<h3 id="why-these-resources-matter">Why These Resources Matter<a class="anchor" href="#why-these-resources-matter">#</a></h3>
+<ul>
+<li><strong>Error handling patterns</strong>: Understanding proven patterns helps you design robust error handling systems</li>
+<li><strong>Observability practices</strong>: Effective logging and monitoring are essential for debugging production issues</li>
+<li><strong>HTTP standards</strong>: Following web standards makes your API easier for clients to integrate with</li>
+<li><strong>Production practices</strong>: Learning from SRE practices helps you build more reliable systems</li>
+</ul>
+<p><strong>Pro Tip</strong>: Start with structured logging practices to ensure you capture the right information, then focus on error classification and user-friendly error messages.</p>
+<h2 id="next-authentication-and-authorization">Next: Authentication and Authorization<a class="anchor" href="#next-authentication-and-authorization">#</a></h2>
+<p>You have comprehensive error handling that helps both users and developers, but now you need to protect your API. How do you verify user identity? How do you control access to different resources? How do you implement secure authentication without creating security vulnerabilities?</p>
+<p>In Chapter 7, we&rsquo;ll explore authentication and authorization patterns that keep your API secure while maintaining usability.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Preview of Chapter 7</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Secure authentication and authorization service.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">authenticate_user</span>(
+</span></span><span style="display:flex;"><span>        self, 
+</span></span><span style="display:flex;"><span>        credentials: UserCredentials
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> TokenResponse:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Verify user credentials and generate secure tokens.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify password</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Generate JWT tokens</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Track login attempt</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Return secure token response</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">authorize_request</span>(
+</span></span><span style="display:flex;"><span>        self,
+</span></span><span style="display:flex;"><span>        token: str,
+</span></span><span style="display:flex;"><span>        required_permissions: List[str]
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Verify token and check permissions.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Validate JWT token</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Load user permissions</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check authorization</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Return authenticated user</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span></span></span></code></pre></div><p>We&rsquo;ll explore how to implement secure authentication that protects against common attacks while providing a smooth user experience.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/neodyme/docs/chapter-5/" class="flex align-center">
+        <img src="/neodyme/icons/backward.svg" class="book-icon" alt="Previous" title="Chapter 5" />
+        <span>Chapter 5</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/neodyme/docs/chapter-7/" class="flex align-center">
+        <span>Chapter 7</span>
+        <img src="/neodyme/icons/forward.svg" class="book-icon" alt="Next" title="Chapter 7" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+
+ 
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-errors-that-dont-help-anyone">The Problem: Errors That Don&rsquo;t Help Anyone</a></li>
+    <li><a href="#why-generic-error-messages-fail-everyone">Why Generic Error Messages Fail Everyone</a></li>
+    <li><a href="#the-professional-error-handling-solution">The Professional Error Handling Solution</a></li>
+    <li><a href="#implementing-error-context-and-logging">Implementing Error Context and Logging</a></li>
+    <li><a href="#service-layer-error-propagation">Service Layer Error Propagation</a></li>
+    <li><a href="#repository-layer-error-handling">Repository Layer Error Handling</a></li>
+    <li><a href="#testing-error-handling">Testing Error Handling</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#error-handling-patterns">Error Handling Patterns</a></li>
+        <li><a href="#logging-and-observability">Logging and Observability</a></li>
+        <li><a href="#http-status-codes-and-api-design">HTTP Status Codes and API Design</a></li>
+        <li><a href="#production-error-management">Production Error Management</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-authentication-and-authorization">Next: Authentication and Authorization</a></li>
+  </ul>
+</nav>
+
+
+
+  </div>
+</aside>
+
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

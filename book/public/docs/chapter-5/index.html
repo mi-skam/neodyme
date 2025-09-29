@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chapter 5: &ldquo;I Need Clean Architecture That Scales&rdquo;#
+Your user management system works, but there&rsquo;s a growing problem. As you add features, your code becomes increasingly tangled. Business logic is mixed with database queries, which are mixed with HTTP handling, which are mixed with external service calls. Making a simple change requires touching multiple files, and every change breaks something unexpected.
+You&rsquo;ve hit the complexity wall that destroys most applications. The question isn&rsquo;t whether this will happen—it&rsquo;s whether you&rsquo;ll be ready with an architecture that keeps complexity manageable as your application grows.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/chapter-5/">
+  <meta property="og:site_name" content="Neodyme Documentation">
+  <meta property="og:title" content="Chapter 5">
+  <meta property="og:description" content="Chapter 5: “I Need Clean Architecture That Scales”# Your user management system works, but there’s a growing problem. As you add features, your code becomes increasingly tangled. Business logic is mixed with database queries, which are mixed with HTTP handling, which are mixed with external service calls. Making a simple change requires touching multiple files, and every change breaks something unexpected.
+You’ve hit the complexity wall that destroys most applications. The question isn’t whether this will happen—it’s whether you’ll be ready with an architecture that keeps complexity manageable as your application grows.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Chapter 5 | Neodyme Documentation</title>
+<link rel="icon" href="/neodyme/favicon.png" >
+<link rel="manifest" href="/neodyme/manifest.json">
+<link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/chapter-5/">
+<link rel="stylesheet" href="/neodyme/book.min.c098be6fdb8410d437a0799e694b206fa639685582089c583ae6ac07afec1ff8.css" integrity="sha256-wJi&#43;b9uEENQ3oHmeaUsgb6Y5aFWCCJxYOuasB6/sH/g=" crossorigin="anonymous">
+
+
+  <script defer src="/neodyme/fuse.min.js"></script>
+  <script defer src="/neodyme/en.search.min.f64f4d2b3193917ebd07e82190bf6e6a2f23d6e670fb678260875bd442e5cf4d.js" integrity="sha256-9k9NKzGTkX69B&#43;ghkL9uai8j1uZw&#43;2eCYIdb1ELlz00=" crossorigin="anonymous"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/neodyme/"><span>Neodyme Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-1/" class="">
+      Chapter 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-2/" class="">
+      Chapter 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-3/" class="">
+      Chapter 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-4/" class="">
+      Chapter 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-5/" class="active">
+      Chapter 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-6/" class="">
+      Chapter 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-7/" class="">
+      Chapter 7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-8/" class="">
+      Chapter 8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-9/" class="">
+      Chapter 9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-10/" class="">
+      Chapter 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Chapter 5</h3>
+
+  <label for="toc-control">
+    
+    <img src="/neodyme/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-code-becomes-an-unmaintainable-mess">The Problem: Code Becomes an Unmaintainable Mess</a></li>
+    <li><a href="#why-traditional-mvc-isnt-enough">Why Traditional MVC Isn&rsquo;t Enough</a></li>
+    <li><a href="#the-clean-architecture-solution">The Clean Architecture Solution</a></li>
+    <li><a href="#neodymes-layered-architecture">Neodyme&rsquo;s Layered Architecture</a>
+      <ul>
+        <li><a href="#layer-1-domain-models-enterprise-business-rules">Layer 1: Domain Models (Enterprise Business Rules)</a></li>
+        <li><a href="#layer-2-repository-layer-interface-adapters">Layer 2: Repository Layer (Interface Adapters)</a></li>
+        <li><a href="#layer-3-service-layer-application-business-rules">Layer 3: Service Layer (Application Business Rules)</a></li>
+        <li><a href="#layer-4-controller-layer-interface-adapters">Layer 4: Controller Layer (Interface Adapters)</a></li>
+      </ul>
+    </li>
+    <li><a href="#dependency-injection-making-it-all-work-together">Dependency Injection: Making It All Work Together</a></li>
+    <li><a href="#hands-on-refactoring-to-clean-architecture">Hands-On: Refactoring to Clean Architecture</a>
+      <ul>
+        <li><a href="#step-1-define-domain-models">Step 1: Define Domain Models</a></li>
+        <li><a href="#step-2-create-repository-interface-and-implementation">Step 2: Create Repository Interface and Implementation</a></li>
+        <li><a href="#step-3-create-external-service-interfaces">Step 3: Create External Service Interfaces</a></li>
+        <li><a href="#step-4-create-service-layer">Step 4: Create Service Layer</a></li>
+        <li><a href="#step-5-create-dependency-injection-setup">Step 5: Create Dependency Injection Setup</a></li>
+        <li><a href="#step-6-create-clean-controller">Step 6: Create Clean Controller</a></li>
+      </ul>
+    </li>
+    <li><a href="#testing-the-clean-architecture">Testing the Clean Architecture</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#clean-architecture-and-design-patterns">Clean Architecture and Design Patterns</a></li>
+        <li><a href="#repository-pattern-and-data-access">Repository Pattern and Data Access</a></li>
+        <li><a href="#service-layer-and-business-logic">Service Layer and Business Logic</a></li>
+        <li><a href="#testing-and-quality-assurance">Testing and Quality Assurance</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-professional-error-handling">Next: Professional Error Handling</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="chapter-5-i-need-clean-architecture-that-scales">Chapter 5: &ldquo;I Need Clean Architecture That Scales&rdquo;<a class="anchor" href="#chapter-5-i-need-clean-architecture-that-scales">#</a></h1>
+<p>Your user management system works, but there&rsquo;s a growing problem. As you add features, your code becomes increasingly tangled. Business logic is mixed with database queries, which are mixed with HTTP handling, which are mixed with external service calls. Making a simple change requires touching multiple files, and every change breaks something unexpected.</p>
+<p>You&rsquo;ve hit the complexity wall that destroys most applications. The question isn&rsquo;t whether this will happen—it&rsquo;s whether you&rsquo;ll be ready with an architecture that keeps complexity manageable as your application grows.</p>
+<h2 id="the-problem-code-becomes-an-unmaintainable-mess">The Problem: Code Becomes an Unmaintainable Mess<a class="anchor" href="#the-problem-code-becomes-an-unmaintainable-mess">#</a></h2>
+<p>Let me ask you: Have you ever tried to add a simple feature and ended up changing files you didn&rsquo;t expect? Or discovered that fixing one bug created three new ones? This happens because code without clear boundaries becomes impossible to reason about.</p>
+<p>Here&rsquo;s what &ldquo;works but isn&rsquo;t scalable&rdquo; looks like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Everything mixed together - a maintenance nightmare</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/users/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(user_data: dict, session: AsyncSession <span style="color:#f92672">=</span> Depends(get_session)):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Validation mixed with business logic</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user_data<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;email&#34;</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">400</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Email required&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Database queries mixed with validation</span>
+</span></span><span style="display:flex;"><span>    existing <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>exec(select(User)<span style="color:#f92672">.</span>where(User<span style="color:#f92672">.</span>email <span style="color:#f92672">==</span> user_data[<span style="color:#e6db74">&#34;email&#34;</span>]))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> existing<span style="color:#f92672">.</span>first():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">409</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Email exists&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># External service calls mixed with database operations</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        email_valid <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> external_email_validator<span style="color:#f92672">.</span>check(user_data[<span style="color:#e6db74">&#34;email&#34;</span>])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> email_valid:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">400</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid email&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Email validation failed&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Password hashing mixed with database operations</span>
+</span></span><span style="display:flex;"><span>    hashed_password <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha256(user_data[<span style="color:#e6db74">&#34;password&#34;</span>]<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Database operations mixed with business logic</span>
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> User(
+</span></span><span style="display:flex;"><span>        email<span style="color:#f92672">=</span>user_data[<span style="color:#e6db74">&#34;email&#34;</span>],
+</span></span><span style="display:flex;"><span>        full_name<span style="color:#f92672">=</span>user_data[<span style="color:#e6db74">&#34;full_name&#34;</span>],
+</span></span><span style="display:flex;"><span>        hashed_password<span style="color:#f92672">=</span>hashed_password,
+</span></span><span style="display:flex;"><span>        is_active<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        created_at<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow(),
+</span></span><span style="display:flex;"><span>        updated_at<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow()
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>add(user)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>refresh(user)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Analytics mixed with user creation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> analytics<span style="color:#f92672">.</span>track_user_registration(user<span style="color:#f92672">.</span>id, user<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Silent failure - bad for debugging</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Email sending mixed with user creation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> email_service<span style="color:#f92672">.</span>send_welcome_email(user<span style="color:#f92672">.</span>email, user<span style="color:#f92672">.</span>full_name)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Silent failure - bad for user experience</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Response creation mixed with everything else</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;id&#34;</span>: user<span style="color:#f92672">.</span>id,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;email&#34;</span>: user<span style="color:#f92672">.</span>email,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;full_name&#34;</span>: user<span style="color:#f92672">.</span>full_name,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;is_active&#34;</span>: user<span style="color:#f92672">.</span>is_active,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;created_at&#34;</span>: user<span style="color:#f92672">.</span>created_at<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>    }</span></span></code></pre></div><p><strong>What&rsquo;s catastrophically wrong with this approach:</strong></p>
+<ul>
+<li><strong>Testing nightmare</strong> - How do you test user creation without hitting the database, external APIs, and email service?</li>
+<li><strong>Change amplification</strong> - Modifying email validation requires changing the user registration endpoint</li>
+<li><strong>Hidden dependencies</strong> - The endpoint secretly depends on analytics and email services, making deployment coordination complex</li>
+<li><strong>Error handling inconsistency</strong> - Different failure modes are handled differently, confusing users and operators</li>
+<li><strong>Impossible to reuse</strong> - User creation logic is locked inside an HTTP endpoint, so you can&rsquo;t use it from background jobs or other services</li>
+<li><strong>No single responsibility</strong> - This function validates, creates, sends emails, tracks analytics, and formats responses</li>
+<li><strong>Silent failures</strong> - External service failures are hidden, making debugging production issues impossible</li>
+</ul>
+<p>This approach works for demos but fails catastrophically when you need to maintain, test, or extend the application.</p>
+<h2 id="why-traditional-mvc-isnt-enough">Why Traditional MVC Isn&rsquo;t Enough<a class="anchor" href="#why-traditional-mvc-isnt-enough">#</a></h2>
+<p>You might think &ldquo;I&rsquo;ll just use MVC (Model-View-Controller)&rdquo; but that pattern doesn&rsquo;t address the core problems of modern applications:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Traditional MVC - better but still problematic</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserController</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(self, user_data):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Still mixing business logic with external services</span>
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> User<span style="color:#f92672">.</span>create(user_data)  <span style="color:#75715e"># Database operation</span>
+</span></span><span style="display:flex;"><span>        EmailService<span style="color:#f92672">.</span>send_welcome(user<span style="color:#f92672">.</span>email)  <span style="color:#75715e"># External service</span>
+</span></span><span style="display:flex;"><span>        Analytics<span style="color:#f92672">.</span>track(user<span style="color:#f92672">.</span>id)  <span style="color:#75715e"># Another external service</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> user<span style="color:#f92672">.</span>to_dict()  <span style="color:#75715e"># Response formatting</span></span></span></code></pre></div><p><strong>Why MVC isn&rsquo;t sufficient for modern backends:</strong></p>
+<ul>
+<li><strong>No business logic layer</strong> - Complex workflows have nowhere to live except controllers</li>
+<li><strong>Tight coupling to frameworks</strong> - Business logic is mixed with HTTP concerns</li>
+<li><strong>External service coordination</strong> - No clear place to handle complex workflows involving multiple services</li>
+<li><strong>Testing difficulties</strong> - Controllers are hard to test because they depend on everything</li>
+<li><strong>No clear boundaries</strong> - What belongs in the model vs. controller vs. view is often unclear</li>
+</ul>
+<p>Modern applications need more sophisticated architecture patterns that handle complexity better.</p>
+<h2 id="the-clean-architecture-solution">The Clean Architecture Solution<a class="anchor" href="#the-clean-architecture-solution">#</a></h2>
+<p>Clean Architecture (also known as Hexagonal Architecture or Ports and Adapters) solves these problems by organizing code into layers with clear responsibilities and dependencies that flow inward:</p>
+<pre tabindex="0"><code>┌─────────────────────────────────────────────────────────┐
+│                    External Layer                       │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │
+│  │   FastAPI   │  │  Database   │  │ Email/SMS   │    │
+│  │   Routes    │  │ PostgreSQL  │  │  Services   │    │
+│  └─────────────┘  └─────────────┘  └─────────────┘    │
+├─────────────────────────────────────────────────────────┤
+│                Interface Adapters Layer                 │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │
+│  │ Controllers │  │Repositories │  │   External  │    │
+│  │ (FastAPI)   │  │ (Database)  │  │  Adapters   │    │
+│  └─────────────┘  └─────────────┘  └─────────────┘    │
+├─────────────────────────────────────────────────────────┤
+│                Application Business Rules               │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │
+│  │   Services  │  │  Use Cases  │  │  Workflows  │    │
+│  │(Orchestrate)│  │ (Business)  │  │(Coordinate) │    │
+│  └─────────────┘  └─────────────┘  └─────────────┘    │
+├─────────────────────────────────────────────────────────┤
+│                Enterprise Business Rules                │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │
+│  │   Entities  │  │Value Objects│  │Domain Rules │    │
+│  │   (Models)  │  │(Validation) │  │(Invariants) │    │
+│  └─────────────┘  └─────────────┘  └─────────────┘    │
+└─────────────────────────────────────────────────────────┘</code></pre><p><strong>Key principles:</strong></p>
+<ul>
+<li><strong>Dependency Inversion</strong> - Outer layers depend on inner layers, never the reverse</li>
+<li><strong>Single Responsibility</strong> - Each layer has one reason to change</li>
+<li><strong>Interface Segregation</strong> - Layers communicate through well-defined interfaces</li>
+<li><strong>Testability</strong> - Inner layers can be tested without outer layer dependencies</li>
+</ul>
+<h2 id="neodymes-layered-architecture">Neodyme&rsquo;s Layered Architecture<a class="anchor" href="#neodymes-layered-architecture">#</a></h2>
+<p>Let&rsquo;s examine how neodyme implements clean architecture:</p>
+<h3 id="layer-1-domain-models-enterprise-business-rules">Layer 1: Domain Models (Enterprise Business Rules)<a class="anchor" href="#layer-1-domain-models-enterprise-business-rules">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s models/user.py - pure business entities</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> Field, SQLModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserBase</span>(SQLModel):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Core user attributes that define what a user IS.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    email: str <span style="color:#f92672">=</span> Field(unique<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    full_name: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    is_active: bool <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(UserBase, table<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Database representation of a user.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    id: int <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    hashed_password: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    created_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow, nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    updated_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow, nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)</span></span></code></pre></div><p><strong>Why this layer contains only essential business concepts:</strong></p>
+<ul>
+<li><strong>Framework independence</strong> - These models don&rsquo;t know about FastAPI, databases, or external services</li>
+<li><strong>Business focus</strong> - Only contains attributes and constraints that matter to the business domain</li>
+<li><strong>Testability</strong> - Can be tested without any external dependencies</li>
+<li><strong>Reusability</strong> - Same models can be used in web APIs, background jobs, or CLI tools</li>
+</ul>
+<h3 id="layer-2-repository-layer-interface-adapters">Layer 2: Repository Layer (Interface Adapters)<a class="anchor" href="#layer-2-repository-layer-interface-adapters">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s repositories/user.py - data access abstraction</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> abc <span style="color:#f92672">import</span> ABC, abstractmethod
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Optional, List
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel.ext.asyncio.session <span style="color:#f92672">import</span> AsyncSession
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> select
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepositoryInterface</span>(ABC):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Abstract interface for user data operations.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@abstractmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_by_id</span>(self, session: AsyncSession, user_id: int) <span style="color:#f92672">-&gt;</span> Optional[User]:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@abstractmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_by_email</span>(self, session: AsyncSession, email: str) <span style="color:#f92672">-&gt;</span> Optional[User]:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@abstractmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, session: AsyncSession, obj_in: UserCreate) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepository</span>(UserRepositoryInterface):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Concrete implementation of user data operations.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_by_id</span>(self, session: AsyncSession, user_id: int) <span style="color:#f92672">-&gt;</span> Optional[User]:
+</span></span><span style="display:flex;"><span>        statement <span style="color:#f92672">=</span> select(User)<span style="color:#f92672">.</span>where(User<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> user_id)
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>exec(statement)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">.</span>first()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_by_email</span>(self, session: AsyncSession, email: str) <span style="color:#f92672">-&gt;</span> Optional[User]:
+</span></span><span style="display:flex;"><span>        statement <span style="color:#f92672">=</span> select(User)<span style="color:#f92672">.</span>where(User<span style="color:#f92672">.</span>email <span style="color:#f92672">==</span> email)
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>exec(statement)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">.</span>first()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, session: AsyncSession, obj_in: UserCreate) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        obj_data <span style="color:#f92672">=</span> obj_in<span style="color:#f92672">.</span>model_dump()
+</span></span><span style="display:flex;"><span>        hashed_password <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_hash_password(obj_data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#34;password&#34;</span>))
+</span></span><span style="display:flex;"><span>        obj_data[<span style="color:#e6db74">&#34;hashed_password&#34;</span>] <span style="color:#f92672">=</span> hashed_password
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        db_obj <span style="color:#f92672">=</span> User(<span style="color:#f92672">**</span>obj_data)
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>add(db_obj)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>refresh(db_obj)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> db_obj
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_hash_password</span>(self, password: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">import</span> hashlib
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> hashlib<span style="color:#f92672">.</span>sha256(password<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest()</span></span></code></pre></div><p><strong>Why the repository pattern is crucial for maintainable applications:</strong></p>
+<ul>
+<li><strong>Database independence</strong> - Business logic doesn&rsquo;t know if you&rsquo;re using PostgreSQL, SQLite, or MongoDB</li>
+<li><strong>Testing simplification</strong> - You can mock the repository interface for unit tests</li>
+<li><strong>Query optimization</strong> - Database-specific optimizations stay in the repository layer</li>
+<li><strong>Caching integration</strong> - Caching logic can be added to repositories without changing business code</li>
+</ul>
+<h3 id="layer-3-service-layer-application-business-rules">Layer 3: Service Layer (Application Business Rules)<a class="anchor" href="#layer-3-service-layer-application-business-rules">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Service layer - coordinates business workflows</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Optional
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> User, UserCreate, UserPublic
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.repositories <span style="color:#f92672">import</span> UserRepositoryInterface
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> ConflictError, NotFoundError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Orchestrates user-related business workflows.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(
+</span></span><span style="display:flex;"><span>        self, 
+</span></span><span style="display:flex;"><span>        user_repo: UserRepositoryInterface,
+</span></span><span style="display:flex;"><span>        email_service: EmailServiceInterface,
+</span></span><span style="display:flex;"><span>        analytics_service: AnalyticsServiceInterface
+</span></span><span style="display:flex;"><span>    ):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>user_repo <span style="color:#f92672">=</span> user_repo
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>email_service <span style="color:#f92672">=</span> email_service
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>analytics_service <span style="color:#f92672">=</span> analytics_service
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register_user</span>(self, session: AsyncSession, user_data: UserCreate) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Complete user registration workflow.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 1. Check business rules</span>
+</span></span><span style="display:flex;"><span>        existing_user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repo<span style="color:#f92672">.</span>get_by_email(session, user_data<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> existing_user:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> ConflictError(<span style="color:#e6db74">&#34;Email already registered&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 2. Create the user</span>
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repo<span style="color:#f92672">.</span>create(session, user_data)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 3. Send welcome email (async, can fail without breaking registration)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>email_service<span style="color:#f92672">.</span>send_welcome_email(user<span style="color:#f92672">.</span>email, user<span style="color:#f92672">.</span>full_name)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Log but don&#39;t fail registration</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Failed to send welcome email: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 4. Track analytics (async, can fail without breaking registration)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>analytics_service<span style="color:#f92672">.</span>track_registration(user<span style="color:#f92672">.</span>id, user<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Failed to track registration: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(user)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">authenticate_user</span>(self, session: AsyncSession, email: str, password: str) <span style="color:#f92672">-&gt;</span> Optional[User]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Authenticate user credentials.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repo<span style="color:#f92672">.</span>get_by_email(session, email)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user <span style="color:#f92672">or</span> <span style="color:#f92672">not</span> user<span style="color:#f92672">.</span>is_active:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify password</span>
+</span></span><span style="display:flex;"><span>        hashed_input <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>user_repo<span style="color:#f92672">.</span>_hash_password(password)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> hashed_input <span style="color:#f92672">!=</span> user<span style="color:#f92672">.</span>hashed_password:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Update last login timestamp</span>
+</span></span><span style="display:flex;"><span>        user<span style="color:#f92672">.</span>last_login <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repo<span style="color:#f92672">.</span>update(session, user)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> user</span></span></code></pre></div><p><strong>Why the service layer is essential for complex applications:</strong></p>
+<ul>
+<li><strong>Workflow orchestration</strong> - Complex business processes have a clear home</li>
+<li><strong>Transaction boundaries</strong> - Services define what operations should be atomic</li>
+<li><strong>External service coordination</strong> - Handles integration with email, analytics, payment services</li>
+<li><strong>Business rule enforcement</strong> - Ensures business constraints are applied consistently</li>
+<li><strong>Error handling policies</strong> - Decides which failures are critical vs. recoverable</li>
+</ul>
+<h3 id="layer-4-controller-layer-interface-adapters">Layer 4: Controller Layer (Interface Adapters)<a class="anchor" href="#layer-4-controller-layer-interface-adapters">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s routes/users.py - HTTP interface adapter</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> APIRouter, Depends, status
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel.ext.asyncio.session <span style="color:#f92672">import</span> AsyncSession
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core <span style="color:#f92672">import</span> get_async_session
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> UserCreate, UserPublic
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.services.user <span style="color:#f92672">import</span> UserService
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> APIRouter(prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/users&#34;</span>, tags<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;users&#34;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Dependency injection - the service is injected, not created</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user_service</span>() <span style="color:#f92672">-&gt;</span> UserService:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> UserService(
+</span></span><span style="display:flex;"><span>        user_repo<span style="color:#f92672">=</span>user_repository,
+</span></span><span style="display:flex;"><span>        email_service<span style="color:#f92672">=</span>email_service,
+</span></span><span style="display:flex;"><span>        analytics_service<span style="color:#f92672">=</span>analytics_service
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.post</span>(<span style="color:#e6db74">&#34;/&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic, status_code<span style="color:#f92672">=</span>status<span style="color:#f92672">.</span>HTTP_201_CREATED)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(
+</span></span><span style="display:flex;"><span>    user_in: UserCreate,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>    user_service: UserService <span style="color:#f92672">=</span> Depends(get_user_service)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Register a new user.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> user_service<span style="color:#f92672">.</span>register_user(session, user_in)</span></span></code></pre></div><p><strong>Why this controller layer is minimal and focused:</strong></p>
+<ul>
+<li><strong>Single responsibility</strong> - Only handles HTTP concerns (routing, status codes, serialization)</li>
+<li><strong>Dependency injection</strong> - Services are injected, making testing and configuration easier</li>
+<li><strong>No business logic</strong> - All business rules live in the service layer</li>
+<li><strong>Framework isolation</strong> - Changing from FastAPI to another framework only affects this layer</li>
+</ul>
+<h2 id="dependency-injection-making-it-all-work-together">Dependency Injection: Making It All Work Together<a class="anchor" href="#dependency-injection-making-it-all-work-together">#</a></h2>
+<p>The key to clean architecture is dependency injection—providing dependencies from the outside rather than creating them internally:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Dependency injection setup</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> functools <span style="color:#f92672">import</span> lru_cache
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Infrastructure layer - creates concrete implementations</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@lru_cache</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user_repository</span>() <span style="color:#f92672">-&gt;</span> UserRepositoryInterface:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> UserRepository()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@lru_cache</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_email_service</span>() <span style="color:#f92672">-&gt;</span> EmailServiceInterface:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> settings<span style="color:#f92672">.</span>environment <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;test&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> MockEmailService()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> SendGridEmailService(api_key<span style="color:#f92672">=</span>settings<span style="color:#f92672">.</span>sendgrid_api_key)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@lru_cache</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_analytics_service</span>() <span style="color:#f92672">-&gt;</span> AnalyticsServiceInterface:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> settings<span style="color:#f92672">.</span>environment <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;test&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> MockAnalyticsService()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> MixpanelAnalyticsService(token<span style="color:#f92672">=</span>settings<span style="color:#f92672">.</span>mixpanel_token)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Service layer - composes services from dependencies</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@lru_cache</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user_service</span>() <span style="color:#f92672">-&gt;</span> UserService:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> UserService(
+</span></span><span style="display:flex;"><span>        user_repo<span style="color:#f92672">=</span>get_user_repository(),
+</span></span><span style="display:flex;"><span>        email_service<span style="color:#f92672">=</span>get_email_service(),
+</span></span><span style="display:flex;"><span>        analytics_service<span style="color:#f92672">=</span>get_analytics_service()
+</span></span><span style="display:flex;"><span>    )</span></span></code></pre></div><p><strong>Why dependency injection is crucial for maintainable applications:</strong></p>
+<ul>
+<li><strong>Testability</strong> - You can inject mock services for unit tests</li>
+<li><strong>Configuration flexibility</strong> - Different environments can use different implementations</li>
+<li><strong>Loose coupling</strong> - Components depend on interfaces, not concrete implementations</li>
+<li><strong>Single responsibility</strong> - Each component focuses on its core purpose</li>
+</ul>
+<h2 id="hands-on-refactoring-to-clean-architecture">Hands-On: Refactoring to Clean Architecture<a class="anchor" href="#hands-on-refactoring-to-clean-architecture">#</a></h2>
+<p>Let&rsquo;s refactor a messy endpoint to use clean architecture:</p>
+<h3 id="step-1-define-domain-models">Step 1: Define Domain Models<a class="anchor" href="#step-1-define-domain-models">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># models/user.py - Domain layer</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> Field, SQLModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserBase</span>(SQLModel):
+</span></span><span style="display:flex;"><span>    email: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    full_name: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    is_active: bool <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(UserBase, table<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    id: int <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    hashed_password: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    created_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow)
+</span></span><span style="display:flex;"><span>    updated_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserCreate</span>(UserBase):
+</span></span><span style="display:flex;"><span>    password: str <span style="color:#f92672">=</span> Field(min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserPublic</span>(UserBase):
+</span></span><span style="display:flex;"><span>    id: int
+</span></span><span style="display:flex;"><span>    created_at: datetime
+</span></span><span style="display:flex;"><span>    updated_at: datetime</span></span></code></pre></div><h3 id="step-2-create-repository-interface-and-implementation">Step 2: Create Repository Interface and Implementation<a class="anchor" href="#step-2-create-repository-interface-and-implementation">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># repositories/user.py - Data access layer</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> abc <span style="color:#f92672">import</span> ABC, abstractmethod
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Optional
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> select
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel.ext.asyncio.session <span style="color:#f92672">import</span> AsyncSession
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepositoryInterface</span>(ABC):
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@abstractmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_by_email</span>(self, session: AsyncSession, email: str) <span style="color:#f92672">-&gt;</span> Optional[User]:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@abstractmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, session: AsyncSession, obj_in: UserCreate) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepository</span>(UserRepositoryInterface):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_by_email</span>(self, session: AsyncSession, email: str) <span style="color:#f92672">-&gt;</span> Optional[User]:
+</span></span><span style="display:flex;"><span>        statement <span style="color:#f92672">=</span> select(User)<span style="color:#f92672">.</span>where(User<span style="color:#f92672">.</span>email <span style="color:#f92672">==</span> email)
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>exec(statement)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">.</span>first()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, session: AsyncSession, obj_in: UserCreate) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        obj_data <span style="color:#f92672">=</span> obj_in<span style="color:#f92672">.</span>model_dump()
+</span></span><span style="display:flex;"><span>        hashed_password <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_hash_password(obj_data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#34;password&#34;</span>))
+</span></span><span style="display:flex;"><span>        obj_data[<span style="color:#e6db74">&#34;hashed_password&#34;</span>] <span style="color:#f92672">=</span> hashed_password
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        db_obj <span style="color:#f92672">=</span> User(<span style="color:#f92672">**</span>obj_data)
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>add(db_obj)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>refresh(db_obj)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> db_obj
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_hash_password</span>(self, password: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">import</span> hashlib
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> hashlib<span style="color:#f92672">.</span>sha256(password<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest()</span></span></code></pre></div><h3 id="step-3-create-external-service-interfaces">Step 3: Create External Service Interfaces<a class="anchor" href="#step-3-create-external-service-interfaces">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># services/interfaces.py - External service contracts</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> abc <span style="color:#f92672">import</span> ABC, abstractmethod
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EmailServiceInterface</span>(ABC):
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@abstractmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">send_welcome_email</span>(self, email: str, name: str) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AnalyticsServiceInterface</span>(ABC):
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@abstractmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">track_registration</span>(self, user_id: int, email: str) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># services/implementations.py - Concrete implementations</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MockEmailService</span>(EmailServiceInterface):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test implementation that doesn&#39;t send real emails.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">send_welcome_email</span>(self, email: str, name: str) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Mock: Sending welcome email to </span><span style="color:#e6db74">{</span>email<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SendGridEmailService</span>(EmailServiceInterface):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Production implementation using SendGrid.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, api_key: str):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>api_key <span style="color:#f92672">=</span> api_key
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">send_welcome_email</span>(self, email: str, name: str) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Real SendGrid integration</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span></span></span></code></pre></div><h3 id="step-4-create-service-layer">Step 4: Create Service Layer<a class="anchor" href="#step-4-create-service-layer">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># services/user.py - Business logic layer</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> logging
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> User, UserCreate, UserPublic
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.repositories.user <span style="color:#f92672">import</span> UserRepositoryInterface
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.services.interfaces <span style="color:#f92672">import</span> EmailServiceInterface, AnalyticsServiceInterface
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> ConflictError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>logger <span style="color:#f92672">=</span> logging<span style="color:#f92672">.</span>getLogger(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(
+</span></span><span style="display:flex;"><span>        self,
+</span></span><span style="display:flex;"><span>        user_repo: UserRepositoryInterface,
+</span></span><span style="display:flex;"><span>        email_service: EmailServiceInterface,
+</span></span><span style="display:flex;"><span>        analytics_service: AnalyticsServiceInterface
+</span></span><span style="display:flex;"><span>    ):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>user_repo <span style="color:#f92672">=</span> user_repo
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>email_service <span style="color:#f92672">=</span> email_service
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>analytics_service <span style="color:#f92672">=</span> analytics_service
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register_user</span>(self, session: AsyncSession, user_data: UserCreate) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Complete user registration workflow.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 1. Business rule: check for duplicate email</span>
+</span></span><span style="display:flex;"><span>        existing_user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repo<span style="color:#f92672">.</span>get_by_email(session, user_data<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> existing_user:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> ConflictError(<span style="color:#e6db74">&#34;Email already registered&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 2. Create user</span>
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repo<span style="color:#f92672">.</span>create(session, user_data)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 3. Send welcome email (non-critical)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>email_service<span style="color:#f92672">.</span>send_welcome_email(user<span style="color:#f92672">.</span>email, user<span style="color:#f92672">.</span>full_name)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Failed to send welcome email to </span><span style="color:#e6db74">{</span>user<span style="color:#f92672">.</span>email<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 4. Track analytics (non-critical)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>analytics_service<span style="color:#f92672">.</span>track_registration(user<span style="color:#f92672">.</span>id, user<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Failed to track registration for </span><span style="color:#e6db74">{</span>user<span style="color:#f92672">.</span>email<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(user)</span></span></code></pre></div><h3 id="step-5-create-dependency-injection-setup">Step 5: Create Dependency Injection Setup<a class="anchor" href="#step-5-create-dependency-injection-setup">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># dependencies.py - Wiring everything together</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> functools <span style="color:#f92672">import</span> lru_cache
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.repositories.user <span style="color:#f92672">import</span> UserRepository
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.services.implementations <span style="color:#f92672">import</span> MockEmailService, MockAnalyticsService
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.services.user <span style="color:#f92672">import</span> UserService
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@lru_cache</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user_repository</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> UserRepository()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@lru_cache</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_email_service</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> MockEmailService()  <span style="color:#75715e"># Use real service in production</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@lru_cache</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_analytics_service</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> MockAnalyticsService()  <span style="color:#75715e"># Use real service in production</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@lru_cache</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user_service</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> UserService(
+</span></span><span style="display:flex;"><span>        user_repo<span style="color:#f92672">=</span>get_user_repository(),
+</span></span><span style="display:flex;"><span>        email_service<span style="color:#f92672">=</span>get_email_service(),
+</span></span><span style="display:flex;"><span>        analytics_service<span style="color:#f92672">=</span>get_analytics_service()
+</span></span><span style="display:flex;"><span>    )</span></span></code></pre></div><h3 id="step-6-create-clean-controller">Step 6: Create Clean Controller<a class="anchor" href="#step-6-create-clean-controller">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># routes/users.py - HTTP interface layer</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> APIRouter, Depends, status
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel.ext.asyncio.session <span style="color:#f92672">import</span> AsyncSession
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core <span style="color:#f92672">import</span> get_async_session
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> UserCreate, UserPublic
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.services.user <span style="color:#f92672">import</span> UserService
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.dependencies <span style="color:#f92672">import</span> get_user_service
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> APIRouter(prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/users&#34;</span>, tags<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;users&#34;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.post</span>(<span style="color:#e6db74">&#34;/&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic, status_code<span style="color:#f92672">=</span>status<span style="color:#f92672">.</span>HTTP_201_CREATED)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(
+</span></span><span style="display:flex;"><span>    user_in: UserCreate,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>    user_service: UserService <span style="color:#f92672">=</span> Depends(get_user_service)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Register a new user.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> user_service<span style="color:#f92672">.</span>register_user(session, user_in)</span></span></code></pre></div><p><strong>What we&rsquo;ve achieved with this refactoring:</strong></p>
+<ul>
+<li><strong>Separated concerns</strong> - Each layer has a single responsibility</li>
+<li><strong>Made testing easy</strong> - You can test the service layer without HTTP or database dependencies</li>
+<li><strong>Enabled reusability</strong> - User registration logic can be used from background jobs, CLI tools, etc.</li>
+<li><strong>Improved maintainability</strong> - Changes to email providers only affect the email service implementation</li>
+<li><strong>Added flexibility</strong> - Different environments can use different service implementations</li>
+</ul>
+<h2 id="testing-the-clean-architecture">Testing the Clean Architecture<a class="anchor" href="#testing-the-clean-architecture">#</a></h2>
+<p>Clean architecture makes testing much easier:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># tests/test_user_service.py - Testing business logic in isolation</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pytest
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> unittest.mock <span style="color:#f92672">import</span> AsyncMock
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> UserCreate, User
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.services.user <span style="color:#f92672">import</span> UserService
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> ConflictError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_register_user_success</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test successful user registration.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Arrange - create mocks</span>
+</span></span><span style="display:flex;"><span>    mock_user_repo <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    mock_email_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    mock_analytics_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># No existing user</span>
+</span></span><span style="display:flex;"><span>    mock_user_repo<span style="color:#f92672">.</span>get_by_email<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Mock user creation</span>
+</span></span><span style="display:flex;"><span>    created_user <span style="color:#f92672">=</span> User(
+</span></span><span style="display:flex;"><span>        id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>        full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Test User&#34;</span>,
+</span></span><span style="display:flex;"><span>        hashed_password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hashed&#34;</span>,
+</span></span><span style="display:flex;"><span>        is_active<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    mock_user_repo<span style="color:#f92672">.</span>create<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> created_user
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create service with mocks</span>
+</span></span><span style="display:flex;"><span>    service <span style="color:#f92672">=</span> UserService(mock_user_repo, mock_email_service, mock_analytics_service)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Act</span>
+</span></span><span style="display:flex;"><span>    user_data <span style="color:#f92672">=</span> UserCreate(email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>, full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Test User&#34;</span>, password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password123&#34;</span>)
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> service<span style="color:#f92672">.</span>register_user(<span style="color:#66d9ef">None</span>, user_data)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Assert</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> result<span style="color:#f92672">.</span>email <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;test@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> result<span style="color:#f92672">.</span>full_name <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;Test User&#34;</span>
+</span></span><span style="display:flex;"><span>    mock_user_repo<span style="color:#f92672">.</span>create<span style="color:#f92672">.</span>assert_called_once()
+</span></span><span style="display:flex;"><span>    mock_email_service<span style="color:#f92672">.</span>send_welcome_email<span style="color:#f92672">.</span>assert_called_once_with(<span style="color:#e6db74">&#34;test@example.com&#34;</span>, <span style="color:#e6db74">&#34;Test User&#34;</span>)
+</span></span><span style="display:flex;"><span>    mock_analytics_service<span style="color:#f92672">.</span>track_registration<span style="color:#f92672">.</span>assert_called_once()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_register_user_duplicate_email</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test registration with duplicate email.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Arrange</span>
+</span></span><span style="display:flex;"><span>    mock_user_repo <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    mock_email_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    mock_analytics_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Existing user found</span>
+</span></span><span style="display:flex;"><span>    existing_user <span style="color:#f92672">=</span> User(id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>, full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Existing&#34;</span>)
+</span></span><span style="display:flex;"><span>    mock_user_repo<span style="color:#f92672">.</span>get_by_email<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> existing_user
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    service <span style="color:#f92672">=</span> UserService(mock_user_repo, mock_email_service, mock_analytics_service)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Act &amp; Assert</span>
+</span></span><span style="display:flex;"><span>    user_data <span style="color:#f92672">=</span> UserCreate(email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>, full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Test User&#34;</span>, password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password123&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(ConflictError, <span style="color:#66d9ef">match</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Email already registered&#34;</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> service<span style="color:#f92672">.</span>register_user(<span style="color:#66d9ef">None</span>, user_data)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Verify no user was created</span>
+</span></span><span style="display:flex;"><span>    mock_user_repo<span style="color:#f92672">.</span>create<span style="color:#f92672">.</span>assert_not_called()
+</span></span><span style="display:flex;"><span>    mock_email_service<span style="color:#f92672">.</span>send_welcome_email<span style="color:#f92672">.</span>assert_not_called()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_register_user_email_failure_doesnt_break_registration</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test that email service failure doesn&#39;t prevent user creation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Arrange</span>
+</span></span><span style="display:flex;"><span>    mock_user_repo <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    mock_email_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    mock_analytics_service <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    mock_user_repo<span style="color:#f92672">.</span>get_by_email<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    created_user <span style="color:#f92672">=</span> User(id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>, full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Test User&#34;</span>)
+</span></span><span style="display:flex;"><span>    mock_user_repo<span style="color:#f92672">.</span>create<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> created_user
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Email service fails</span>
+</span></span><span style="display:flex;"><span>    mock_email_service<span style="color:#f92672">.</span>send_welcome_email<span style="color:#f92672">.</span>side_effect <span style="color:#f92672">=</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#34;Email service down&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    service <span style="color:#f92672">=</span> UserService(mock_user_repo, mock_email_service, mock_analytics_service)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Act</span>
+</span></span><span style="display:flex;"><span>    user_data <span style="color:#f92672">=</span> UserCreate(email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>, full_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Test User&#34;</span>, password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password123&#34;</span>)
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> service<span style="color:#f92672">.</span>register_user(<span style="color:#66d9ef">None</span>, user_data)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Assert - user creation succeeded despite email failure</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> result<span style="color:#f92672">.</span>email <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;test@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>    mock_user_repo<span style="color:#f92672">.</span>create<span style="color:#f92672">.</span>assert_called_once()</span></span></code></pre></div><p><strong>Why this testing approach is superior:</strong></p>
+<ul>
+<li><strong>Fast tests</strong> - No database or external service dependencies</li>
+<li><strong>Focused tests</strong> - Each test verifies specific business logic</li>
+<li><strong>Reliable tests</strong> - No flaky network calls or database state issues</li>
+<li><strong>Clear failures</strong> - When tests fail, you know exactly which business rule is broken</li>
+</ul>
+<h2 id="what-youve-learned">What You&rsquo;ve Learned<a class="anchor" href="#what-youve-learned">#</a></h2>
+<p>By the end of this chapter, you understand:</p>
+<p>✅ <strong>Why tangled code becomes unmaintainable</strong> - and how mixed responsibilities create change amplification and testing nightmares<br>
+✅ <strong>How clean architecture organizes complexity</strong> - using layers with clear boundaries and dependency inversion<br>
+✅ <strong>The repository pattern</strong> - and why abstracting data access enables testing and flexibility<br>
+✅ <strong>Service layer patterns</strong> - and how they orchestrate complex business workflows<br>
+✅ <strong>Dependency injection</strong> - and why it&rsquo;s essential for testable, configurable applications<br>
+✅ <strong>Testing strategies</strong> - that verify business logic independently of infrastructure concerns</p>
+<p>More importantly, you&rsquo;ve established an architecture that can grow with your application while maintaining clarity and testability.</p>
+<h2 id="building-blocks-for-next-chapters">Building Blocks for Next Chapters<a class="anchor" href="#building-blocks-for-next-chapters">#</a></h2>
+<p>This architectural foundation gives us:</p>
+<ul>
+<li><strong>HTTP handling</strong> ← Chapter 1: FastAPI basics</li>
+<li><strong>Data persistence</strong> ← Chapter 2: Database integration</li>
+<li><strong>Input validation</strong> ← Chapter 3: Request/response validation</li>
+<li><strong>Schema evolution</strong> ← Chapter 4: Database migrations</li>
+<li><strong>Clean architecture</strong> ← You are here</li>
+<li><strong>Error handling</strong> ← Chapter 6: Professional error management</li>
+</ul>
+<h2 id="exercises">Exercises<a class="anchor" href="#exercises">#</a></h2>
+<ol>
+<li><strong>Refactor an endpoint</strong>: Take a complex endpoint and separate it into repository, service, and controller layers</li>
+<li><strong>Add a new service</strong>: Create an email service interface and mock implementation</li>
+<li><strong>Write service tests</strong>: Test your service layer without database dependencies</li>
+<li><strong>Add dependency injection</strong>: Set up proper dependency injection for your services</li>
+<li><strong>Create integration tests</strong>: Test the full stack from HTTP request to database</li>
+</ol>
+<h2 id="resources-for-deeper-learning">Resources for Deeper Learning<a class="anchor" href="#resources-for-deeper-learning">#</a></h2>
+<h3 id="clean-architecture-and-design-patterns">Clean Architecture and Design Patterns<a class="anchor" href="#clean-architecture-and-design-patterns">#</a></h3>
+<ul>
+<li><strong>Clean Architecture by Robert Martin</strong>: The definitive guide to organizing code for maintainability - <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html</a></li>
+<li><strong>Hexagonal Architecture</strong>: Alternative presentation of similar concepts - <a href="https://alistair.cockburn.us/hexagonal-architecture/">https://alistair.cockburn.us/hexagonal-architecture/</a></li>
+<li><strong>Dependency Injection in Python</strong>: Patterns for managing dependencies - <a href="https://python-dependency-injector.ets-labs.org/">https://python-dependency-injector.ets-labs.org/</a></li>
+</ul>
+<h3 id="repository-pattern-and-data-access">Repository Pattern and Data Access<a class="anchor" href="#repository-pattern-and-data-access">#</a></h3>
+<ul>
+<li><strong>Repository Pattern Explained</strong>: Why and how to abstract data access - <a href="https://deviq.com/design-patterns/repository-pattern">https://deviq.com/design-patterns/repository-pattern</a></li>
+<li><strong>Unit of Work Pattern</strong>: Managing transactions across repositories - <a href="https://martinfowler.com/eaaCatalog/unitOfWork.html">https://martinfowler.com/eaaCatalog/unitOfWork.html</a></li>
+<li><strong>Data Mapper vs Active Record</strong>: Different approaches to data access patterns - <a href="https://martinfowler.com/eaaCatalog/dataMapper.html">https://martinfowler.com/eaaCatalog/dataMapper.html</a></li>
+</ul>
+<h3 id="service-layer-and-business-logic">Service Layer and Business Logic<a class="anchor" href="#service-layer-and-business-logic">#</a></h3>
+<ul>
+<li><strong>Domain-Driven Design</strong>: Organizing business logic around domain concepts - <a href="https://martinfowler.com/bliki/DomainDrivenDesign.html">https://martinfowler.com/bliki/DomainDrivenDesign.html</a></li>
+<li><strong>Service Layer Pattern</strong>: When and how to use service layers - <a href="https://martinfowler.com/eaaCatalog/serviceLayer.html">https://martinfowler.com/eaaCatalog/serviceLayer.html</a></li>
+<li><strong>CQRS Pattern</strong>: Separating read and write operations - <a href="https://martinfowler.com/bliki/CQRS.html">https://martinfowler.com/bliki/CQRS.html</a></li>
+</ul>
+<h3 id="testing-and-quality-assurance">Testing and Quality Assurance<a class="anchor" href="#testing-and-quality-assurance">#</a></h3>
+<ul>
+<li><strong>Test Doubles</strong>: Understanding mocks, stubs, and fakes - <a href="https://martinfowler.com/bliki/TestDouble.html">https://martinfowler.com/bliki/TestDouble.html</a></li>
+<li><strong>Testing Pyramid</strong>: Balancing unit, integration, and e2e tests - <a href="https://martinfowler.com/bliki/TestPyramid.html">https://martinfowler.com/bliki/TestPyramid.html</a></li>
+<li><strong>Property-Based Testing</strong>: Using Hypothesis for robust test cases - <a href="https://hypothesis.readthedocs.io/">https://hypothesis.readthedocs.io/</a></li>
+</ul>
+<h3 id="why-these-resources-matter">Why These Resources Matter<a class="anchor" href="#why-these-resources-matter">#</a></h3>
+<ul>
+<li><strong>Architectural patterns</strong>: Understanding design principles helps you make better structural decisions</li>
+<li><strong>Repository patterns</strong>: Proper data access abstraction is crucial for maintainable applications</li>
+<li><strong>Service design</strong>: Well-designed services enable complex workflows while maintaining simplicity</li>
+<li><strong>Testing strategies</strong>: Good testing practices ensure your architecture actually delivers maintainability benefits</li>
+</ul>
+<p><strong>Pro Tip</strong>: Start by implementing the repository pattern to separate data access, then gradually add service layers as your business logic becomes more complex. Don&rsquo;t over-engineer early, but design for the complexity you can foresee.</p>
+<h2 id="next-professional-error-handling">Next: Professional Error Handling<a class="anchor" href="#next-professional-error-handling">#</a></h2>
+<p>You have clean, testable architecture, but there&rsquo;s still a critical piece missing: comprehensive error handling. Real applications fail in countless ways—database timeouts, external service outages, invalid user input, resource exhaustion. How do you handle these failures gracefully while providing excellent user and developer experiences?</p>
+<p>In Chapter 6, we&rsquo;ll explore error handling strategies that make your application resilient and debuggable.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Preview of Chapter 6</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register_user</span>(self, user_data: UserCreate) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Business logic with proper error boundaries</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> DatabaseConnectionError <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Log for ops, return user-friendly message</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Database connection failed: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> ServiceUnavailableError(<span style="color:#e6db74">&#34;Registration temporarily unavailable&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> EmailServiceError <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Non-critical failure - log but continue</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Welcome email failed: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># User creation still succeeds</span></span></span></code></pre></div><p>We&rsquo;ll explore how neodyme&rsquo;s exception hierarchy and error handling middleware create excellent error experiences for both users and developers.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/neodyme/docs/chapter-4/" class="flex align-center">
+        <img src="/neodyme/icons/backward.svg" class="book-icon" alt="Previous" title="Chapter 4" />
+        <span>Chapter 4</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/neodyme/docs/chapter-6/" class="flex align-center">
+        <span>Chapter 6</span>
+        <img src="/neodyme/icons/forward.svg" class="book-icon" alt="Next" title="Chapter 6" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+
+ 
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-code-becomes-an-unmaintainable-mess">The Problem: Code Becomes an Unmaintainable Mess</a></li>
+    <li><a href="#why-traditional-mvc-isnt-enough">Why Traditional MVC Isn&rsquo;t Enough</a></li>
+    <li><a href="#the-clean-architecture-solution">The Clean Architecture Solution</a></li>
+    <li><a href="#neodymes-layered-architecture">Neodyme&rsquo;s Layered Architecture</a>
+      <ul>
+        <li><a href="#layer-1-domain-models-enterprise-business-rules">Layer 1: Domain Models (Enterprise Business Rules)</a></li>
+        <li><a href="#layer-2-repository-layer-interface-adapters">Layer 2: Repository Layer (Interface Adapters)</a></li>
+        <li><a href="#layer-3-service-layer-application-business-rules">Layer 3: Service Layer (Application Business Rules)</a></li>
+        <li><a href="#layer-4-controller-layer-interface-adapters">Layer 4: Controller Layer (Interface Adapters)</a></li>
+      </ul>
+    </li>
+    <li><a href="#dependency-injection-making-it-all-work-together">Dependency Injection: Making It All Work Together</a></li>
+    <li><a href="#hands-on-refactoring-to-clean-architecture">Hands-On: Refactoring to Clean Architecture</a>
+      <ul>
+        <li><a href="#step-1-define-domain-models">Step 1: Define Domain Models</a></li>
+        <li><a href="#step-2-create-repository-interface-and-implementation">Step 2: Create Repository Interface and Implementation</a></li>
+        <li><a href="#step-3-create-external-service-interfaces">Step 3: Create External Service Interfaces</a></li>
+        <li><a href="#step-4-create-service-layer">Step 4: Create Service Layer</a></li>
+        <li><a href="#step-5-create-dependency-injection-setup">Step 5: Create Dependency Injection Setup</a></li>
+        <li><a href="#step-6-create-clean-controller">Step 6: Create Clean Controller</a></li>
+      </ul>
+    </li>
+    <li><a href="#testing-the-clean-architecture">Testing the Clean Architecture</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#clean-architecture-and-design-patterns">Clean Architecture and Design Patterns</a></li>
+        <li><a href="#repository-pattern-and-data-access">Repository Pattern and Data Access</a></li>
+        <li><a href="#service-layer-and-business-logic">Service Layer and Business Logic</a></li>
+        <li><a href="#testing-and-quality-assurance">Testing and Quality Assurance</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-professional-error-handling">Next: Professional Error Handling</a></li>
+  </ul>
+</nav>
+
+
+
+  </div>
+</aside>
+
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chapter 8: &ldquo;I Need Configuration That Works Everywhere&rdquo;#
+Your neodyme application is secure, well-architected, and handles errors professionally. But now you&rsquo;re facing the deployment reality that breaks so many applications: your code needs to run in multiple environments with different settings.
+Development uses SQLite, but production needs PostgreSQL. Your local email uses a test SMTP server, but production requires authenticated SendGrid. Security keys that work on your laptop definitely shouldn&rsquo;t be used in production.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/chapter-8/">
+  <meta property="og:site_name" content="Neodyme Documentation">
+  <meta property="og:title" content="Chapter 8">
+  <meta property="og:description" content="Chapter 8: “I Need Configuration That Works Everywhere”# Your neodyme application is secure, well-architected, and handles errors professionally. But now you’re facing the deployment reality that breaks so many applications: your code needs to run in multiple environments with different settings.
+Development uses SQLite, but production needs PostgreSQL. Your local email uses a test SMTP server, but production requires authenticated SendGrid. Security keys that work on your laptop definitely shouldn’t be used in production.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Chapter 8 | Neodyme Documentation</title>
+<link rel="icon" href="/neodyme/favicon.png" >
+<link rel="manifest" href="/neodyme/manifest.json">
+<link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/chapter-8/">
+<link rel="stylesheet" href="/neodyme/book.min.c098be6fdb8410d437a0799e694b206fa639685582089c583ae6ac07afec1ff8.css" integrity="sha256-wJi&#43;b9uEENQ3oHmeaUsgb6Y5aFWCCJxYOuasB6/sH/g=" crossorigin="anonymous">
+
+
+  <script defer src="/neodyme/fuse.min.js"></script>
+  <script defer src="/neodyme/en.search.min.f64f4d2b3193917ebd07e82190bf6e6a2f23d6e670fb678260875bd442e5cf4d.js" integrity="sha256-9k9NKzGTkX69B&#43;ghkL9uai8j1uZw&#43;2eCYIdb1ELlz00=" crossorigin="anonymous"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/neodyme/"><span>Neodyme Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-1/" class="">
+      Chapter 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-2/" class="">
+      Chapter 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-3/" class="">
+      Chapter 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-4/" class="">
+      Chapter 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-5/" class="">
+      Chapter 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-6/" class="">
+      Chapter 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-7/" class="">
+      Chapter 7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-8/" class="active">
+      Chapter 8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-9/" class="">
+      Chapter 9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-10/" class="">
+      Chapter 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Chapter 8</h3>
+
+  <label for="toc-control">
+    
+    <img src="/neodyme/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-configuration-chaos-everywhere">The Problem: Configuration Chaos Everywhere</a></li>
+    <li><a href="#why-environment-variables-alone-arent-enough">Why Environment Variables Alone Aren&rsquo;t Enough</a></li>
+    <li><a href="#the-professional-configuration-solution-structured-settings">The Professional Configuration Solution: Structured Settings</a></li>
+    <li><a href="#environment-specific-configuration">Environment-Specific Configuration</a></li>
+    <li><a href="#secret-management-and-security">Secret Management and Security</a></li>
+    <li><a href="#configuration-validation-and-startup-checks">Configuration Validation and Startup Checks</a></li>
+    <li><a href="#docker-and-container-configuration">Docker and Container Configuration</a></li>
+    <li><a href="#configuration-testing-and-validation">Configuration Testing and Validation</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#configuration-management-patterns">Configuration Management Patterns</a></li>
+        <li><a href="#secret-management">Secret Management</a></li>
+        <li><a href="#validation-and-testing">Validation and Testing</a></li>
+        <li><a href="#container-configuration">Container Configuration</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-comprehensive-testing-strategies">Next: Comprehensive Testing Strategies</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="chapter-8-i-need-configuration-that-works-everywhere">Chapter 8: &ldquo;I Need Configuration That Works Everywhere&rdquo;<a class="anchor" href="#chapter-8-i-need-configuration-that-works-everywhere">#</a></h1>
+<p>Your neodyme application is secure, well-architected, and handles errors professionally. But now you&rsquo;re facing the deployment reality that breaks so many applications: your code needs to run in multiple environments with different settings.</p>
+<p><em>Development uses SQLite, but production needs PostgreSQL. Your local email uses a test SMTP server, but production requires authenticated SendGrid. Security keys that work on your laptop definitely shouldn&rsquo;t be used in production.</em></p>
+<p>You start with environment variables scattered everywhere, but soon you&rsquo;re drowning in deployment failures caused by missing configuration, type mismatches, and security leaks. Each environment becomes a unique snowflake with its own mysterious configuration requirements.</p>
+<p>This is the moment when configuration becomes your biggest operational risk: <strong>code that works everywhere except where it matters most</strong>. The question isn&rsquo;t whether configuration will cause deployment problems—it&rsquo;s whether your configuration management will save you hours of debugging or cost you days of downtime.</p>
+<h2 id="the-problem-configuration-chaos-everywhere">The Problem: Configuration Chaos Everywhere<a class="anchor" href="#the-problem-configuration-chaos-everywhere">#</a></h2>
+<p>Let me ask you: Have you ever spent hours debugging only to discover that a single environment variable was misnamed or had the wrong type? If so, you&rsquo;ve experienced the pain of ad-hoc configuration management.</p>
+<p>Here&rsquo;s what configuration typically looks like before it becomes a systematic problem:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># What starts simple but becomes unmaintainable</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Database configuration scattered throughout the codebase</span>
+</span></span><span style="display:flex;"><span>database_url <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;DATABASE_URL&#34;</span>, <span style="color:#e6db74">&#34;sqlite:///./test.db&#34;</span>)
+</span></span><span style="display:flex;"><span>database_pool_size <span style="color:#f92672">=</span> int(os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;DB_POOL_SIZE&#34;</span>, <span style="color:#e6db74">&#34;5&#34;</span>))
+</span></span><span style="display:flex;"><span>database_timeout <span style="color:#f92672">=</span> float(os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;DB_TIMEOUT&#34;</span>, <span style="color:#e6db74">&#34;30.0&#34;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Email configuration in another file</span>
+</span></span><span style="display:flex;"><span>smtp_host <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;SMTP_HOST&#34;</span>, <span style="color:#e6db74">&#34;localhost&#34;</span>)
+</span></span><span style="display:flex;"><span>smtp_port <span style="color:#f92672">=</span> int(os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;SMTP_PORT&#34;</span>, <span style="color:#e6db74">&#34;587&#34;</span>))  <span style="color:#75715e"># Runtime error if not numeric!</span>
+</span></span><span style="display:flex;"><span>smtp_user <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;SMTP_USER&#34;</span>)  <span style="color:#75715e"># None if not set!</span>
+</span></span><span style="display:flex;"><span>smtp_password <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;SMTP_PASSWORD&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Security configuration elsewhere</span>
+</span></span><span style="display:flex;"><span>secret_key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;SECRET_KEY&#34;</span>, <span style="color:#e6db74">&#34;dev-key-123&#34;</span>)  <span style="color:#75715e"># Insecure default!</span>
+</span></span><span style="display:flex;"><span>jwt_algorithm <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;JWT_ALGORITHM&#34;</span>, <span style="color:#e6db74">&#34;HS256&#34;</span>)
+</span></span><span style="display:flex;"><span>token_expiry <span style="color:#f92672">=</span> int(os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;TOKEN_EXPIRY_MINUTES&#34;</span>, <span style="color:#e6db74">&#34;30&#34;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># App configuration somewhere else</span>
+</span></span><span style="display:flex;"><span>debug_mode <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;DEBUG&#34;</span>, <span style="color:#e6db74">&#34;True&#34;</span>)<span style="color:#f92672">.</span>lower() <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>log_level <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;LOG_LEVEL&#34;</span>, <span style="color:#e6db74">&#34;INFO&#34;</span>)
+</span></span><span style="display:flex;"><span>cors_origins <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;CORS_ORIGINS&#34;</span>, <span style="color:#e6db74">&#34;*&#34;</span>)<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;,&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Production breaks because environment variables are not set properly:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># TypeError: int() argument must be a string, a bytes-like object or a number, not &#39;NoneType&#39;</span></span></span></code></pre></div><p><strong>Why this approach creates systematic deployment failures:</strong></p>
+<ul>
+<li><strong>Type conversion errors</strong> - String environment variables cause runtime crashes when converted to integers or booleans without validation</li>
+<li><strong>Missing required configuration</strong> - Applications start successfully but fail when they try to use unset configuration, causing hard-to-debug runtime errors</li>
+<li><strong>Insecure defaults</strong> - Development convenience defaults (like weak secret keys) accidentally make it to production, creating security vulnerabilities</li>
+<li><strong>Configuration drift</strong> - Different environments end up with different configuration requirements, making deployments unpredictable</li>
+<li><strong>No validation</strong> - Invalid configuration values (like negative port numbers) cause mysterious failures deep in the application stack</li>
+<li><strong>Discovery impossibility</strong> - You can&rsquo;t tell what configuration an application needs without reading through all the source code</li>
+</ul>
+<p>The fundamental problem is <strong>treating configuration as an afterthought</strong>. Configuration is data that your application depends on just as much as your database—it deserves the same validation, documentation, and reliability.</p>
+<h2 id="why-environment-variables-alone-arent-enough">Why Environment Variables Alone Aren&rsquo;t Enough<a class="anchor" href="#why-environment-variables-alone-arent-enough">#</a></h2>
+<p>The &ldquo;just use environment variables&rdquo; approach looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Production deployment script that works until it doesn&#39;t</span>
+</span></span><span style="display:flex;"><span>export DATABASE_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;postgresql://user:pass@db.prod.com/app&#34;</span>
+</span></span><span style="display:flex;"><span>export SMTP_HOST<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;smtp.sendgrid.net&#34;</span> 
+</span></span><span style="display:flex;"><span>export SMTP_PORT<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;587&#34;</span>
+</span></span><span style="display:flex;"><span>export SECRET_KEY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;prod-secret-key-here&#34;</span>
+</span></span><span style="display:flex;"><span>export DEBUG<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;False&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>python main.py  <span style="color:#75715e"># Fingers crossed it works!</span></span></span></code></pre></div><p><strong>This approach fails because:</strong></p>
+<ul>
+<li><strong>Type safety absence</strong> - Environment variables are always strings, but your application needs integers, booleans, URLs, and complex types</li>
+<li><strong>Validation missing</strong> - Invalid values cause failures deep in the application where they&rsquo;re first used, not at startup where they can be caught</li>
+<li><strong>Documentation lack</strong> - There&rsquo;s no single place that documents what configuration is required and what values are valid</li>
+<li><strong>Default handling inconsistency</strong> - Some values have defaults, others don&rsquo;t, and the logic is scattered throughout the codebase</li>
+<li><strong>Secret management failure</strong> - Sensitive values are mixed with non-sensitive ones, making secure secret management impossible</li>
+<li><strong>Environment coupling</strong> - Configuration logic is tightly coupled to the specific way environment variables are named and formatted</li>
+</ul>
+<h2 id="the-professional-configuration-solution-structured-settings">The Professional Configuration Solution: Structured Settings<a class="anchor" href="#the-professional-configuration-solution-structured-settings">#</a></h2>
+<p>Professional configuration management treats settings as a first-class concern with validation, documentation, and type safety. Here&rsquo;s how neodyme implements this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># core/config.py - Centralized configuration with validation</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Optional, List
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> BaseSettings, Field, validator, EmailStr, HttpUrl, PostgresDsn, SecretStr
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> enum <span style="color:#f92672">import</span> Enum
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> secrets
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Environment</span>(str, Enum):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Supported deployment environments.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    DEVELOPMENT <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;development&#34;</span>
+</span></span><span style="display:flex;"><span>    TESTING <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;testing&#34;</span>
+</span></span><span style="display:flex;"><span>    STAGING <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;staging&#34;</span>
+</span></span><span style="display:flex;"><span>    PRODUCTION <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;production&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LogLevel</span>(str, Enum):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Supported logging levels.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    CRITICAL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CRITICAL&#34;</span>
+</span></span><span style="display:flex;"><span>    ERROR <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ERROR&#34;</span>
+</span></span><span style="display:flex;"><span>    WARNING <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;WARNING&#34;</span>
+</span></span><span style="display:flex;"><span>    INFO <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;INFO&#34;</span>
+</span></span><span style="display:flex;"><span>    DEBUG <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;DEBUG&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Settings</span>(BaseSettings):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Application settings with validation and documentation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Environment and deployment</span>
+</span></span><span style="display:flex;"><span>    environment: Environment <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span>Environment<span style="color:#f92672">.</span>DEVELOPMENT,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Deployment environment (development, testing, staging, production)&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    debug: bool <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Enable debug mode (should be False in production)&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    log_level: LogLevel <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span>LogLevel<span style="color:#f92672">.</span>INFO,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Logging level for the application&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Application settings</span>
+</span></span><span style="display:flex;"><span>    app_name: str <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Neodyme API&#34;</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Application name for logging and monitoring&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    app_version: str <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.0.0&#34;</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Application version&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    api_prefix: str <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/api/v1&#34;</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;API URL prefix&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Database configuration</span>
+</span></span><span style="display:flex;"><span>    database_url: PostgresDsn <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">...</span>,  <span style="color:#75715e"># Required field</span>
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;PostgreSQL database connection URL&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    database_pool_size: int <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>,
+</span></span><span style="display:flex;"><span>        ge<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,  <span style="color:#75715e"># Greater than or equal to 1</span>
+</span></span><span style="display:flex;"><span>        le<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>,  <span style="color:#75715e"># Less than or equal to 50</span>
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Database connection pool size&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    database_pool_timeout: float <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#ae81ff">30.0</span>,
+</span></span><span style="display:flex;"><span>        gt<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>,  <span style="color:#75715e"># Greater than 0</span>
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Database connection timeout in seconds&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Security settings</span>
+</span></span><span style="display:flex;"><span>    secret_key: SecretStr <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">...</span>,  <span style="color:#75715e"># Required field</span>
+</span></span><span style="display:flex;"><span>        min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Secret key for JWT tokens and encryption (32+ characters)&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    jwt_algorithm: str <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;HS256&#34;</span>,
+</span></span><span style="display:flex;"><span>        regex<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;^(HS256|HS384|HS512|RS256|RS384|RS512)$&#34;</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;JWT signing algorithm&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    access_token_expire_minutes: int <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>,
+</span></span><span style="display:flex;"><span>        ge<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        le<span style="color:#f92672">=</span><span style="color:#ae81ff">1440</span>,  <span style="color:#75715e"># Maximum 24 hours</span>
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Access token expiration time in minutes&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    refresh_token_expire_days: int <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#ae81ff">7</span>,
+</span></span><span style="display:flex;"><span>        ge<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        le<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>,  <span style="color:#75715e"># Maximum 30 days</span>
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Refresh token expiration time in days&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># CORS configuration</span>
+</span></span><span style="display:flex;"><span>    cors_origins: List[str] <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;*&#34;</span>],
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Allowed CORS origins (use specific origins in production)&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    cors_allow_credentials: bool <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Allow credentials in CORS requests&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Email configuration</span>
+</span></span><span style="display:flex;"><span>    email_smtp_host: str <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">...</span>,  <span style="color:#75715e"># Required field</span>
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SMTP server hostname&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    email_smtp_port: int <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#ae81ff">587</span>,
+</span></span><span style="display:flex;"><span>        ge<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        le<span style="color:#f92672">=</span><span style="color:#ae81ff">65535</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SMTP server port&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    email_smtp_username: str <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">...</span>,  <span style="color:#75715e"># Required field</span>
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SMTP authentication username&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    email_smtp_password: SecretStr <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">...</span>,  <span style="color:#75715e"># Required field</span>
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SMTP authentication password&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    email_from_address: EmailStr <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">...</span>,  <span style="color:#75715e"># Required field</span>
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Default &#39;from&#39; email address&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    email_from_name: str <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Neodyme&#34;</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Default &#39;from&#39; name for emails&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># External service URLs</span>
+</span></span><span style="display:flex;"><span>    frontend_url: HttpUrl <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://localhost:3000&#34;</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Frontend application URL for email links&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    analytics_endpoint: Optional[HttpUrl] <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Analytics service endpoint (optional)&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Rate limiting</span>
+</span></span><span style="display:flex;"><span>    rate_limit_requests: int <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>        ge<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Rate limit: requests per window&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    rate_limit_window_seconds: int <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#ae81ff">60</span>,
+</span></span><span style="display:flex;"><span>        ge<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Rate limit: window size in seconds&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># File storage</span>
+</span></span><span style="display:flex;"><span>    upload_max_size_mb: int <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>,
+</span></span><span style="display:flex;"><span>        ge<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        le<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Maximum file upload size in MB&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    allowed_file_types: List[str] <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;image/jpeg&#34;</span>, <span style="color:#e6db74">&#34;image/png&#34;</span>, <span style="color:#e6db74">&#34;image/gif&#34;</span>, <span style="color:#e6db74">&#34;application/pdf&#34;</span>],
+</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Allowed MIME types for file uploads&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@validator</span>(<span style="color:#e6db74">&#34;secret_key&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validate_secret_key</span>(cls, v):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Ensure secret key is strong enough for production.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> isinstance(v, SecretStr):
+</span></span><span style="display:flex;"><span>            secret_value <span style="color:#f92672">=</span> v<span style="color:#f92672">.</span>get_secret_value()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            secret_value <span style="color:#f92672">=</span> v
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(secret_value) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">32</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#34;Secret key must be at least 32 characters long&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># In production, ensure it&#39;s not a development default</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> secret_value <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;dev-secret-key&#34;</span>, <span style="color:#e6db74">&#34;development&#34;</span>, <span style="color:#e6db74">&#34;testing&#34;</span>]:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#34;Secret key appears to be a development default&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> v
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@validator</span>(<span style="color:#e6db74">&#34;cors_origins&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validate_cors_origins</span>(cls, v, values):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Ensure CORS is properly configured for production.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        environment <span style="color:#f92672">=</span> values<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;environment&#34;</span>, Environment<span style="color:#f92672">.</span>DEVELOPMENT)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> environment <span style="color:#f92672">==</span> Environment<span style="color:#f92672">.</span>PRODUCTION <span style="color:#f92672">and</span> <span style="color:#e6db74">&#34;*&#34;</span> <span style="color:#f92672">in</span> v:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#34;CORS origins cannot be &#39;*&#39; in production environment&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> v
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@validator</span>(<span style="color:#e6db74">&#34;debug&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validate_debug_setting</span>(cls, v, values):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Ensure debug is disabled in production.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        environment <span style="color:#f92672">=</span> values<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;environment&#34;</span>, Environment<span style="color:#f92672">.</span>DEVELOPMENT)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> environment <span style="color:#f92672">==</span> Environment<span style="color:#f92672">.</span>PRODUCTION <span style="color:#f92672">and</span> v <span style="color:#f92672">is</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#34;Debug mode must be disabled in production&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> v
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@validator</span>(<span style="color:#e6db74">&#34;database_url&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validate_database_url</span>(cls, v, values):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Ensure database URL is appropriate for environment.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        environment <span style="color:#f92672">=</span> values<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;environment&#34;</span>, Environment<span style="color:#f92672">.</span>DEVELOPMENT)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> environment <span style="color:#f92672">==</span> Environment<span style="color:#f92672">.</span>PRODUCTION:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;sqlite&#34;</span> <span style="color:#f92672">in</span> str(v):
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#34;SQLite is not supported in production environment&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;localhost&#34;</span> <span style="color:#f92672">in</span> str(v):
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#34;Database URL cannot use localhost in production&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> v
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Config</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Pydantic configuration for settings loading.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        env_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.env&#34;</span>
+</span></span><span style="display:flex;"><span>        env_file_encoding <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;utf-8&#34;</span>
+</span></span><span style="display:flex;"><span>        case_sensitive <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>  <span style="color:#75715e"># Allow lowercase environment variables</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Custom environment variable names</span>
+</span></span><span style="display:flex;"><span>        fields <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;secret_key&#34;</span>: {<span style="color:#e6db74">&#34;env&#34;</span>: <span style="color:#e6db74">&#34;SECRET_KEY&#34;</span>},
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;database_url&#34;</span>: {<span style="color:#e6db74">&#34;env&#34;</span>: <span style="color:#e6db74">&#34;DATABASE_URL&#34;</span>},
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_password&#34;</span>: {<span style="color:#e6db74">&#34;env&#34;</span>: <span style="color:#e6db74">&#34;SMTP_PASSWORD&#34;</span>},
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create settings instance that loads from environment</span>
+</span></span><span style="display:flex;"><span>settings <span style="color:#f92672">=</span> Settings()</span></span></code></pre></div><p><strong>Why this structured approach eliminates configuration problems:</strong></p>
+<ul>
+<li><strong>Type safety guaranteed</strong> - Pydantic automatically converts and validates types, preventing runtime type errors</li>
+<li><strong>Validation at startup</strong> - Invalid configuration causes immediate application startup failure with clear error messages</li>
+<li><strong>Documentation built-in</strong> - Every setting is documented with its purpose, valid values, and constraints</li>
+<li><strong>Environment-specific validation</strong> - Production environments have stricter validation rules to prevent common deployment mistakes</li>
+<li><strong>Secret handling</strong> - SecretStr fields prevent accidental logging or exposure of sensitive values</li>
+<li><strong>Single source of truth</strong> - All configuration is defined in one place, making it easy to understand application requirements</li>
+</ul>
+<h2 id="environment-specific-configuration">Environment-Specific Configuration<a class="anchor" href="#environment-specific-configuration">#</a></h2>
+<p>Different environments need different configuration strategies:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># config/environments.py - Environment-specific overrides</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Dict, Any
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.config <span style="color:#f92672">import</span> Environment, Settings
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EnvironmentConfig</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Environment-specific configuration overrides.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@staticmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_environment_overrides</span>(env: Environment) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Get configuration overrides for specific environment.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> env <span style="color:#f92672">==</span> Environment<span style="color:#f92672">.</span>DEVELOPMENT:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;debug&#34;</span>: <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;log_level&#34;</span>: <span style="color:#e6db74">&#34;DEBUG&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;cors_origins&#34;</span>: [<span style="color:#e6db74">&#34;http://localhost:3000&#34;</span>, <span style="color:#e6db74">&#34;http://localhost:8080&#34;</span>],
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;database_pool_size&#34;</span>: <span style="color:#ae81ff">2</span>,  <span style="color:#75715e"># Smaller pool for development</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;access_token_expire_minutes&#34;</span>: <span style="color:#ae81ff">60</span>,  <span style="color:#75715e"># Longer tokens for development</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> env <span style="color:#f92672">==</span> Environment<span style="color:#f92672">.</span>TESTING:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;debug&#34;</span>: <span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;log_level&#34;</span>: <span style="color:#e6db74">&#34;WARNING&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;cors_origins&#34;</span>: [<span style="color:#e6db74">&#34;http://localhost:3000&#34;</span>],
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;database_pool_size&#34;</span>: <span style="color:#ae81ff">1</span>,  <span style="color:#75715e"># Minimal pool for tests</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;access_token_expire_minutes&#34;</span>: <span style="color:#ae81ff">5</span>,  <span style="color:#75715e"># Short tokens for testing</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;rate_limit_requests&#34;</span>: <span style="color:#ae81ff">1000</span>,  <span style="color:#75715e"># Higher limits for tests</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> env <span style="color:#f92672">==</span> Environment<span style="color:#f92672">.</span>STAGING:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;debug&#34;</span>: <span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;log_level&#34;</span>: <span style="color:#e6db74">&#34;INFO&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;cors_origins&#34;</span>: [<span style="color:#e6db74">&#34;https://staging.neodyme.app&#34;</span>],
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;database_pool_size&#34;</span>: <span style="color:#ae81ff">3</span>,  <span style="color:#75715e"># Moderate pool for staging</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;access_token_expire_minutes&#34;</span>: <span style="color:#ae81ff">30</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;rate_limit_requests&#34;</span>: <span style="color:#ae81ff">200</span>,
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> env <span style="color:#f92672">==</span> Environment<span style="color:#f92672">.</span>PRODUCTION:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;debug&#34;</span>: <span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;log_level&#34;</span>: <span style="color:#e6db74">&#34;WARNING&#34;</span>,  <span style="color:#75715e"># Less verbose logging in production</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;cors_origins&#34;</span>: [<span style="color:#e6db74">&#34;https://neodyme.app&#34;</span>, <span style="color:#e6db74">&#34;https://www.neodyme.app&#34;</span>],
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;database_pool_size&#34;</span>: <span style="color:#ae81ff">10</span>,  <span style="color:#75715e"># Larger pool for production load</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;access_token_expire_minutes&#34;</span>: <span style="color:#ae81ff">15</span>,  <span style="color:#75715e"># Shorter tokens for security</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;rate_limit_requests&#34;</span>: <span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_settings</span>() <span style="color:#f92672">-&gt;</span> Settings:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Create settings with environment-specific overrides.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Load base settings from environment variables</span>
+</span></span><span style="display:flex;"><span>    base_settings <span style="color:#f92672">=</span> Settings()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Get environment-specific overrides</span>
+</span></span><span style="display:flex;"><span>    overrides <span style="color:#f92672">=</span> EnvironmentConfig<span style="color:#f92672">.</span>get_environment_overrides(base_settings<span style="color:#f92672">.</span>environment)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create new settings with overrides</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> overrides:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Update values with overrides</span>
+</span></span><span style="display:flex;"><span>        settings_dict <span style="color:#f92672">=</span> base_settings<span style="color:#f92672">.</span>dict()
+</span></span><span style="display:flex;"><span>        settings_dict<span style="color:#f92672">.</span>update(overrides)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Settings(<span style="color:#f92672">**</span>settings_dict)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> base_settings
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use this instead of Settings() directly</span>
+</span></span><span style="display:flex;"><span>settings <span style="color:#f92672">=</span> create_settings()</span></span></code></pre></div><p><strong>Why environment-specific configuration is essential:</strong></p>
+<ul>
+<li><strong>Development optimization</strong> - Development environments can use more permissive settings that improve developer productivity</li>
+<li><strong>Testing isolation</strong> - Test environments use settings that ensure test reliability and isolation</li>
+<li><strong>Staging validation</strong> - Staging environments mirror production settings while allowing testing with production-like data</li>
+<li><strong>Production security</strong> - Production environments enforce strict security and performance settings</li>
+<li><strong>Consistent deployment</strong> - The same configuration system works across all environments with appropriate defaults</li>
+</ul>
+<h2 id="secret-management-and-security">Secret Management and Security<a class="anchor" href="#secret-management-and-security">#</a></h2>
+<p>Sensitive configuration requires special handling:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># core/secrets.py - Secure secret management</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Dict, Any, Optional
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> dataclasses <span style="color:#f92672">import</span> dataclass
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@dataclass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SecretSource</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Configuration for secret loading source.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    name: str
+</span></span><span style="display:flex;"><span>    priority: int  <span style="color:#75715e"># Lower numbers = higher priority</span>
+</span></span><span style="display:flex;"><span>    description: str
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SecretManager</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Manage secrets from multiple sources with priority order.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>sources <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>            SecretSource(<span style="color:#e6db74">&#34;environment&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;Environment variables&#34;</span>),
+</span></span><span style="display:flex;"><span>            SecretSource(<span style="color:#e6db74">&#34;docker_secrets&#34;</span>, <span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#34;Docker secrets (/run/secrets/)&#34;</span>),
+</span></span><span style="display:flex;"><span>            SecretSource(<span style="color:#e6db74">&#34;vault_file&#34;</span>, <span style="color:#ae81ff">3</span>, <span style="color:#e6db74">&#34;Local vault file (.secrets.json)&#34;</span>),
+</span></span><span style="display:flex;"><span>            SecretSource(<span style="color:#e6db74">&#34;defaults&#34;</span>, <span style="color:#ae81ff">99</span>, <span style="color:#e6db74">&#34;Development defaults&#34;</span>),
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_secret</span>(self, key: str, default: Optional[str] <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>) <span style="color:#f92672">-&gt;</span> Optional[str]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Get secret from highest priority available source.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Try each source in priority order</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> source <span style="color:#f92672">in</span> sorted(self<span style="color:#f92672">.</span>sources, key<span style="color:#f92672">=</span><span style="color:#66d9ef">lambda</span> x: x<span style="color:#f92672">.</span>priority):
+</span></span><span style="display:flex;"><span>            value <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_get_from_source(source<span style="color:#f92672">.</span>name, key)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> value <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> value
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> default
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_get_from_source</span>(self, source: str, key: str) <span style="color:#f92672">-&gt;</span> Optional[str]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Get value from specific source.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> source <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;environment&#34;</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> os<span style="color:#f92672">.</span>getenv(key)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> source <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;docker_secrets&#34;</span>:
+</span></span><span style="display:flex;"><span>            secret_file <span style="color:#f92672">=</span> Path(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;/run/secrets/</span><span style="color:#e6db74">{</span>key<span style="color:#f92672">.</span>lower()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> secret_file<span style="color:#f92672">.</span>exists():
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> secret_file<span style="color:#f92672">.</span>read_text()<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> source <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;vault_file&#34;</span>:
+</span></span><span style="display:flex;"><span>            vault_file <span style="color:#f92672">=</span> Path(<span style="color:#e6db74">&#34;.secrets.json&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> vault_file<span style="color:#f92672">.</span>exists():
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                    secrets <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(vault_file<span style="color:#f92672">.</span>read_text())
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> secrets<span style="color:#f92672">.</span>get(key)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">except</span> (json<span style="color:#f92672">.</span>JSONDecodeError, <span style="color:#a6e22e">OSError</span>):
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> source <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;defaults&#34;</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Only provide defaults for development</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;ENVIRONMENT&#34;</span>, <span style="color:#e6db74">&#34;development&#34;</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;development&#34;</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>_get_development_default(key)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_get_development_default</span>(self, key: str) <span style="color:#f92672">-&gt;</span> Optional[str]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Get development-only default values.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        defaults <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;SECRET_KEY&#34;</span>: <span style="color:#e6db74">&#34;dev-secret-key-&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;x&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">20</span>,  <span style="color:#75715e"># 32+ chars</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;DATABASE_URL&#34;</span>: <span style="color:#e6db74">&#34;sqlite:///./dev.db&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;SMTP_PASSWORD&#34;</span>: <span style="color:#e6db74">&#34;dev-smtp-password&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;ANALYTICS_API_KEY&#34;</span>: <span style="color:#e6db74">&#34;dev-analytics-key&#34;</span>,
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> defaults<span style="color:#f92672">.</span>get(key)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validate_production_secrets</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Validate that production secrets are properly configured.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        required_secrets <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;SECRET_KEY&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;DATABASE_URL&#34;</span>, 
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;SMTP_PASSWORD&#34;</span>,
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        validation_results <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;valid&#34;</span>: <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;issues&#34;</span>: [],
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;source_summary&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> secret <span style="color:#f92672">in</span> required_secrets:
+</span></span><span style="display:flex;"><span>            value <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_secret(secret)
+</span></span><span style="display:flex;"><span>            source <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_get_secret_source(secret)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            validation_results[<span style="color:#e6db74">&#34;source_summary&#34;</span>][secret] <span style="color:#f92672">=</span> source
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> value:
+</span></span><span style="display:flex;"><span>                validation_results[<span style="color:#e6db74">&#34;valid&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>                validation_results[<span style="color:#e6db74">&#34;issues&#34;</span>]<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Required secret </span><span style="color:#e6db74">{</span>secret<span style="color:#e6db74">}</span><span style="color:#e6db74"> is not configured&#34;</span>)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> source <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;defaults&#34;</span>:
+</span></span><span style="display:flex;"><span>                validation_results[<span style="color:#e6db74">&#34;valid&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>                validation_results[<span style="color:#e6db74">&#34;issues&#34;</span>]<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Secret </span><span style="color:#e6db74">{</span>secret<span style="color:#e6db74">}</span><span style="color:#e6db74"> is using development default in production&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> validation_results
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_get_secret_source</span>(self, key: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Determine which source provided a secret value.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> source <span style="color:#f92672">in</span> sorted(self<span style="color:#f92672">.</span>sources, key<span style="color:#f92672">=</span><span style="color:#66d9ef">lambda</span> x: x<span style="color:#f92672">.</span>priority):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>_get_from_source(source<span style="color:#f92672">.</span>name, key) <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> source<span style="color:#f92672">.</span>name
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;not_found&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Global secret manager</span>
+</span></span><span style="display:flex;"><span>secret_manager <span style="color:#f92672">=</span> SecretManager()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Updated Settings class to use secret manager</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SecureSettings</span>(BaseSettings):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Settings that use secure secret management.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    secret_key: SecretStr <span style="color:#f92672">=</span> Field(<span style="color:#f92672">...</span>)
+</span></span><span style="display:flex;"><span>    database_url: PostgresDsn <span style="color:#f92672">=</span> Field(<span style="color:#f92672">...</span>)
+</span></span><span style="display:flex;"><span>    email_smtp_password: SecretStr <span style="color:#f92672">=</span> Field(<span style="color:#f92672">...</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, <span style="color:#f92672">**</span>kwargs):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Load secrets before validation</span>
+</span></span><span style="display:flex;"><span>        secret_values <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> field_name, field_info <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>__fields__<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> field_info<span style="color:#f92672">.</span>type_ <span style="color:#f92672">==</span> SecretStr <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#f92672">in</span> field_name<span style="color:#f92672">.</span>lower():
+</span></span><span style="display:flex;"><span>                env_key <span style="color:#f92672">=</span> field_name<span style="color:#f92672">.</span>upper()
+</span></span><span style="display:flex;"><span>                secret_value <span style="color:#f92672">=</span> secret_manager<span style="color:#f92672">.</span>get_secret(env_key)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> secret_value:
+</span></span><span style="display:flex;"><span>                    secret_values[field_name] <span style="color:#f92672">=</span> secret_value
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Merge with provided kwargs</span>
+</span></span><span style="display:flex;"><span>        kwargs<span style="color:#f92672">.</span>update(secret_values)
+</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span><span style="color:#a6e22e">__init__</span>(<span style="color:#f92672">**</span>kwargs)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validate_for_production</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Validate configuration for production deployment.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        issues <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Validate secrets are not using defaults</span>
+</span></span><span style="display:flex;"><span>        secret_validation <span style="color:#f92672">=</span> secret_manager<span style="color:#f92672">.</span>validate_production_secrets()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> secret_validation[<span style="color:#e6db74">&#34;valid&#34;</span>]:
+</span></span><span style="display:flex;"><span>            issues<span style="color:#f92672">.</span>extend(secret_validation[<span style="color:#e6db74">&#34;issues&#34;</span>])
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Validate environment-specific requirements</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>environment <span style="color:#f92672">==</span> Environment<span style="color:#f92672">.</span>PRODUCTION:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>debug:
+</span></span><span style="display:flex;"><span>                issues<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Debug mode is enabled in production&#34;</span>)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;*&#34;</span> <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>cors_origins:
+</span></span><span style="display:flex;"><span>                issues<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;CORS allows all origins in production&#34;</span>)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;localhost&#34;</span> <span style="color:#f92672">in</span> str(self<span style="color:#f92672">.</span>database_url):
+</span></span><span style="display:flex;"><span>                issues<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Database URL uses localhost in production&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;valid&#34;</span>: len(issues) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;issues&#34;</span>: issues,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;secret_sources&#34;</span>: secret_validation[<span style="color:#e6db74">&#34;source_summary&#34;</span>]
+</span></span><span style="display:flex;"><span>        }</span></span></code></pre></div><p><strong>Why secure secret management is critical:</strong></p>
+<ul>
+<li><strong>Source priority</strong> - Secrets can come from environment variables, Docker secrets, or vault files with clear precedence rules</li>
+<li><strong>Development convenience</strong> - Developers get working defaults without needing to configure production secrets</li>
+<li><strong>Production validation</strong> - Production deployments are validated to ensure they&rsquo;re not using development defaults</li>
+<li><strong>Secret source transparency</strong> - You can see exactly where each secret value came from for debugging and security auditing</li>
+<li><strong>Multiple secret backends</strong> - The same application can use different secret management systems in different environments</li>
+</ul>
+<h2 id="configuration-validation-and-startup-checks">Configuration Validation and Startup Checks<a class="anchor" href="#configuration-validation-and-startup-checks">#</a></h2>
+<p>Configuration should be validated before the application starts accepting requests:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># core/startup.py - Application startup validation</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> asyncio
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> logging
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Dict, Any
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> create_engine, text
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.exc <span style="color:#f92672">import</span> SQLAlchemyError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.config <span style="color:#f92672">import</span> settings
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.secrets <span style="color:#f92672">import</span> secret_manager
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>logger <span style="color:#f92672">=</span> logging<span style="color:#f92672">.</span>getLogger(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StartupValidator</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Validate application configuration and dependencies at startup.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validate_all</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Run all startup validations.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        results <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;valid&#34;</span>: <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;checks&#34;</span>: {},
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;summary&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;passed&#34;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;failed&#34;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;warnings&#34;</span>: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Configuration validation</span>
+</span></span><span style="display:flex;"><span>        config_result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>_validate_configuration()
+</span></span><span style="display:flex;"><span>        results[<span style="color:#e6db74">&#34;checks&#34;</span>][<span style="color:#e6db74">&#34;configuration&#34;</span>] <span style="color:#f92672">=</span> config_result
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Database connectivity</span>
+</span></span><span style="display:flex;"><span>        db_result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>_validate_database()
+</span></span><span style="display:flex;"><span>        results[<span style="color:#e6db74">&#34;checks&#34;</span>][<span style="color:#e6db74">&#34;database&#34;</span>] <span style="color:#f92672">=</span> db_result
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Email service</span>
+</span></span><span style="display:flex;"><span>        email_result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>_validate_email()
+</span></span><span style="display:flex;"><span>        results[<span style="color:#e6db74">&#34;checks&#34;</span>][<span style="color:#e6db74">&#34;email&#34;</span>] <span style="color:#f92672">=</span> email_result
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># External services</span>
+</span></span><span style="display:flex;"><span>        external_result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>_validate_external_services()
+</span></span><span style="display:flex;"><span>        results[<span style="color:#e6db74">&#34;checks&#34;</span>][<span style="color:#e6db74">&#34;external_services&#34;</span>] <span style="color:#f92672">=</span> external_result
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Compile summary</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> check_name, check_result <span style="color:#f92672">in</span> results[<span style="color:#e6db74">&#34;checks&#34;</span>]<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> check_result[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;pass&#34;</span>:
+</span></span><span style="display:flex;"><span>                results[<span style="color:#e6db74">&#34;summary&#34;</span>][<span style="color:#e6db74">&#34;passed&#34;</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> check_result[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;fail&#34;</span>:
+</span></span><span style="display:flex;"><span>                results[<span style="color:#e6db74">&#34;summary&#34;</span>][<span style="color:#e6db74">&#34;failed&#34;</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                results[<span style="color:#e6db74">&#34;valid&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> check_result[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;warning&#34;</span>:
+</span></span><span style="display:flex;"><span>                results[<span style="color:#e6db74">&#34;summary&#34;</span>][<span style="color:#e6db74">&#34;warnings&#34;</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> results
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_validate_configuration</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Validate application configuration.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Validate settings</span>
+</span></span><span style="display:flex;"><span>            validation_result <span style="color:#f92672">=</span> settings<span style="color:#f92672">.</span>validate_for_production()
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> validation_result[<span style="color:#e6db74">&#34;valid&#34;</span>]:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Configuration validation passed&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;details&#34;</span>: validation_result
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;fail&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Configuration validation failed&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;details&#34;</span>: validation_result[<span style="color:#e6db74">&#34;issues&#34;</span>]
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;fail&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Configuration validation error: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: str(e)
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_validate_database</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Validate database connectivity and configuration.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Test database connection</span>
+</span></span><span style="display:flex;"><span>            engine <span style="color:#f92672">=</span> create_engine(str(settings<span style="color:#f92672">.</span>database_url))
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">with</span> engine<span style="color:#f92672">.</span>connect() <span style="color:#66d9ef">as</span> conn:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Test basic connectivity</span>
+</span></span><span style="display:flex;"><span>                result <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>execute(text(<span style="color:#e6db74">&#34;SELECT 1&#34;</span>))
+</span></span><span style="display:flex;"><span>                result<span style="color:#f92672">.</span>fetchone()
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Test database configuration</span>
+</span></span><span style="display:flex;"><span>                pool_size <span style="color:#f92672">=</span> engine<span style="color:#f92672">.</span>pool<span style="color:#f92672">.</span>size()
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Database connection successful&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;url&#34;</span>: str(settings<span style="color:#f92672">.</span>database_url)<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;@&#34;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>],  <span style="color:#75715e"># Hide credentials</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;pool_size&#34;</span>: pool_size
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> SQLAlchemyError <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;fail&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Database connection failed: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: str(e)
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;fail&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Database validation error: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: str(e)
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_validate_email</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Validate email service configuration.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">import</span> smtplib
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Test SMTP connection (don&#39;t send email)</span>
+</span></span><span style="display:flex;"><span>            server <span style="color:#f92672">=</span> smtplib<span style="color:#f92672">.</span>SMTP(settings<span style="color:#f92672">.</span>email_smtp_host, settings<span style="color:#f92672">.</span>email_smtp_port)
+</span></span><span style="display:flex;"><span>            server<span style="color:#f92672">.</span>starttls()
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Test authentication</span>
+</span></span><span style="display:flex;"><span>            server<span style="color:#f92672">.</span>login(
+</span></span><span style="display:flex;"><span>                settings<span style="color:#f92672">.</span>email_smtp_username,
+</span></span><span style="display:flex;"><span>                settings<span style="color:#f92672">.</span>email_smtp_password<span style="color:#f92672">.</span>get_secret_value()
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>            server<span style="color:#f92672">.</span>quit()
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Email service connection successful&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;host&#34;</span>: settings<span style="color:#f92672">.</span>email_smtp_host,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;port&#34;</span>: settings<span style="color:#f92672">.</span>email_smtp_port
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> smtplib<span style="color:#f92672">.</span>SMTPAuthenticationError:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;fail&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Email authentication failed&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: <span style="color:#e6db74">&#34;Check SMTP username and password&#34;</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> smtplib<span style="color:#f92672">.</span>SMTPConnectError:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;fail&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Cannot connect to email server&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Check </span><span style="color:#e6db74">{</span>settings<span style="color:#f92672">.</span>email_smtp_host<span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">{</span>settings<span style="color:#f92672">.</span>email_smtp_port<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;warning&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Email validation inconclusive: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: <span style="color:#e6db74">&#34;Email service may work but validation failed&#34;</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_validate_external_services</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Validate external service dependencies.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        services_status <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Analytics service (if configured)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> settings<span style="color:#f92672">.</span>analytics_endpoint:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">import</span> httpx
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">with</span> httpx<span style="color:#f92672">.</span>AsyncClient(timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">5.0</span>) <span style="color:#66d9ef">as</span> client:
+</span></span><span style="display:flex;"><span>                    response <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> client<span style="color:#f92672">.</span>get(str(settings<span style="color:#f92672">.</span>analytics_endpoint))
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status_code <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">500</span>:
+</span></span><span style="display:flex;"><span>                        services_status<span style="color:#f92672">.</span>append({
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;service&#34;</span>: <span style="color:#e6db74">&#34;analytics&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Analytics endpoint accessible&#34;</span>
+</span></span><span style="display:flex;"><span>                        })
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                        services_status<span style="color:#f92672">.</span>append({
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;service&#34;</span>: <span style="color:#e6db74">&#34;analytics&#34;</span>, 
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;warning&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Analytics returned </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>                        })
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>                services_status<span style="color:#f92672">.</span>append({
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;service&#34;</span>: <span style="color:#e6db74">&#34;analytics&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;warning&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Analytics check failed: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>                })
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Determine overall status</span>
+</span></span><span style="display:flex;"><span>        failed_services <span style="color:#f92672">=</span> [s <span style="color:#66d9ef">for</span> s <span style="color:#f92672">in</span> services_status <span style="color:#66d9ef">if</span> s[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;fail&#34;</span>]
+</span></span><span style="display:flex;"><span>        warning_services <span style="color:#f92672">=</span> [s <span style="color:#66d9ef">for</span> s <span style="color:#f92672">in</span> services_status <span style="color:#66d9ef">if</span> s[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;warning&#34;</span>]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> failed_services:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;fail&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Critical external services unavailable&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: services_status
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> warning_services:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;warning&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Some external services have issues&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: services_status
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;All external services accessible&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;details&#34;</span>: services_status
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Global validator instance</span>
+</span></span><span style="display:flex;"><span>startup_validator <span style="color:#f92672">=</span> StartupValidator()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run_startup_checks</span>() <span style="color:#f92672">-&gt;</span> bool:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Run startup validation and return success status.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Running application startup validation...&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    validation_results <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> startup_validator<span style="color:#f92672">.</span>validate_all()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Log summary</span>
+</span></span><span style="display:flex;"><span>    summary <span style="color:#f92672">=</span> validation_results[<span style="color:#e6db74">&#34;summary&#34;</span>]
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Startup validation: </span><span style="color:#e6db74">{</span>summary[<span style="color:#e6db74">&#39;passed&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74"> passed, &#34;</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>summary[<span style="color:#e6db74">&#39;failed&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74"> failed, </span><span style="color:#e6db74">{</span>summary[<span style="color:#e6db74">&#39;warnings&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74"> warnings&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Log details for failed checks</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> check_name, check_result <span style="color:#f92672">in</span> validation_results[<span style="color:#e6db74">&#34;checks&#34;</span>]<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> check_result[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;fail&#34;</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;FAILED: </span><span style="color:#e6db74">{</span>check_name<span style="color:#e6db74">}</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">{</span>check_result[<span style="color:#e6db74">&#39;message&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> check_result[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;warning&#34;</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;WARNING: </span><span style="color:#e6db74">{</span>check_name<span style="color:#e6db74">}</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">{</span>check_result[<span style="color:#e6db74">&#39;message&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;PASSED: </span><span style="color:#e6db74">{</span>check_name<span style="color:#e6db74">}</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">{</span>check_result[<span style="color:#e6db74">&#39;message&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> validation_results[<span style="color:#e6db74">&#34;valid&#34;</span>]</span></span></code></pre></div><p><strong>Why startup validation prevents deployment disasters:</strong></p>
+<ul>
+<li><strong>Fail fast principle</strong> - Configuration problems are detected immediately at startup rather than during user requests</li>
+<li><strong>Comprehensive checking</strong> - All critical dependencies (database, email, external services) are validated before accepting traffic</li>
+<li><strong>Clear error reporting</strong> - Failed validations provide specific error messages that help diagnose configuration problems</li>
+<li><strong>Warning classification</strong> - Non-critical issues are reported as warnings without preventing startup</li>
+<li><strong>Operational visibility</strong> - Startup checks provide clear feedback about application health during deployment</li>
+</ul>
+<h2 id="docker-and-container-configuration">Docker and Container Configuration<a class="anchor" href="#docker-and-container-configuration">#</a></h2>
+<p>Containerized applications need special configuration considerations:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># docker/entrypoint.py - Container startup script</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> asyncio
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> logging
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add application to Python path</span>
+</span></span><span style="display:flex;"><span>sys<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;/app&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.config <span style="color:#f92672">import</span> settings, Environment
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.startup <span style="color:#f92672">import</span> run_startup_checks
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Configure logging for container environment</span>
+</span></span><span style="display:flex;"><span>logging<span style="color:#f92672">.</span>basicConfig(
+</span></span><span style="display:flex;"><span>    level<span style="color:#f92672">=</span>getattr(logging, settings<span style="color:#f92672">.</span>log_level<span style="color:#f92672">.</span>value),
+</span></span><span style="display:flex;"><span>    format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%(asctime)s</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">%(name)s</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">%(levelname)s</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">%(message)s</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    handlers<span style="color:#f92672">=</span>[logging<span style="color:#f92672">.</span>StreamHandler(sys<span style="color:#f92672">.</span>stdout)]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>logger <span style="color:#f92672">=</span> logging<span style="color:#f92672">.</span>getLogger(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">container_startup</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Container startup sequence.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Starting Neodyme API v</span><span style="color:#e6db74">{</span>settings<span style="color:#f92672">.</span>app_version<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Environment: </span><span style="color:#e6db74">{</span>settings<span style="color:#f92672">.</span>environment<span style="color:#f92672">.</span>value<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Debug mode: </span><span style="color:#e6db74">{</span>settings<span style="color:#f92672">.</span>debug<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Run startup validation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">await</span> run_startup_checks():
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">&#34;Startup validation failed - exiting&#34;</span>)
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Startup validation completed successfully&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Import and start the application</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> uvicorn
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">from</span> neodyme.main <span style="color:#f92672">import</span> app
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Configure uvicorn for container environment</span>
+</span></span><span style="display:flex;"><span>    uvicorn<span style="color:#f92672">.</span>run(
+</span></span><span style="display:flex;"><span>        app,
+</span></span><span style="display:flex;"><span>        host<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0.0.0.0&#34;</span>,  <span style="color:#75715e"># Listen on all interfaces in container</span>
+</span></span><span style="display:flex;"><span>        port<span style="color:#f92672">=</span>int(os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;PORT&#34;</span>, <span style="color:#e6db74">&#34;8000&#34;</span>)),
+</span></span><span style="display:flex;"><span>        log_level<span style="color:#f92672">=</span>settings<span style="color:#f92672">.</span>log_level<span style="color:#f92672">.</span>value<span style="color:#f92672">.</span>lower(),
+</span></span><span style="display:flex;"><span>        access_log<span style="color:#f92672">=</span>settings<span style="color:#f92672">.</span>debug,  <span style="color:#75715e"># Access logs only in debug mode</span>
+</span></span><span style="display:flex;"><span>        reload<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,  <span style="color:#75715e"># Never reload in container</span>
+</span></span><span style="display:flex;"><span>        workers<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> settings<span style="color:#f92672">.</span>debug <span style="color:#66d9ef">else</span> int(os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;WORKERS&#34;</span>, <span style="color:#e6db74">&#34;4&#34;</span>))
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    asyncio<span style="color:#f92672">.</span>run(container_startup())</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># Dockerfile - Multi-stage container build</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span> <span style="color:#e6db74">python:3.11-slim</span> <span style="color:#66d9ef">as</span> <span style="color:#e6db74">base</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install system dependencies</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    gcc <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Create non-root user</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> groupadd -r appuser <span style="color:#f92672">&amp;&amp;</span> useradd -r -g appuser appuser<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Set working directory</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span> <span style="color:#e6db74">/app</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy requirements first for better caching</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> requirements.txt .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pip install --no-cache-dir -r requirements.txt<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy application code</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Change ownership to non-root user</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> chown -R appuser:appuser /app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Switch to non-root user</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">USER</span> <span style="color:#e6db74">appuser</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Health check</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">HEALTHCHECK</span> --interval<span style="color:#f92672">=</span>30s --timeout<span style="color:#f92672">=</span>10s --start-period<span style="color:#f92672">=</span>60s --retries<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    CMD python -c <span style="color:#e6db74">&#34;import requests; requests.get(&#39;http://localhost:8000/health&#39;)&#34;</span> <span style="color:#f92672">||</span> exit <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Environment configuration</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> PYTHONPATH<span style="color:#f92672">=</span>/app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> PYTHONUNBUFFERED<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Expose port</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span> <span style="color:#e6db74">8000</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Use custom entrypoint</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;python&#34;</span>, <span style="color:#e6db74">&#34;docker/entrypoint.py&#34;</span>]</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># docker-compose.yml - Development environment</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3.8&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">api</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">build</span>: <span style="color:#ae81ff">.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;8000:8000&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">ENVIRONMENT=development</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">DEBUG=true</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">DATABASE_URL=postgresql://neodyme:neodyme@db:5432/neodyme_dev</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">SECRET_KEY=dev-secret-key-32-characters-long</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">SMTP_HOST=mailhog</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">SMTP_PORT=1025</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">SMTP_USERNAME=test</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">SMTP_PASSWORD=test</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">EMAIL_FROM_ADDRESS=noreply@neodyme.local</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">db</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">mailhog</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">.:/app </span> <span style="color:#75715e"># Mount source for development</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/app/.venv </span> <span style="color:#75715e"># Exclude virtual environment</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">db</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">postgres:15</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_DB=neodyme_dev</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_USER=neodyme</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_PASSWORD=neodyme</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;5432:5432&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">postgres_data:/var/lib/postgresql/data</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">mailhog</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">mailhog/mailhog</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;1025:1025&#34;</span>  <span style="color:#75715e"># SMTP port</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;8025:8025&#34;</span>  <span style="color:#75715e"># Web UI port</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">postgres_data:</span></span></span></code></pre></div><p><strong>Why container-specific configuration is important:</strong></p>
+<ul>
+<li><strong>Container networking</strong> - Applications must listen on all interfaces (0.0.0.0) rather than localhost in containers</li>
+<li><strong>Environment variable injection</strong> - Docker provides a clean way to inject environment-specific configuration</li>
+<li><strong>Health checks</strong> - Container orchestrators need health endpoints to determine if containers are ready for traffic</li>
+<li><strong>Non-root execution</strong> - Security best practices require running containers as non-root users</li>
+<li><strong>Resource optimization</strong> - Container-specific settings like worker counts can be tuned for the container environment</li>
+</ul>
+<h2 id="configuration-testing-and-validation">Configuration Testing and Validation<a class="anchor" href="#configuration-testing-and-validation">#</a></h2>
+<p>Configuration systems need testing just like application code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># tests/test_configuration.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pytest
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> unittest.mock <span style="color:#f92672">import</span> patch, MagicMock
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> ValidationError
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.config <span style="color:#f92672">import</span> Settings, Environment
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.secrets <span style="color:#f92672">import</span> SecretManager
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestSettingsValidation</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test configuration validation logic.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_valid_configuration</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that valid configuration passes validation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        config <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;environment&#34;</span>: <span style="color:#e6db74">&#34;development&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;database_url&#34;</span>: <span style="color:#e6db74">&#34;postgresql://user:pass@localhost/test&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;secret_key&#34;</span>: <span style="color:#e6db74">&#34;test-secret-key-32-characters-long&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_host&#34;</span>: <span style="color:#e6db74">&#34;smtp.test.com&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_username&#34;</span>: <span style="color:#e6db74">&#34;test&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_password&#34;</span>: <span style="color:#e6db74">&#34;password&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_from_address&#34;</span>: <span style="color:#e6db74">&#34;test@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        settings <span style="color:#f92672">=</span> Settings(<span style="color:#f92672">**</span>config)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> settings<span style="color:#f92672">.</span>environment <span style="color:#f92672">==</span> Environment<span style="color:#f92672">.</span>DEVELOPMENT
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> settings<span style="color:#f92672">.</span>secret_key<span style="color:#f92672">.</span>get_secret_value() <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;test-secret-key-32-characters-long&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_invalid_secret_key_length</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that short secret keys are rejected.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        config <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;database_url&#34;</span>: <span style="color:#e6db74">&#34;postgresql://user:pass@localhost/test&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;secret_key&#34;</span>: <span style="color:#e6db74">&#34;short&#34;</span>,  <span style="color:#75715e"># Too short</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_host&#34;</span>: <span style="color:#e6db74">&#34;smtp.test.com&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_username&#34;</span>: <span style="color:#e6db74">&#34;test&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_password&#34;</span>: <span style="color:#e6db74">&#34;password&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_from_address&#34;</span>: <span style="color:#e6db74">&#34;test@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(ValidationError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>            Settings(<span style="color:#f92672">**</span>config)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;at least 32 characters&#34;</span> <span style="color:#f92672">in</span> str(exc_info<span style="color:#f92672">.</span>value)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_production_debug_validation</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that debug mode is rejected in production.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        config <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;environment&#34;</span>: <span style="color:#e6db74">&#34;production&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;debug&#34;</span>: <span style="color:#66d9ef">True</span>,  <span style="color:#75715e"># Invalid in production</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;database_url&#34;</span>: <span style="color:#e6db74">&#34;postgresql://user:pass@prod.com/app&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;secret_key&#34;</span>: <span style="color:#e6db74">&#34;production-secret-key-32-characters&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_host&#34;</span>: <span style="color:#e6db74">&#34;smtp.prod.com&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_username&#34;</span>: <span style="color:#e6db74">&#34;prod&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_password&#34;</span>: <span style="color:#e6db74">&#34;password&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_from_address&#34;</span>: <span style="color:#e6db74">&#34;noreply@prod.com&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(ValidationError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>            Settings(<span style="color:#f92672">**</span>config)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;Debug mode must be disabled in production&#34;</span> <span style="color:#f92672">in</span> str(exc_info<span style="color:#f92672">.</span>value)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_production_cors_validation</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that wildcard CORS is rejected in production.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        config <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;environment&#34;</span>: <span style="color:#e6db74">&#34;production&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;cors_origins&#34;</span>: [<span style="color:#e6db74">&#34;*&#34;</span>],  <span style="color:#75715e"># Invalid in production</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;database_url&#34;</span>: <span style="color:#e6db74">&#34;postgresql://user:pass@prod.com/app&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;secret_key&#34;</span>: <span style="color:#e6db74">&#34;production-secret-key-32-characters&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_host&#34;</span>: <span style="color:#e6db74">&#34;smtp.prod.com&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_username&#34;</span>: <span style="color:#e6db74">&#34;prod&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_password&#34;</span>: <span style="color:#e6db74">&#34;password&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_from_address&#34;</span>: <span style="color:#e6db74">&#34;noreply@prod.com&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(ValidationError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>            Settings(<span style="color:#f92672">**</span>config)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;CORS origins cannot be &#39;*&#39; in production&#34;</span> <span style="color:#f92672">in</span> str(exc_info<span style="color:#f92672">.</span>value)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_database_url_validation</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test database URL validation for different environments.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># SQLite should be rejected in production</span>
+</span></span><span style="display:flex;"><span>        config <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;environment&#34;</span>: <span style="color:#e6db74">&#34;production&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;database_url&#34;</span>: <span style="color:#e6db74">&#34;sqlite:///./app.db&#34;</span>,  <span style="color:#75715e"># Invalid in production</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;secret_key&#34;</span>: <span style="color:#e6db74">&#34;production-secret-key-32-characters&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_host&#34;</span>: <span style="color:#e6db74">&#34;smtp.prod.com&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_username&#34;</span>: <span style="color:#e6db74">&#34;prod&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_smtp_password&#34;</span>: <span style="color:#e6db74">&#34;password&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;email_from_address&#34;</span>: <span style="color:#e6db74">&#34;noreply@prod.com&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(ValidationError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>            Settings(<span style="color:#f92672">**</span>config)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;SQLite is not supported in production&#34;</span> <span style="color:#f92672">in</span> str(exc_info<span style="color:#f92672">.</span>value)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestSecretManager</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test secret management functionality.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@pytest.fixture</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">secret_manager</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Create secret manager for testing.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> SecretManager()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_environment_variable_priority</span>(self, secret_manager):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that environment variables have highest priority.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> patch<span style="color:#f92672">.</span>dict(os<span style="color:#f92672">.</span>environ, {<span style="color:#e6db74">&#34;TEST_SECRET&#34;</span>: <span style="color:#e6db74">&#34;env_value&#34;</span>}):
+</span></span><span style="display:flex;"><span>            value <span style="color:#f92672">=</span> secret_manager<span style="color:#f92672">.</span>get_secret(<span style="color:#e6db74">&#34;TEST_SECRET&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">assert</span> value <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;env_value&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_docker_secrets_fallback</span>(self, secret_manager):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test Docker secrets as fallback.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> patch(<span style="color:#e6db74">&#34;pathlib.Path.exists&#34;</span>) <span style="color:#66d9ef">as</span> mock_exists:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">with</span> patch(<span style="color:#e6db74">&#34;pathlib.Path.read_text&#34;</span>) <span style="color:#66d9ef">as</span> mock_read:
+</span></span><span style="display:flex;"><span>                mock_exists<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>                mock_read<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;docker_secret_value&#34;</span>
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># No environment variable, should use Docker secret</span>
+</span></span><span style="display:flex;"><span>                value <span style="color:#f92672">=</span> secret_manager<span style="color:#f92672">.</span>get_secret(<span style="color:#e6db74">&#34;TEST_SECRET&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">assert</span> value <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;docker_secret_value&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_development_defaults</span>(self, secret_manager):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test development defaults in development environment.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> patch<span style="color:#f92672">.</span>dict(os<span style="color:#f92672">.</span>environ, {<span style="color:#e6db74">&#34;ENVIRONMENT&#34;</span>: <span style="color:#e6db74">&#34;development&#34;</span>}, clear<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>            value <span style="color:#f92672">=</span> secret_manager<span style="color:#f92672">.</span>get_secret(<span style="color:#e6db74">&#34;SECRET_KEY&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">assert</span> value <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">assert</span> len(value) <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">32</span>  <span style="color:#75715e"># Should meet minimum length</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_production_secret_validation</span>(self, secret_manager):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test production secret validation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> patch<span style="color:#f92672">.</span>dict(os<span style="color:#f92672">.</span>environ, {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;ENVIRONMENT&#34;</span>: <span style="color:#e6db74">&#34;production&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;SECRET_KEY&#34;</span>: <span style="color:#e6db74">&#34;prod-secret-32-characters-long&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;DATABASE_URL&#34;</span>: <span style="color:#e6db74">&#34;postgresql://user:pass@prod.db/app&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;SMTP_PASSWORD&#34;</span>: <span style="color:#e6db74">&#34;prod-smtp-password&#34;</span>
+</span></span><span style="display:flex;"><span>        }):
+</span></span><span style="display:flex;"><span>            validation <span style="color:#f92672">=</span> secret_manager<span style="color:#f92672">.</span>validate_production_secrets()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">assert</span> validation[<span style="color:#e6db74">&#34;valid&#34;</span>] <span style="color:#f92672">is</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">assert</span> len(validation[<span style="color:#e6db74">&#34;issues&#34;</span>]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestStartupValidation</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test application startup validation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_successful_startup_validation</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test successful startup validation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">from</span> neodyme.core.startup <span style="color:#f92672">import</span> StartupValidator
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        validator <span style="color:#f92672">=</span> StartupValidator()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Mock all validation methods to succeed</span>
+</span></span><span style="display:flex;"><span>        validator<span style="color:#f92672">.</span>_validate_configuration <span style="color:#f92672">=</span> MagicMock(return_value<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Configuration valid&#34;</span>
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        validator<span style="color:#f92672">.</span>_validate_database <span style="color:#f92672">=</span> MagicMock(return_value<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>, 
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Database connected&#34;</span>
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        validator<span style="color:#f92672">.</span>_validate_email <span style="color:#f92672">=</span> MagicMock(return_value<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Email service available&#34;</span>
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        validator<span style="color:#f92672">.</span>_validate_external_services <span style="color:#f92672">=</span> MagicMock(return_value<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;External services available&#34;</span>
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> validator<span style="color:#f92672">.</span>validate_all()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> result[<span style="color:#e6db74">&#34;valid&#34;</span>] <span style="color:#f92672">is</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> result[<span style="color:#e6db74">&#34;summary&#34;</span>][<span style="color:#e6db74">&#34;failed&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_failed_startup_validation</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test failed startup validation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">from</span> neodyme.core.startup <span style="color:#f92672">import</span> StartupValidator
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        validator <span style="color:#f92672">=</span> StartupValidator()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Mock database validation to fail</span>
+</span></span><span style="display:flex;"><span>        validator<span style="color:#f92672">.</span>_validate_configuration <span style="color:#f92672">=</span> MagicMock(return_value<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Configuration valid&#34;</span>
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        validator<span style="color:#f92672">.</span>_validate_database <span style="color:#f92672">=</span> MagicMock(return_value<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;fail&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Database connection failed&#34;</span>
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        validator<span style="color:#f92672">.</span>_validate_email <span style="color:#f92672">=</span> MagicMock(return_value<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;pass&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Email service available&#34;</span>
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        validator<span style="color:#f92672">.</span>_validate_external_services <span style="color:#f92672">=</span> MagicMock(return_value<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;warning&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Some external services unavailable&#34;</span>
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> validator<span style="color:#f92672">.</span>validate_all()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> result[<span style="color:#e6db74">&#34;valid&#34;</span>] <span style="color:#f92672">is</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> result[<span style="color:#e6db74">&#34;summary&#34;</span>][<span style="color:#e6db74">&#34;failed&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> result[<span style="color:#e6db74">&#34;summary&#34;</span>][<span style="color:#e6db74">&#34;warnings&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span></span></span></code></pre></div><p><strong>Why configuration testing is essential:</strong></p>
+<ul>
+<li><strong>Validation logic verification</strong> - Tests ensure that configuration validation catches invalid settings before deployment</li>
+<li><strong>Environment-specific rules</strong> - Tests verify that production environments enforce stricter validation than development</li>
+<li><strong>Secret management reliability</strong> - Tests confirm that secrets are loaded from the correct sources in the right priority order</li>
+<li><strong>Startup validation coverage</strong> - Tests verify that startup checks correctly identify configuration problems</li>
+<li><strong>Regression prevention</strong> - Configuration tests prevent accidentally breaking validation logic during refactoring</li>
+</ul>
+<h2 id="what-youve-learned">What You&rsquo;ve Learned<a class="anchor" href="#what-youve-learned">#</a></h2>
+<p>By the end of this chapter, you understand:</p>
+<p>✅ <strong>Why ad-hoc configuration causes deployment failures</strong> - and how structured configuration with validation prevents runtime errors<br>
+✅ <strong>Pydantic Settings for type-safe configuration</strong> - including validation rules, environment-specific overrides, and documentation<br>
+✅ <strong>Secret management strategies</strong> - handling sensitive configuration securely across multiple environments and secret sources<br>
+✅ <strong>Startup validation patterns</strong> - checking configuration and dependencies before accepting requests to fail fast on problems<br>
+✅ <strong>Container-specific configuration</strong> - adapting configuration management for Docker and container orchestration environments<br>
+✅ <strong>Configuration testing approaches</strong> - ensuring configuration validation works correctly and catches deployment issues</p>
+<p>More importantly, you&rsquo;ve built a configuration system that prevents deployment surprises while maintaining security and developer productivity.</p>
+<h2 id="building-blocks-for-next-chapters">Building Blocks for Next Chapters<a class="anchor" href="#building-blocks-for-next-chapters">#</a></h2>
+<p>This configuration foundation gives us:</p>
+<ul>
+<li><strong>HTTP handling</strong> ← Chapter 1: FastAPI basics</li>
+<li><strong>Data persistence</strong> ← Chapter 2: Database integration</li>
+<li><strong>Input validation</strong> ← Chapter 3: Request/response validation</li>
+<li><strong>Schema evolution</strong> ← Chapter 4: Database migrations</li>
+<li><strong>Clean architecture</strong> ← Chapter 5: Service layer organization</li>
+<li><strong>Error handling</strong> ← Chapter 6: Professional error management</li>
+<li><strong>Security</strong> ← Chapter 7: Authentication and authorization</li>
+<li><strong>Configuration</strong> ← You are here</li>
+<li><strong>Testing</strong> ← Chapter 9: Comprehensive testing strategies</li>
+</ul>
+<h2 id="exercises">Exercises<a class="anchor" href="#exercises">#</a></h2>
+<ol>
+<li><strong>Add configuration profiles</strong> - Create configuration profiles for different deployment types (local, cloud, kubernetes)</li>
+<li><strong>Implement configuration hot-reload</strong> - Add ability to reload non-sensitive configuration without restarting</li>
+<li><strong>Create configuration documentation</strong> - Build auto-generated documentation from Pydantic field descriptions</li>
+<li><strong>Add configuration encryption</strong> - Encrypt sensitive configuration files for additional security</li>
+<li><strong>Build configuration validation CLI</strong> - Create command-line tool to validate configuration before deployment</li>
+</ol>
+<h2 id="resources-for-deeper-learning">Resources for Deeper Learning<a class="anchor" href="#resources-for-deeper-learning">#</a></h2>
+<h3 id="configuration-management-patterns">Configuration Management Patterns<a class="anchor" href="#configuration-management-patterns">#</a></h3>
+<ul>
+<li><strong>The Twelve-Factor App</strong>: Configuration best practices for modern applications - <a href="https://12factor.net/config">https://12factor.net/config</a></li>
+<li><strong>Pydantic Settings</strong>: Official documentation for type-safe configuration - <a href="https://pydantic-docs.helpmanual.io/usage/settings/">https://pydantic-docs.helpmanual.io/usage/settings/</a></li>
+<li><strong>Environment Configuration Patterns</strong>: Managing configuration across environments - <a href="https://blog.djangoproject.com/2022/04/14/django-security-releases-issued-408-321-315-and-225/">https://blog.djangoproject.com/2022/04/14/django-security-releases-issued-408-321-315-and-225/</a></li>
+</ul>
+<h3 id="secret-management">Secret Management<a class="anchor" href="#secret-management">#</a></h3>
+<ul>
+<li><strong>Secret Management Best Practices</strong>: Secure handling of sensitive configuration - <a href="https://www.vaultproject.io/docs/secrets">https://www.vaultproject.io/docs/secrets</a></li>
+<li><strong>Docker Secrets</strong>: Container-based secret management - <a href="https://docs.docker.com/engine/swarm/secrets/">https://docs.docker.com/engine/swarm/secrets/</a></li>
+<li><strong>Kubernetes Secrets</strong>: Secret management in Kubernetes environments - <a href="https://kubernetes.io/docs/concepts/configuration/secret/">https://kubernetes.io/docs/concepts/configuration/secret/</a></li>
+</ul>
+<h3 id="validation-and-testing">Validation and Testing<a class="anchor" href="#validation-and-testing">#</a></h3>
+<ul>
+<li><strong>Configuration Testing Patterns</strong>: Testing configuration validation logic - <a href="https://docs.python.org/3/library/unittest.mock.html">https://docs.python.org/3/library/unittest.mock.html</a></li>
+<li><strong>Pydantic Validation</strong>: Advanced validation techniques - <a href="https://pydantic-docs.helpmanual.io/usage/validators/">https://pydantic-docs.helpmanual.io/usage/validators/</a></li>
+<li><strong>Environment Testing</strong>: Testing across different environments - <a href="https://testdriven.io/blog/testing-python/">https://testdriven.io/blog/testing-python/</a></li>
+</ul>
+<h3 id="container-configuration">Container Configuration<a class="anchor" href="#container-configuration">#</a></h3>
+<ul>
+<li><strong>Docker Environment Variables</strong>: Best practices for container configuration - <a href="https://docs.docker.com/compose/environment-variables/">https://docs.docker.com/compose/environment-variables/</a></li>
+<li><strong>Container Security</strong>: Secure configuration in containerized environments - <a href="https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html</a></li>
+<li><strong>Health Checks</strong>: Container health monitoring - <a href="https://docs.docker.com/engine/reference/builder/#healthcheck">https://docs.docker.com/engine/reference/builder/#healthcheck</a></li>
+</ul>
+<h3 id="why-these-resources-matter">Why These Resources Matter<a class="anchor" href="#why-these-resources-matter">#</a></h3>
+<ul>
+<li><strong>Configuration principles</strong>: Understanding 12-factor principles helps you design configuration that works reliably across deployment environments</li>
+<li><strong>Secret security</strong>: Proper secret management prevents security breaches and compliance violations</li>
+<li><strong>Validation strategies</strong>: Comprehensive validation catches configuration errors before they cause production outages</li>
+<li><strong>Container best practices</strong>: Modern applications need configuration patterns that work with containerization and orchestration</li>
+</ul>
+<p><strong>Pro Tip</strong>: Start with the 12-factor app principles to understand configuration fundamentals, then focus on Pydantic Settings for type-safe implementation in Python applications.</p>
+<h2 id="next-comprehensive-testing-strategies">Next: Comprehensive Testing Strategies<a class="anchor" href="#next-comprehensive-testing-strategies">#</a></h2>
+<p>You have configuration that works reliably across environments, but now you need to ensure your application actually works correctly. How do you test complex business logic? How do you test async operations? How do you ensure your tests are fast, reliable, and give you confidence to deploy?</p>
+<p>In Chapter 9, we&rsquo;ll explore testing strategies that catch bugs before they reach production while maintaining fast development cycles.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Preview of Chapter 9</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.fixture</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_client</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Create test client with isolated test database.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Set up test database</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Configure test dependencies</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Return test client</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_user_registration_workflow</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test complete user registration with all side effects.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Test user creation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Verify email was sent</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Check analytics tracking</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Validate audit logs</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span></span></span></code></pre></div><p>We&rsquo;ll explore how to build test suites that give you confidence while running fast enough to use during development.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/neodyme/docs/chapter-7/" class="flex align-center">
+        <img src="/neodyme/icons/backward.svg" class="book-icon" alt="Previous" title="Chapter 7" />
+        <span>Chapter 7</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/neodyme/docs/chapter-9/" class="flex align-center">
+        <span>Chapter 9</span>
+        <img src="/neodyme/icons/forward.svg" class="book-icon" alt="Next" title="Chapter 9" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+
+ 
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-configuration-chaos-everywhere">The Problem: Configuration Chaos Everywhere</a></li>
+    <li><a href="#why-environment-variables-alone-arent-enough">Why Environment Variables Alone Aren&rsquo;t Enough</a></li>
+    <li><a href="#the-professional-configuration-solution-structured-settings">The Professional Configuration Solution: Structured Settings</a></li>
+    <li><a href="#environment-specific-configuration">Environment-Specific Configuration</a></li>
+    <li><a href="#secret-management-and-security">Secret Management and Security</a></li>
+    <li><a href="#configuration-validation-and-startup-checks">Configuration Validation and Startup Checks</a></li>
+    <li><a href="#docker-and-container-configuration">Docker and Container Configuration</a></li>
+    <li><a href="#configuration-testing-and-validation">Configuration Testing and Validation</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#configuration-management-patterns">Configuration Management Patterns</a></li>
+        <li><a href="#secret-management">Secret Management</a></li>
+        <li><a href="#validation-and-testing">Validation and Testing</a></li>
+        <li><a href="#container-configuration">Container Configuration</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-comprehensive-testing-strategies">Next: Comprehensive Testing Strategies</a></li>
+  </ul>
+</nav>
+
+
+
+  </div>
+</aside>
+
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

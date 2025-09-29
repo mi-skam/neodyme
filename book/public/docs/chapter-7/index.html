@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chapter 7: &ldquo;I Need Security That Actually Protects&rdquo;#
+Your neodyme application is running beautifully. Users can register, the service layer coordinates complex workflows, and errors are handled professionally. But then your security audit arrives with a damning report:
+&ldquo;Passwords are stored in plain text. Sessions never expire. No rate limiting on login attempts. Any user can access any other user&rsquo;s data.&rdquo;
+Suddenly, you realize that your perfectly functional application is a security disaster waiting to happen. One data breach, one credential stuffing attack, one privilege escalation exploit, and your users&rsquo; data—and your reputation—are gone forever.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/chapter-7/">
+  <meta property="og:site_name" content="Neodyme Documentation">
+  <meta property="og:title" content="Chapter 7">
+  <meta property="og:description" content="Chapter 7: “I Need Security That Actually Protects”# Your neodyme application is running beautifully. Users can register, the service layer coordinates complex workflows, and errors are handled professionally. But then your security audit arrives with a damning report:
+“Passwords are stored in plain text. Sessions never expire. No rate limiting on login attempts. Any user can access any other user’s data.”
+Suddenly, you realize that your perfectly functional application is a security disaster waiting to happen. One data breach, one credential stuffing attack, one privilege escalation exploit, and your users’ data—and your reputation—are gone forever.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Chapter 7 | Neodyme Documentation</title>
+<link rel="icon" href="/neodyme/favicon.png" >
+<link rel="manifest" href="/neodyme/manifest.json">
+<link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/chapter-7/">
+<link rel="stylesheet" href="/neodyme/book.min.c098be6fdb8410d437a0799e694b206fa639685582089c583ae6ac07afec1ff8.css" integrity="sha256-wJi&#43;b9uEENQ3oHmeaUsgb6Y5aFWCCJxYOuasB6/sH/g=" crossorigin="anonymous">
+
+
+  <script defer src="/neodyme/fuse.min.js"></script>
+  <script defer src="/neodyme/en.search.min.f64f4d2b3193917ebd07e82190bf6e6a2f23d6e670fb678260875bd442e5cf4d.js" integrity="sha256-9k9NKzGTkX69B&#43;ghkL9uai8j1uZw&#43;2eCYIdb1ELlz00=" crossorigin="anonymous"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/neodyme/"><span>Neodyme Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-1/" class="">
+      Chapter 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-2/" class="">
+      Chapter 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-3/" class="">
+      Chapter 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-4/" class="">
+      Chapter 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-5/" class="">
+      Chapter 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-6/" class="">
+      Chapter 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-7/" class="active">
+      Chapter 7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-8/" class="">
+      Chapter 8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-9/" class="">
+      Chapter 9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-10/" class="">
+      Chapter 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Chapter 7</h3>
+
+  <label for="toc-control">
+    
+    <img src="/neodyme/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-security-theater-vs-real-protection">The Problem: Security Theater vs Real Protection</a></li>
+    <li><a href="#why-simple-security-fails-against-real-attacks">Why &ldquo;Simple&rdquo; Security Fails Against Real Attacks</a></li>
+    <li><a href="#the-professional-security-solution-defense-in-depth">The Professional Security Solution: Defense in Depth</a></li>
+    <li><a href="#implementing-rate-limiting-and-attack-prevention">Implementing Rate Limiting and Attack Prevention</a></li>
+    <li><a href="#building-the-authentication-service">Building the Authentication Service</a></li>
+    <li><a href="#authorization-and-permission-management">Authorization and Permission Management</a></li>
+    <li><a href="#secure-api-endpoints">Secure API Endpoints</a></li>
+    <li><a href="#testing-security-implementation">Testing Security Implementation</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#authentication-and-security-fundamentals">Authentication and Security Fundamentals</a></li>
+        <li><a href="#security-implementation">Security Implementation</a></li>
+        <li><a href="#attack-prevention">Attack Prevention</a></li>
+        <li><a href="#authorization-and-access-control">Authorization and Access Control</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-configuration-management">Next: Configuration Management</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="chapter-7-i-need-security-that-actually-protects">Chapter 7: &ldquo;I Need Security That Actually Protects&rdquo;<a class="anchor" href="#chapter-7-i-need-security-that-actually-protects">#</a></h1>
+<p>Your neodyme application is running beautifully. Users can register, the service layer coordinates complex workflows, and errors are handled professionally. But then your security audit arrives with a damning report:</p>
+<p><em>&ldquo;Passwords are stored in plain text. Sessions never expire. No rate limiting on login attempts. Any user can access any other user&rsquo;s data.&rdquo;</em></p>
+<p>Suddenly, you realize that your perfectly functional application is a security disaster waiting to happen. One data breach, one credential stuffing attack, one privilege escalation exploit, and your users&rsquo; data—and your reputation—are gone forever.</p>
+<p>This is the moment every developer faces: <strong>functionality without security is a liability, not an asset</strong>. The question isn&rsquo;t whether attackers will try to compromise your system—it&rsquo;s whether your security will stop them when they do.</p>
+<h2 id="the-problem-security-theater-vs-real-protection">The Problem: Security Theater vs Real Protection<a class="anchor" href="#the-problem-security-theater-vs-real-protection">#</a></h2>
+<p>Let me ask you: Have you ever implemented authentication that &ldquo;worked&rdquo; but wouldn&rsquo;t survive five minutes against a determined attacker? If so, you&rsquo;ve experienced the difference between security theater and actual security.</p>
+<p>Here&rsquo;s what most developers build first:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># What looks like security but isn&#39;t</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.post</span>(<span style="color:#e6db74">&#34;/login&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">login</span>(credentials: dict):
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> get_user_by_email(credentials[<span style="color:#e6db74">&#34;email&#34;</span>])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> user <span style="color:#f92672">and</span> user<span style="color:#f92672">.</span>password <span style="color:#f92672">==</span> credentials[<span style="color:#e6db74">&#34;password&#34;</span>]:  <span style="color:#75715e"># Plain text comparison!</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># &#34;Session&#34; management with no expiration</span>
+</span></span><span style="display:flex;"><span>        session_token <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;user_</span><span style="color:#e6db74">{</span>user<span style="color:#f92672">.</span>id<span style="color:#e6db74">}</span><span style="color:#e6db74">_</span><span style="color:#e6db74">{</span>random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">1000</span>, <span style="color:#ae81ff">9999</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;token&#34;</span>: session_token}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">401</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid credentials&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.get</span>(<span style="color:#e6db74">&#34;/profile&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_profile</span>(user_id: int, token: str):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># No token validation - any token works!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> token<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#34;user_&#34;</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">401</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Unauthorized&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># No authorization check - any user can access any profile!</span>
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> get_user_by_id(user_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> user</span></span></code></pre></div><p><strong>Why this approach creates catastrophic security vulnerabilities:</strong></p>
+<ul>
+<li><strong>Password storage catastrophe</strong> - Plain text passwords mean a single database breach exposes every user&rsquo;s credentials for use across all their accounts</li>
+<li><strong>Predictable session tokens</strong> - Simple numeric tokens can be guessed or brute-forced by attackers within minutes</li>
+<li><strong>No session expiration</strong> - Stolen tokens work forever, giving attackers permanent access even after users &ldquo;log out&rdquo;</li>
+<li><strong>Missing authorization</strong> - Any authenticated user can access any other user&rsquo;s data by simply changing URL parameters</li>
+<li><strong>No rate limiting</strong> - Attackers can attempt thousands of login combinations per second without restriction</li>
+<li><strong>No audit trail</strong> - Security breaches leave no evidence, making forensic analysis and compliance reporting impossible</li>
+</ul>
+<p>The fundamental problem is <strong>mistaking authentication for security</strong>. Authentication proves identity, but real security requires authorization, session management, attack prevention, and comprehensive auditing.</p>
+<h2 id="why-simple-security-fails-against-real-attacks">Why &ldquo;Simple&rdquo; Security Fails Against Real Attacks<a class="anchor" href="#why-simple-security-fails-against-real-attacks">#</a></h2>
+<p>The naive approach to security looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># &#34;Simple&#34; security that invites attacks</span>
+</span></span><span style="display:flex;"><span>users <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;admin@company.com&#34;</span>: <span style="color:#e6db74">&#34;password123&#34;</span>,  <span style="color:#75715e"># Weak password stored in plain text</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;user@company.com&#34;</span>: <span style="color:#e6db74">&#34;123456&#34;</span>        <span style="color:#75715e"># Even weaker password</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.post</span>(<span style="color:#e6db74">&#34;/login&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">simple_login</span>(email: str, password: str):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> users<span style="color:#f92672">.</span>get(email) <span style="color:#f92672">==</span> password:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Login successful&#34;</span>, <span style="color:#e6db74">&#34;user&#34;</span>: email}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Login failed&#34;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># No protection on sensitive endpoints</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.get</span>(<span style="color:#e6db74">&#34;/admin/users&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_all_users</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> list(users<span style="color:#f92672">.</span>keys())  <span style="color:#75715e"># Anyone can access admin functionality!</span></span></span></code></pre></div><p><strong>This approach fails against common attack vectors:</strong></p>
+<ul>
+<li><strong>Credential stuffing attacks</strong> - Attackers use automated tools to test millions of leaked username/password combinations from other breaches against your login endpoint</li>
+<li><strong>Brute force attacks</strong> - Without rate limiting, attackers can test thousands of password combinations per minute until they find valid credentials</li>
+<li><strong>Session hijacking</strong> - Predictable or non-expiring session tokens can be stolen through network interception or cross-site scripting attacks</li>
+<li><strong>Privilege escalation</strong> - Lack of proper authorization allows attackers to access administrative functions after compromising any user account</li>
+<li><strong>Password database breaches</strong> - Plain text passwords make every user vulnerable across all their online accounts when your database is compromised</li>
+<li><strong>Timing attacks</strong> - Inconsistent response times can leak information about which usernames exist in your system</li>
+</ul>
+<h2 id="the-professional-security-solution-defense-in-depth">The Professional Security Solution: Defense in Depth<a class="anchor" href="#the-professional-security-solution-defense-in-depth">#</a></h2>
+<p>Professional security implements multiple overlapping protection layers. Here&rsquo;s how neodyme creates a comprehensive security system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># core/security.py - Comprehensive security foundation</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timedelta
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Optional, Dict, Any
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> jwt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> bcrypt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> passlib.context <span style="color:#f92672">import</span> CryptContext
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.security <span style="color:#f92672">import</span> HTTPBearer, HTTPAuthorizationCredentials
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> HTTPException, Depends, Request
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.config <span style="color:#f92672">import</span> settings
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> User
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> SecurityError, ErrorCode
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SecurityConfig</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Centralized security configuration.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># JWT Configuration</span>
+</span></span><span style="display:flex;"><span>    SECRET_KEY <span style="color:#f92672">=</span> settings<span style="color:#f92672">.</span>secret_key
+</span></span><span style="display:flex;"><span>    ALGORITHM <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;HS256&#34;</span>
+</span></span><span style="display:flex;"><span>    ACCESS_TOKEN_EXPIRE_MINUTES <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span>    REFRESH_TOKEN_EXPIRE_DAYS <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Password Requirements</span>
+</span></span><span style="display:flex;"><span>    MIN_PASSWORD_LENGTH <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>    REQUIRE_UPPERCASE <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    REQUIRE_LOWERCASE <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    REQUIRE_DIGITS <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    REQUIRE_SPECIAL_CHARS <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Rate Limiting</span>
+</span></span><span style="display:flex;"><span>    MAX_LOGIN_ATTEMPTS <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>    LOGIN_LOCKOUT_MINUTES <span style="color:#f92672">=</span> <span style="color:#ae81ff">15</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Session Security</span>
+</span></span><span style="display:flex;"><span>    SECURE_COOKIES <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    HTTPONLY_COOKIES <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PasswordManager</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Secure password handling with industry best practices.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Use bcrypt with appropriate cost factor</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>pwd_context <span style="color:#f92672">=</span> CryptContext(
+</span></span><span style="display:flex;"><span>            schemes<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;bcrypt&#34;</span>],
+</span></span><span style="display:flex;"><span>            deprecated<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>,
+</span></span><span style="display:flex;"><span>            bcrypt__rounds<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>  <span style="color:#75715e"># Computationally expensive enough to slow brute force</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hash_password</span>(self, password: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Hash password using bcrypt with salt.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Bcrypt automatically generates unique salt for each password</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>pwd_context<span style="color:#f92672">.</span>hash(password)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">verify_password</span>(self, plain_password: str, hashed_password: str) <span style="color:#f92672">-&gt;</span> bool:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Verify password against hash with timing attack protection.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>pwd_context<span style="color:#f92672">.</span>verify(plain_password, hashed_password)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validate_password_strength</span>(self, password: str) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Validate password meets security requirements.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        issues <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(password) <span style="color:#f92672">&lt;</span> SecurityConfig<span style="color:#f92672">.</span>MIN_PASSWORD_LENGTH:
+</span></span><span style="display:flex;"><span>            issues<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Password must be at least </span><span style="color:#e6db74">{</span>SecurityConfig<span style="color:#f92672">.</span>MIN_PASSWORD_LENGTH<span style="color:#e6db74">}</span><span style="color:#e6db74"> characters&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> SecurityConfig<span style="color:#f92672">.</span>REQUIRE_UPPERCASE <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> any(c<span style="color:#f92672">.</span>isupper() <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password):
+</span></span><span style="display:flex;"><span>            issues<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Password must contain at least one uppercase letter&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> SecurityConfig<span style="color:#f92672">.</span>REQUIRE_LOWERCASE <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> any(c<span style="color:#f92672">.</span>islower() <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password):
+</span></span><span style="display:flex;"><span>            issues<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Password must contain at least one lowercase letter&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> SecurityConfig<span style="color:#f92672">.</span>REQUIRE_DIGITS <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> any(c<span style="color:#f92672">.</span>isdigit() <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password):
+</span></span><span style="display:flex;"><span>            issues<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Password must contain at least one digit&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> SecurityConfig<span style="color:#f92672">.</span>REQUIRE_SPECIAL_CHARS <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> any(c <span style="color:#f92672">in</span> <span style="color:#e6db74">&#34;!@#$%^&amp;*()_+-=[]</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">|;:,.&lt;&gt;?&#34;</span> <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password):
+</span></span><span style="display:flex;"><span>            issues<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;Password must contain at least one special character&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;valid&#34;</span>: len(issues) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;issues&#34;</span>: issues,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;strength_score&#34;</span>: self<span style="color:#f92672">.</span>_calculate_strength_score(password)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_calculate_strength_score</span>(self, password: str) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Calculate password strength score (0-100).&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        score <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Length bonus</span>
+</span></span><span style="display:flex;"><span>        score <span style="color:#f92672">+=</span> min(<span style="color:#ae81ff">25</span>, len(password) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Character diversity bonus</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> any(c<span style="color:#f92672">.</span>isupper() <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password):
+</span></span><span style="display:flex;"><span>            score <span style="color:#f92672">+=</span> <span style="color:#ae81ff">15</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> any(c<span style="color:#f92672">.</span>islower() <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password):
+</span></span><span style="display:flex;"><span>            score <span style="color:#f92672">+=</span> <span style="color:#ae81ff">15</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> any(c<span style="color:#f92672">.</span>isdigit() <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password):
+</span></span><span style="display:flex;"><span>            score <span style="color:#f92672">+=</span> <span style="color:#ae81ff">15</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> any(c <span style="color:#f92672">in</span> <span style="color:#e6db74">&#34;!@#$%^&amp;*()_+-=[]</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">|;:,.&lt;&gt;?&#34;</span> <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password):
+</span></span><span style="display:flex;"><span>            score <span style="color:#f92672">+=</span> <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Penalty for common patterns</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> password<span style="color:#f92672">.</span>lower() <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;password&#34;</span>, <span style="color:#e6db74">&#34;123456&#34;</span>, <span style="color:#e6db74">&#34;qwerty&#34;</span>, <span style="color:#e6db74">&#34;admin&#34;</span>]:
+</span></span><span style="display:flex;"><span>            score <span style="color:#f92672">-=</span> <span style="color:#ae81ff">50</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> max(<span style="color:#ae81ff">0</span>, min(<span style="color:#ae81ff">100</span>, score))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JWTManager</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;JWT token management with security best practices.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_access_token</span>(self, user_id: int, permissions: list[str] <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Create JWT access token with limited lifetime.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        expire <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow() <span style="color:#f92672">+</span> timedelta(minutes<span style="color:#f92672">=</span>SecurityConfig<span style="color:#f92672">.</span>ACCESS_TOKEN_EXPIRE_MINUTES)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        payload <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;sub&#34;</span>: str(user_id),  <span style="color:#75715e"># Subject (user ID)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;exp&#34;</span>: expire,        <span style="color:#75715e"># Expiration time</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;iat&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow(),  <span style="color:#75715e"># Issued at</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;access&#34;</span>,     <span style="color:#75715e"># Token type</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;permissions&#34;</span>: permissions <span style="color:#f92672">or</span> []
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> jwt<span style="color:#f92672">.</span>encode(payload, SecurityConfig<span style="color:#f92672">.</span>SECRET_KEY, algorithm<span style="color:#f92672">=</span>SecurityConfig<span style="color:#f92672">.</span>ALGORITHM)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_refresh_token</span>(self, user_id: int) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Create JWT refresh token with longer lifetime.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        expire <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow() <span style="color:#f92672">+</span> timedelta(days<span style="color:#f92672">=</span>SecurityConfig<span style="color:#f92672">.</span>REFRESH_TOKEN_EXPIRE_DAYS)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        payload <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;sub&#34;</span>: str(user_id),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;exp&#34;</span>: expire,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;iat&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow(),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;refresh&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> jwt<span style="color:#f92672">.</span>encode(payload, SecurityConfig<span style="color:#f92672">.</span>SECRET_KEY, algorithm<span style="color:#f92672">=</span>SecurityConfig<span style="color:#f92672">.</span>ALGORITHM)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">verify_token</span>(self, token: str, expected_type: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;access&#34;</span>) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Verify JWT token and return payload.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            payload <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>decode(
+</span></span><span style="display:flex;"><span>                token, 
+</span></span><span style="display:flex;"><span>                SecurityConfig<span style="color:#f92672">.</span>SECRET_KEY, 
+</span></span><span style="display:flex;"><span>                algorithms<span style="color:#f92672">=</span>[SecurityConfig<span style="color:#f92672">.</span>ALGORITHM]
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Verify token type</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> payload<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;type&#34;</span>) <span style="color:#f92672">!=</span> expected_type:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                    message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Invalid token type. Expected </span><span style="color:#e6db74">{</span>expected_type<span style="color:#e6db74">}</span><span style="color:#e6db74">, got </span><span style="color:#e6db74">{</span>payload<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;type&#39;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                    error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INVALID_TOKEN,
+</span></span><span style="display:flex;"><span>                    user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid authentication token&#34;</span>
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> payload
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> jwt<span style="color:#f92672">.</span>ExpiredSignatureError:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Token has expired&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>TOKEN_EXPIRED,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Your session has expired. Please log in again.&#34;</span>
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> jwt<span style="color:#f92672">.</span>InvalidTokenError <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Invalid token: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INVALID_TOKEN,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid authentication token&#34;</span>
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Initialize security components</span>
+</span></span><span style="display:flex;"><span>password_manager <span style="color:#f92672">=</span> PasswordManager()
+</span></span><span style="display:flex;"><span>jwt_manager <span style="color:#f92672">=</span> JWTManager()</span></span></code></pre></div><p><strong>Why this comprehensive approach provides real security:</strong></p>
+<ul>
+<li><strong>Bcrypt password hashing</strong> - Computationally expensive hashing with automatic salt generation makes password cracking infeasible even with database access</li>
+<li><strong>JWT token security</strong> - Cryptographically signed tokens with expiration prevent forgery and limit breach impact</li>
+<li><strong>Password strength validation</strong> - Enforced complexity requirements prevent users from choosing easily guessed passwords</li>
+<li><strong>Token type verification</strong> - Separate access and refresh tokens limit the impact of token theft</li>
+<li><strong>Timing attack protection</strong> - Consistent password verification timing prevents attackers from detecting valid usernames</li>
+<li><strong>Centralized security configuration</strong> - Security policies are enforced consistently across the entire application</li>
+</ul>
+<h2 id="implementing-rate-limiting-and-attack-prevention">Implementing Rate Limiting and Attack Prevention<a class="anchor" href="#implementing-rate-limiting-and-attack-prevention">#</a></h2>
+<p>Real security requires active defense against attack patterns:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># core/rate_limiting.py - Attack prevention system</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> asyncio
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timedelta
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Dict, Optional
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> collections <span style="color:#f92672">import</span> defaultdict, deque
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> Request, HTTPException
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RateLimiter</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Rate limiting to prevent brute force attacks.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Store attempt counts by IP address</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>attempts: Dict[str, deque] <span style="color:#f92672">=</span> defaultdict(<span style="color:#66d9ef">lambda</span>: deque())
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Store lockout times by IP address</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>lockouts: Dict[str, datetime] <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Cleanup task to prevent memory leaks</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_cleanup_task <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_rate_limit</span>(self, request: Request, max_attempts: int, window_minutes: int) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Check if request is within rate limits.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        client_ip <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_get_client_ip(request)
+</span></span><span style="display:flex;"><span>        now <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check if IP is currently locked out</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> client_ip <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>lockouts:
+</span></span><span style="display:flex;"><span>            lockout_end <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>lockouts[client_ip]
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> now <span style="color:#f92672">&lt;</span> lockout_end:
+</span></span><span style="display:flex;"><span>                remaining_seconds <span style="color:#f92672">=</span> int((lockout_end <span style="color:#f92672">-</span> now)<span style="color:#f92672">.</span>total_seconds())
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> HTTPException(
+</span></span><span style="display:flex;"><span>                    status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">429</span>,
+</span></span><span style="display:flex;"><span>                    detail<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Too many failed attempts. Try again in </span><span style="color:#e6db74">{</span>remaining_seconds<span style="color:#e6db74">}</span><span style="color:#e6db74"> seconds.&#34;</span>,
+</span></span><span style="display:flex;"><span>                    headers<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;Retry-After&#34;</span>: str(remaining_seconds)}
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Lockout expired, remove it</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">del</span> self<span style="color:#f92672">.</span>lockouts[client_ip]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Clean old attempts outside the window</span>
+</span></span><span style="display:flex;"><span>        window_start <span style="color:#f92672">=</span> now <span style="color:#f92672">-</span> timedelta(minutes<span style="color:#f92672">=</span>window_minutes)
+</span></span><span style="display:flex;"><span>        attempts <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>attempts[client_ip]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> attempts <span style="color:#f92672">and</span> attempts[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;</span> window_start:
+</span></span><span style="display:flex;"><span>            attempts<span style="color:#f92672">.</span>popleft()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check if adding this attempt would exceed the limit</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(attempts) <span style="color:#f92672">&gt;=</span> max_attempts:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Lock out the IP</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>lockouts[client_ip] <span style="color:#f92672">=</span> now <span style="color:#f92672">+</span> timedelta(minutes<span style="color:#f92672">=</span>SecurityConfig<span style="color:#f92672">.</span>LOGIN_LOCKOUT_MINUTES)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> HTTPException(
+</span></span><span style="display:flex;"><span>                status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">429</span>,
+</span></span><span style="display:flex;"><span>                detail<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Too many attempts. Locked out for </span><span style="color:#e6db74">{</span>SecurityConfig<span style="color:#f92672">.</span>LOGIN_LOCKOUT_MINUTES<span style="color:#e6db74">}</span><span style="color:#e6db74"> minutes.&#34;</span>,
+</span></span><span style="display:flex;"><span>                headers<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;Retry-After&#34;</span>: str(SecurityConfig<span style="color:#f92672">.</span>LOGIN_LOCKOUT_MINUTES <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span>)}
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Record this attempt</span>
+</span></span><span style="display:flex;"><span>        attempts<span style="color:#f92672">.</span>append(now)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">record_failed_attempt</span>(self, request: Request) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Record a failed login attempt for rate limiting.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Attempt is already recorded in check_rate_limit</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">record_successful_attempt</span>(self, request: Request) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Clear rate limiting on successful login.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        client_ip <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_get_client_ip(request)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> client_ip <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>attempts:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>attempts[client_ip]<span style="color:#f92672">.</span>clear()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> client_ip <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>lockouts:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">del</span> self<span style="color:#f92672">.</span>lockouts[client_ip]
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_get_client_ip</span>(self, request: Request) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Get client IP address with proxy header support.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check for forwarded IP (common in load-balanced setups)</span>
+</span></span><span style="display:flex;"><span>        forwarded_for <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>headers<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;X-Forwarded-For&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> forwarded_for:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Take the first IP (client IP) if multiple proxies</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> forwarded_for<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;,&#34;</span>)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        real_ip <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>headers<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;X-Real-IP&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> real_ip:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> real_ip
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Fall back to direct client IP</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> request<span style="color:#f92672">.</span>client<span style="color:#f92672">.</span>host <span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>client <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;unknown&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cleanup_expired_data</span>(self) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Periodic cleanup of expired rate limiting data.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        now <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Clean expired lockouts</span>
+</span></span><span style="display:flex;"><span>        expired_lockouts <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>            ip <span style="color:#66d9ef">for</span> ip, lockout_time <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>lockouts<span style="color:#f92672">.</span>items()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> now <span style="color:#f92672">&gt;</span> lockout_time
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> ip <span style="color:#f92672">in</span> expired_lockouts:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">del</span> self<span style="color:#f92672">.</span>lockouts[ip]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Clean old attempts (older than 1 hour)</span>
+</span></span><span style="display:flex;"><span>        cutoff <span style="color:#f92672">=</span> now <span style="color:#f92672">-</span> timedelta(hours<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> ip, attempts <span style="color:#f92672">in</span> list(self<span style="color:#f92672">.</span>attempts<span style="color:#f92672">.</span>items()):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">while</span> attempts <span style="color:#f92672">and</span> attempts[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;</span> cutoff:
+</span></span><span style="display:flex;"><span>                attempts<span style="color:#f92672">.</span>popleft()
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Remove empty deques</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> attempts:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">del</span> self<span style="color:#f92672">.</span>attempts[ip]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Global rate limiter instance</span>
+</span></span><span style="display:flex;"><span>rate_limiter <span style="color:#f92672">=</span> RateLimiter()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Rate limiting decorator</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">rate_limit</span>(max_attempts: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>, window_minutes: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">15</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Decorator to add rate limiting to endpoints.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">decorator</span>(func):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper</span>(request: Request, <span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> rate_limiter<span style="color:#f92672">.</span>check_rate_limit(request, max_attempts, window_minutes)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> func(request, <span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> wrapper
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> decorator</span></span></code></pre></div><p><strong>Why rate limiting is essential for security:</strong></p>
+<ul>
+<li><strong>Brute force prevention</strong> - Limits the number of password attempts per IP address, making password cracking infeasible</li>
+<li><strong>Resource protection</strong> - Prevents attackers from overwhelming your authentication system with rapid requests</li>
+<li><strong>Lockout mechanisms</strong> - Temporary bans give legitimate users time to secure their accounts while blocking automated attacks</li>
+<li><strong>Distributed attack resistance</strong> - IP-based limiting handles attacks from multiple source addresses</li>
+<li><strong>Memory efficiency</strong> - Automatic cleanup prevents rate limiting data from consuming unlimited memory</li>
+<li><strong>Proxy-aware IP detection</strong> - Correctly identifies client IPs behind load balancers and CDNs</li>
+</ul>
+<h2 id="building-the-authentication-service">Building the Authentication Service<a class="anchor" href="#building-the-authentication-service">#</a></h2>
+<p>The authentication service coordinates all security components:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># services/auth_service.py - Complete authentication workflow</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timedelta
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Optional, Dict, Any
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.ext.asyncio <span style="color:#f92672">import</span> AsyncSession
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.security <span style="color:#f92672">import</span> password_manager, jwt_manager, rate_limiter
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> SecurityError, ErrorCode
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> User, UserCreate
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.repositories <span style="color:#f92672">import</span> UserRepository
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Comprehensive authentication and authorization service.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, user_repository: UserRepository):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>user_repository <span style="color:#f92672">=</span> user_repository
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>failed_attempts: Dict[str, list] <span style="color:#f92672">=</span> {}  <span style="color:#75715e"># Track failed attempts by email</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register_user</span>(
+</span></span><span style="display:flex;"><span>        self, 
+</span></span><span style="display:flex;"><span>        session: AsyncSession, 
+</span></span><span style="display:flex;"><span>        user_data: UserCreate,
+</span></span><span style="display:flex;"><span>        request: Request
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Register new user with security validation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Validate password strength</span>
+</span></span><span style="display:flex;"><span>        password_validation <span style="color:#f92672">=</span> password_manager<span style="color:#f92672">.</span>validate_password_strength(user_data<span style="color:#f92672">.</span>password)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> password_validation[<span style="color:#e6db74">&#34;valid&#34;</span>]:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Password validation failed: </span><span style="color:#e6db74">{</span>password_validation[<span style="color:#e6db74">&#39;issues&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>WEAK_PASSWORD,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Password requirements not met: </span><span style="color:#e6db74">{</span><span style="color:#e6db74">&#39;, &#39;</span><span style="color:#f92672">.</span>join(password_validation[<span style="color:#e6db74">&#39;issues&#39;</span>])<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;password_issues&#34;</span>: password_validation[<span style="color:#e6db74">&#34;issues&#34;</span>]}
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check for existing user</span>
+</span></span><span style="display:flex;"><span>        existing_user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>get_by_email(session, email<span style="color:#f92672">=</span>user_data<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> existing_user:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Registration attempted with existing email: </span><span style="color:#e6db74">{</span>user_data<span style="color:#f92672">.</span>email<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>EMAIL_ALREADY_EXISTS,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;An account with this email already exists&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;email&#34;</span>: user_data<span style="color:#f92672">.</span>email}
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Create user with hashed password</span>
+</span></span><span style="display:flex;"><span>        user_dict <span style="color:#f92672">=</span> user_data<span style="color:#f92672">.</span>model_dump()
+</span></span><span style="display:flex;"><span>        user_dict[<span style="color:#e6db74">&#34;hashed_password&#34;</span>] <span style="color:#f92672">=</span> password_manager<span style="color:#f92672">.</span>hash_password(user_dict<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#34;password&#34;</span>))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>create(session, obj_in<span style="color:#f92672">=</span>user_dict)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Generate tokens</span>
+</span></span><span style="display:flex;"><span>        access_token <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>create_access_token(user<span style="color:#f92672">.</span>id, permissions<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;user&#34;</span>])
+</span></span><span style="display:flex;"><span>        refresh_token <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>create_refresh_token(user<span style="color:#f92672">.</span>id)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;user&#34;</span>: UserPublic<span style="color:#f92672">.</span>model_validate(user),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;access_token&#34;</span>: access_token,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;refresh_token&#34;</span>: refresh_token,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;token_type&#34;</span>: <span style="color:#e6db74">&#34;bearer&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">authenticate_user</span>(
+</span></span><span style="display:flex;"><span>        self, 
+</span></span><span style="display:flex;"><span>        session: AsyncSession, 
+</span></span><span style="display:flex;"><span>        email: str, 
+</span></span><span style="display:flex;"><span>        password: str,
+</span></span><span style="display:flex;"><span>        request: Request
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Authenticate user with comprehensive security checks.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Apply rate limiting</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> rate_limiter<span style="color:#f92672">.</span>check_rate_limit(
+</span></span><span style="display:flex;"><span>            request, 
+</span></span><span style="display:flex;"><span>            max_attempts<span style="color:#f92672">=</span>SecurityConfig<span style="color:#f92672">.</span>MAX_LOGIN_ATTEMPTS,
+</span></span><span style="display:flex;"><span>            window_minutes<span style="color:#f92672">=</span>SecurityConfig<span style="color:#f92672">.</span>LOGIN_LOCKOUT_MINUTES
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Get user by email</span>
+</span></span><span style="display:flex;"><span>            user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>get_by_email(session, email<span style="color:#f92672">=</span>email)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Don&#39;t reveal whether email exists (timing attack protection)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>_simulate_password_check()
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                    message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Login attempt with non-existent email: </span><span style="color:#e6db74">{</span>email<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                    error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INVALID_CREDENTIALS,
+</span></span><span style="display:flex;"><span>                    user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid email or password&#34;</span>,
+</span></span><span style="display:flex;"><span>                    context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;email&#34;</span>: email, <span style="color:#e6db74">&#34;reason&#34;</span>: <span style="color:#e6db74">&#34;user_not_found&#34;</span>}
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Check if account is active</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user<span style="color:#f92672">.</span>is_active:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                    message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Login attempt with inactive account: </span><span style="color:#e6db74">{</span>email<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                    error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>ACCOUNT_DISABLED,
+</span></span><span style="display:flex;"><span>                    user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Account is disabled. Contact support for assistance.&#34;</span>,
+</span></span><span style="display:flex;"><span>                    context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;user_id&#34;</span>: user<span style="color:#f92672">.</span>id, <span style="color:#e6db74">&#34;email&#34;</span>: email}
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Verify password</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> password_manager<span style="color:#f92672">.</span>verify_password(password, user<span style="color:#f92672">.</span>hashed_password):
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Record failed attempt</span>
+</span></span><span style="display:flex;"><span>                rate_limiter<span style="color:#f92672">.</span>record_failed_attempt(request)
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>_record_failed_login(email)
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                    message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Failed login attempt for user </span><span style="color:#e6db74">{</span>email<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                    error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INVALID_CREDENTIALS,
+</span></span><span style="display:flex;"><span>                    user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid email or password&#34;</span>,
+</span></span><span style="display:flex;"><span>                    context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;user_id&#34;</span>: user<span style="color:#f92672">.</span>id, <span style="color:#e6db74">&#34;email&#34;</span>: email, <span style="color:#e6db74">&#34;reason&#34;</span>: <span style="color:#e6db74">&#34;invalid_password&#34;</span>}
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Success - clear rate limiting and failed attempts</span>
+</span></span><span style="display:flex;"><span>            rate_limiter<span style="color:#f92672">.</span>record_successful_attempt(request)
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>_clear_failed_attempts(email)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Update last login</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>update(
+</span></span><span style="display:flex;"><span>                session, 
+</span></span><span style="display:flex;"><span>                db_obj<span style="color:#f92672">=</span>user, 
+</span></span><span style="display:flex;"><span>                obj_in<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;last_login&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()}
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Generate tokens with user permissions</span>
+</span></span><span style="display:flex;"><span>            user_permissions <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>_get_user_permissions(user)
+</span></span><span style="display:flex;"><span>            access_token <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>create_access_token(user<span style="color:#f92672">.</span>id, permissions<span style="color:#f92672">=</span>user_permissions)
+</span></span><span style="display:flex;"><span>            refresh_token <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>create_refresh_token(user<span style="color:#f92672">.</span>id)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;user&#34;</span>: UserPublic<span style="color:#f92672">.</span>model_validate(user),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;access_token&#34;</span>: access_token,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;refresh_token&#34;</span>: refresh_token,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;token_type&#34;</span>: <span style="color:#e6db74">&#34;bearer&#34;</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> SecurityError:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Re-raise security errors as-is</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Wrap unexpected errors</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unexpected error during authentication: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Authentication system error: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INTERNAL_ERROR,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Authentication temporarily unavailable. Please try again.&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;email&#34;</span>: email, <span style="color:#e6db74">&#34;unexpected_error&#34;</span>: str(e)}
+</span></span><span style="display:flex;"><span>            ) <span style="color:#f92672">from</span> e
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">refresh_token</span>(
+</span></span><span style="display:flex;"><span>        self, 
+</span></span><span style="display:flex;"><span>        session: AsyncSession, 
+</span></span><span style="display:flex;"><span>        refresh_token: str
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Generate new access token from refresh token.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify refresh token</span>
+</span></span><span style="display:flex;"><span>        payload <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>verify_token(refresh_token, expected_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;refresh&#34;</span>)
+</span></span><span style="display:flex;"><span>        user_id <span style="color:#f92672">=</span> int(payload[<span style="color:#e6db74">&#34;sub&#34;</span>])
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get user and verify they still exist and are active</span>
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>get(session, id<span style="color:#f92672">=</span>user_id)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user <span style="color:#f92672">or</span> <span style="color:#f92672">not</span> user<span style="color:#f92672">.</span>is_active:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Token refresh attempted for invalid/inactive user: </span><span style="color:#e6db74">{</span>user_id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INVALID_TOKEN,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid refresh token&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;user_id&#34;</span>: user_id}
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Generate new access token</span>
+</span></span><span style="display:flex;"><span>        user_permissions <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>_get_user_permissions(user)
+</span></span><span style="display:flex;"><span>        access_token <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>create_access_token(user<span style="color:#f92672">.</span>id, permissions<span style="color:#f92672">=</span>user_permissions)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;access_token&#34;</span>: access_token,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;token_type&#34;</span>: <span style="color:#e6db74">&#34;bearer&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_simulate_password_check</span>(self) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Simulate password checking to prevent timing attacks.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Perform a fake password hash verification to maintain consistent timing</span>
+</span></span><span style="display:flex;"><span>        fake_hash <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/h/bu6U.qy&#34;</span>
+</span></span><span style="display:flex;"><span>        password_manager<span style="color:#f92672">.</span>verify_password(<span style="color:#e6db74">&#34;fake_password&#34;</span>, fake_hash)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_get_user_permissions</span>(self, user: User) <span style="color:#f92672">-&gt;</span> list[str]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Get user permissions for token generation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Basic permissions for all users</span>
+</span></span><span style="display:flex;"><span>        permissions <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;user&#34;</span>]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Add admin permissions if user is admin</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> user<span style="color:#f92672">.</span>is_admin:
+</span></span><span style="display:flex;"><span>            permissions<span style="color:#f92672">.</span>extend([<span style="color:#e6db74">&#34;admin&#34;</span>, <span style="color:#e6db74">&#34;user_management&#34;</span>])
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> permissions
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_record_failed_login</span>(self, email: str) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Record failed login attempt for monitoring.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        now <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> email <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>failed_attempts:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>failed_attempts[email] <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>failed_attempts[email]<span style="color:#f92672">.</span>append(now)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Keep only attempts from the last hour</span>
+</span></span><span style="display:flex;"><span>        cutoff <span style="color:#f92672">=</span> now <span style="color:#f92672">-</span> timedelta(hours<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>failed_attempts[email] <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>            attempt <span style="color:#66d9ef">for</span> attempt <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>failed_attempts[email]
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> attempt <span style="color:#f92672">&gt;</span> cutoff
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_clear_failed_attempts</span>(self, email: str) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Clear failed attempts on successful login.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> email <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>failed_attempts:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">del</span> self<span style="color:#f92672">.</span>failed_attempts[email]</span></span></code></pre></div><p><strong>Why comprehensive authentication service is critical:</strong></p>
+<ul>
+<li><strong>Coordinated security</strong> - All security components work together to provide defense in depth</li>
+<li><strong>Attack pattern detection</strong> - Failed attempt tracking helps identify brute force attacks</li>
+<li><strong>Token lifecycle management</strong> - Proper token generation, verification, and refresh prevents session attacks</li>
+<li><strong>Account status verification</strong> - Disabled accounts can&rsquo;t be used even with valid credentials</li>
+<li><strong>Timing attack protection</strong> - Consistent response times prevent username enumeration attacks</li>
+<li><strong>Permission integration</strong> - User permissions are embedded in tokens for efficient authorization</li>
+</ul>
+<h2 id="authorization-and-permission-management">Authorization and Permission Management<a class="anchor" href="#authorization-and-permission-management">#</a></h2>
+<p>Authentication verifies identity; authorization controls access:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># core/authorization.py - Permission-based access control</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> List, Optional
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> Depends, HTTPException, Request
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.security <span style="color:#f92672">import</span> HTTPBearer, HTTPAuthorizationCredentials
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.security <span style="color:#f92672">import</span> jwt_manager
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> SecurityError, ErrorCode
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> User
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.repositories <span style="color:#f92672">import</span> UserRepository
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>security <span style="color:#f92672">=</span> HTTPBearer()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Permission</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Define application permissions.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    USER_READ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;user:read&#34;</span>
+</span></span><span style="display:flex;"><span>    USER_WRITE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;user:write&#34;</span>
+</span></span><span style="display:flex;"><span>    USER_DELETE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;user:delete&#34;</span>
+</span></span><span style="display:flex;"><span>    ADMIN_READ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;admin:read&#34;</span>
+</span></span><span style="display:flex;"><span>    ADMIN_WRITE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;admin:write&#34;</span>
+</span></span><span style="display:flex;"><span>    SYSTEM_ADMIN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;system:admin&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthorizationService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Handle authorization and permission checking.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, user_repository: UserRepository):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>user_repository <span style="color:#f92672">=</span> user_repository
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_current_user</span>(
+</span></span><span style="display:flex;"><span>        self, 
+</span></span><span style="display:flex;"><span>        session: AsyncSession,
+</span></span><span style="display:flex;"><span>        credentials: HTTPAuthorizationCredentials <span style="color:#f92672">=</span> Depends(security)
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Get current authenticated user from token.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Verify and decode token</span>
+</span></span><span style="display:flex;"><span>            payload <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>verify_token(credentials<span style="color:#f92672">.</span>credentials)
+</span></span><span style="display:flex;"><span>            user_id <span style="color:#f92672">=</span> int(payload[<span style="color:#e6db74">&#34;sub&#34;</span>])
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Get user from database</span>
+</span></span><span style="display:flex;"><span>            user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>get(session, id<span style="color:#f92672">=</span>user_id)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                    message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Token references non-existent user: </span><span style="color:#e6db74">{</span>user_id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                    error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INVALID_TOKEN,
+</span></span><span style="display:flex;"><span>                    user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid authentication token&#34;</span>
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user<span style="color:#f92672">.</span>is_active:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                    message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Token for inactive user: </span><span style="color:#e6db74">{</span>user_id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                    error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>ACCOUNT_DISABLED,
+</span></span><span style="display:flex;"><span>                    user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Account is disabled&#34;</span>
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> user
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> SecurityError:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Token validation error: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INVALID_TOKEN,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid authentication token&#34;</span>
+</span></span><span style="display:flex;"><span>            ) <span style="color:#f92672">from</span> e
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">require_permissions</span>(
+</span></span><span style="display:flex;"><span>        self,
+</span></span><span style="display:flex;"><span>        required_permissions: List[str],
+</span></span><span style="display:flex;"><span>        session: AsyncSession,
+</span></span><span style="display:flex;"><span>        credentials: HTTPAuthorizationCredentials <span style="color:#f92672">=</span> Depends(security)
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Require specific permissions for access.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get current user</span>
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>get_current_user(session, credentials)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get token permissions</span>
+</span></span><span style="display:flex;"><span>        payload <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>verify_token(credentials<span style="color:#f92672">.</span>credentials)
+</span></span><span style="display:flex;"><span>        token_permissions <span style="color:#f92672">=</span> payload<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;permissions&#34;</span>, [])
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check if user has required permissions</span>
+</span></span><span style="display:flex;"><span>        missing_permissions <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> permission <span style="color:#f92672">in</span> required_permissions:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> permission <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> token_permissions:
+</span></span><span style="display:flex;"><span>                missing_permissions<span style="color:#f92672">.</span>append(permission)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> missing_permissions:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>                message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;User </span><span style="color:#e6db74">{</span>user<span style="color:#f92672">.</span>id<span style="color:#e6db74">}</span><span style="color:#e6db74"> missing permissions: </span><span style="color:#e6db74">{</span>missing_permissions<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INSUFFICIENT_PERMISSIONS,
+</span></span><span style="display:flex;"><span>                user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;You don&#39;t have permission to access this resource&#34;</span>,
+</span></span><span style="display:flex;"><span>                context<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;user_id&#34;</span>: user<span style="color:#f92672">.</span>id,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;required_permissions&#34;</span>: required_permissions,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;missing_permissions&#34;</span>: missing_permissions
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> user
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">require_self_or_admin</span>(
+</span></span><span style="display:flex;"><span>        self,
+</span></span><span style="display:flex;"><span>        target_user_id: int,
+</span></span><span style="display:flex;"><span>        session: AsyncSession,
+</span></span><span style="display:flex;"><span>        credentials: HTTPAuthorizationCredentials <span style="color:#f92672">=</span> Depends(security)
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Require user to be accessing their own data or be an admin.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        current_user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>get_current_user(session, credentials)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Allow if user is accessing their own data</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> current_user<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> target_user_id:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> current_user
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Allow if user has admin permissions</span>
+</span></span><span style="display:flex;"><span>        payload <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>verify_token(credentials<span style="color:#f92672">.</span>credentials)
+</span></span><span style="display:flex;"><span>        token_permissions <span style="color:#f92672">=</span> payload<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;permissions&#34;</span>, [])
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> Permission<span style="color:#f92672">.</span>ADMIN_READ <span style="color:#f92672">in</span> token_permissions:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> current_user
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>            message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;User </span><span style="color:#e6db74">{</span>current_user<span style="color:#f92672">.</span>id<span style="color:#e6db74">}</span><span style="color:#e6db74"> attempted to access user </span><span style="color:#e6db74">{</span>target_user_id<span style="color:#e6db74">}</span><span style="color:#e6db74"> data&#34;</span>,
+</span></span><span style="display:flex;"><span>            error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INSUFFICIENT_PERMISSIONS,
+</span></span><span style="display:flex;"><span>            user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;You can only access your own data&#34;</span>,
+</span></span><span style="display:flex;"><span>            context<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;current_user_id&#34;</span>: current_user<span style="color:#f92672">.</span>id,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;target_user_id&#34;</span>: target_user_id
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create authorization service instance</span>
+</span></span><span style="display:flex;"><span>authorization_service <span style="color:#f92672">=</span> AuthorizationService(user_repository)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Convenience dependency functions</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_current_user</span>(
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>    credentials: HTTPAuthorizationCredentials <span style="color:#f92672">=</span> Depends(security)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Dependency to get current authenticated user.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> authorization_service<span style="color:#f92672">.</span>get_current_user(session, credentials)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">require_permissions</span>(permissions: List[str]):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Dependency factory to require specific permissions.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">permission_dependency</span>(
+</span></span><span style="display:flex;"><span>        session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>        credentials: HTTPAuthorizationCredentials <span style="color:#f92672">=</span> Depends(security)
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> authorization_service<span style="color:#f92672">.</span>require_permissions(permissions, session, credentials)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> permission_dependency
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">require_self_or_admin</span>(target_user_id: int):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Dependency factory to require self-access or admin permissions.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">self_or_admin_dependency</span>(
+</span></span><span style="display:flex;"><span>        session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>        credentials: HTTPAuthorizationCredentials <span style="color:#f92672">=</span> Depends(security)
+</span></span><span style="display:flex;"><span>    ) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> authorization_service<span style="color:#f92672">.</span>require_self_or_admin(target_user_id, session, credentials)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> self_or_admin_dependency</span></span></code></pre></div><p><strong>Why proper authorization prevents privilege escalation:</strong></p>
+<ul>
+<li><strong>Permission-based access control</strong> - Granular permissions allow fine-tuned access control without complex role hierarchies</li>
+<li><strong>Token-embedded permissions</strong> - Permissions are verified without additional database lookups, improving performance</li>
+<li><strong>Self-access patterns</strong> - Users can access their own data without admin privileges, following principle of least privilege</li>
+<li><strong>Admin verification</strong> - Administrative actions require explicit admin permissions, preventing unauthorized access</li>
+<li><strong>Context logging</strong> - Failed authorization attempts are logged with full context for security monitoring</li>
+</ul>
+<h2 id="secure-api-endpoints">Secure API Endpoints<a class="anchor" href="#secure-api-endpoints">#</a></h2>
+<p>Now let&rsquo;s implement secure endpoints using the authentication and authorization system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># routes/auth.py - Authentication endpoints</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> APIRouter, Depends, Request, status
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.security <span style="color:#f92672">import</span> HTTPAuthorizationCredentials
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> BaseModel, EmailStr
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.services.auth_service <span style="color:#f92672">import</span> AuthService
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.authorization <span style="color:#f92672">import</span> get_current_user, require_permissions, Permission
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> UserCreate, UserPublic
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> APIRouter(prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/auth&#34;</span>, tags<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;authentication&#34;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LoginRequest</span>(BaseModel):
+</span></span><span style="display:flex;"><span>    email: EmailStr
+</span></span><span style="display:flex;"><span>    password: str <span style="color:#f92672">=</span> Field(min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TokenResponse</span>(BaseModel):
+</span></span><span style="display:flex;"><span>    access_token: str
+</span></span><span style="display:flex;"><span>    refresh_token: str
+</span></span><span style="display:flex;"><span>    token_type: str
+</span></span><span style="display:flex;"><span>    user: UserPublic
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RefreshRequest</span>(BaseModel):
+</span></span><span style="display:flex;"><span>    refresh_token: str
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.post</span>(<span style="color:#e6db74">&#34;/register&#34;</span>, response_model<span style="color:#f92672">=</span>TokenResponse, status_code<span style="color:#f92672">=</span>status<span style="color:#f92672">.</span>HTTP_201_CREATED)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register</span>(
+</span></span><span style="display:flex;"><span>    user_data: UserCreate,
+</span></span><span style="display:flex;"><span>    request: Request,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>    auth_service: AuthService <span style="color:#f92672">=</span> Depends(get_auth_service)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> TokenResponse:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Register new user account with comprehensive validation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> auth_service<span style="color:#f92672">.</span>register_user(session, user_data, request)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> TokenResponse(<span style="color:#f92672">**</span>result)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.post</span>(<span style="color:#e6db74">&#34;/login&#34;</span>, response_model<span style="color:#f92672">=</span>TokenResponse)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">login</span>(
+</span></span><span style="display:flex;"><span>    login_data: LoginRequest,
+</span></span><span style="display:flex;"><span>    request: Request,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>    auth_service: AuthService <span style="color:#f92672">=</span> Depends(get_auth_service)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> TokenResponse:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Authenticate user and return access tokens.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> auth_service<span style="color:#f92672">.</span>authenticate_user(
+</span></span><span style="display:flex;"><span>        session, login_data<span style="color:#f92672">.</span>email, login_data<span style="color:#f92672">.</span>password, request
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> TokenResponse(<span style="color:#f92672">**</span>result)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.post</span>(<span style="color:#e6db74">&#34;/refresh&#34;</span>, response_model<span style="color:#f92672">=</span>dict)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">refresh_token</span>(
+</span></span><span style="display:flex;"><span>    refresh_data: RefreshRequest,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session),
+</span></span><span style="display:flex;"><span>    auth_service: AuthService <span style="color:#f92672">=</span> Depends(get_auth_service)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Generate new access token from refresh token.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> auth_service<span style="color:#f92672">.</span>refresh_token(session, refresh_data<span style="color:#f92672">.</span>refresh_token)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.post</span>(<span style="color:#e6db74">&#34;/logout&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">logout</span>(
+</span></span><span style="display:flex;"><span>    current_user: User <span style="color:#f92672">=</span> Depends(get_current_user)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Logout user (client should discard tokens).&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># In a stateless JWT system, logout is handled client-side</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># For enhanced security, you could maintain a token blacklist</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Logout successful&#34;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.get</span>(<span style="color:#e6db74">&#34;/me&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_current_user_profile</span>(
+</span></span><span style="display:flex;"><span>    current_user: User <span style="color:#f92672">=</span> Depends(get_current_user)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Get current authenticated user&#39;s profile.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(current_user)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># routes/users.py - Protected user endpoints</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.get</span>(<span style="color:#e6db74">&#34;/</span><span style="color:#e6db74">{user_id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user</span>(
+</span></span><span style="display:flex;"><span>    user_id: int,
+</span></span><span style="display:flex;"><span>    current_user: User <span style="color:#f92672">=</span> Depends(require_self_or_admin(user_id)),
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Get user profile (own profile or admin access).&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> current_user<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> user_id:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># User accessing their own profile</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(current_user)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Admin accessing another user&#39;s profile</span>
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>get(session, id<span style="color:#f92672">=</span>user_id)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> UserNotFoundError(user_id)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(user)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.get</span>(<span style="color:#e6db74">&#34;/&#34;</span>, response_model<span style="color:#f92672">=</span>List[UserPublic])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">list_users</span>(
+</span></span><span style="display:flex;"><span>    skip: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    limit: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>    current_user: User <span style="color:#f92672">=</span> Depends(require_permissions([Permission<span style="color:#f92672">.</span>ADMIN_READ])),
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> List[UserPublic]:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;List all users (admin only).&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    users <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>get_multi(session, skip<span style="color:#f92672">=</span>skip, limit<span style="color:#f92672">=</span>limit)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [UserPublic<span style="color:#f92672">.</span>model_validate(user) <span style="color:#66d9ef">for</span> user <span style="color:#f92672">in</span> users]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.delete</span>(<span style="color:#e6db74">&#34;/</span><span style="color:#e6db74">{user_id}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete_user</span>(
+</span></span><span style="display:flex;"><span>    user_id: int,
+</span></span><span style="display:flex;"><span>    current_user: User <span style="color:#f92672">=</span> Depends(require_permissions([Permission<span style="color:#f92672">.</span>USER_DELETE])),
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_async_session)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Delete user account (admin only).&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>get(session, id<span style="color:#f92672">=</span>user_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> user:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> UserNotFoundError(user_id)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Prevent self-deletion</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> user<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> current_user<span style="color:#f92672">.</span>id:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> SecurityError(
+</span></span><span style="display:flex;"><span>            message<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;User </span><span style="color:#e6db74">{</span>current_user<span style="color:#f92672">.</span>id<span style="color:#e6db74">}</span><span style="color:#e6db74"> attempted self-deletion&#34;</span>,
+</span></span><span style="display:flex;"><span>            error_code<span style="color:#f92672">=</span>ErrorCode<span style="color:#f92672">.</span>INVALID_OPERATION,
+</span></span><span style="display:flex;"><span>            user_message<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;You cannot delete your own account through this endpoint&#34;</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> user_repository<span style="color:#f92672">.</span>delete(session, id<span style="color:#f92672">=</span>user_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;User deleted successfully&#34;</span>}</span></span></code></pre></div><p><strong>Why secure endpoint design prevents unauthorized access:</strong></p>
+<ul>
+<li><strong>Defense in depth</strong> - Multiple security layers (authentication, authorization, business logic validation) protect each endpoint</li>
+<li><strong>Principle of least privilege</strong> - Users can only access data and operations they specifically need</li>
+<li><strong>Self-access optimization</strong> - Users can access their own data efficiently without additional permission checks</li>
+<li><strong>Admin separation</strong> - Administrative functions require explicit admin permissions and additional validation</li>
+<li><strong>Operation validation</strong> - Business rules (like preventing self-deletion) are enforced even for authorized users</li>
+</ul>
+<h2 id="testing-security-implementation">Testing Security Implementation<a class="anchor" href="#testing-security-implementation">#</a></h2>
+<p>Security code requires comprehensive testing to ensure it actually works:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># tests/test_security.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pytest
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> unittest.mock <span style="color:#f92672">import</span> AsyncMock, patch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timedelta
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> jwt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.security <span style="color:#f92672">import</span> password_manager, jwt_manager
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.exceptions <span style="color:#f92672">import</span> SecurityError, ErrorCode
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.services.auth_service <span style="color:#f92672">import</span> AuthService
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestPasswordManager</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test password security functions.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_password_hashing</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that passwords are hashed securely.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;securepassword123&#34;</span>
+</span></span><span style="display:flex;"><span>        hashed <span style="color:#f92672">=</span> password_manager<span style="color:#f92672">.</span>hash_password(password)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Hash should be different from original</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> hashed <span style="color:#f92672">!=</span> password
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Hash should be bcrypt format</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> hashed<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#34;$2b$&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verification should work</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> password_manager<span style="color:#f92672">.</span>verify_password(password, hashed)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Wrong password should fail</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#f92672">not</span> password_manager<span style="color:#f92672">.</span>verify_password(<span style="color:#e6db74">&#34;wrongpassword&#34;</span>, hashed)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_password_strength_validation</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test password strength requirements.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Weak password</span>
+</span></span><span style="display:flex;"><span>        weak_result <span style="color:#f92672">=</span> password_manager<span style="color:#f92672">.</span>validate_password_strength(<span style="color:#e6db74">&#34;123&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#f92672">not</span> weak_result[<span style="color:#e6db74">&#34;valid&#34;</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;at least 8 characters&#34;</span> <span style="color:#f92672">in</span> weak_result[<span style="color:#e6db74">&#34;issues&#34;</span>][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Strong password</span>
+</span></span><span style="display:flex;"><span>        strong_result <span style="color:#f92672">=</span> password_manager<span style="color:#f92672">.</span>validate_password_strength(<span style="color:#e6db74">&#34;StrongP@ss123&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> strong_result[<span style="color:#e6db74">&#34;valid&#34;</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> len(strong_result[<span style="color:#e6db74">&#34;issues&#34;</span>]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> strong_result[<span style="color:#e6db74">&#34;strength_score&#34;</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestJWTManager</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test JWT token management.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_token_creation_and_verification</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test JWT token lifecycle.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        user_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">123</span>
+</span></span><span style="display:flex;"><span>        permissions <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;user&#34;</span>, <span style="color:#e6db74">&#34;admin&#34;</span>]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Create token</span>
+</span></span><span style="display:flex;"><span>        token <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>create_access_token(user_id, permissions)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> isinstance(token, str)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify token</span>
+</span></span><span style="display:flex;"><span>        payload <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>verify_token(token)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> payload[<span style="color:#e6db74">&#34;sub&#34;</span>] <span style="color:#f92672">==</span> str(user_id)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> payload[<span style="color:#e6db74">&#34;permissions&#34;</span>] <span style="color:#f92672">==</span> permissions
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> payload[<span style="color:#e6db74">&#34;type&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;access&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_token_expiration</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that expired tokens are rejected.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        user_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">123</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Create token with past expiration</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> patch(<span style="color:#e6db74">&#39;neodyme.core.security.datetime&#39;</span>) <span style="color:#66d9ef">as</span> mock_datetime:
+</span></span><span style="display:flex;"><span>            past_time <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow() <span style="color:#f92672">-</span> timedelta(hours<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>            mock_datetime<span style="color:#f92672">.</span>utcnow<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> past_time
+</span></span><span style="display:flex;"><span>            token <span style="color:#f92672">=</span> jwt_manager<span style="color:#f92672">.</span>create_access_token(user_id)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verification should fail</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(SecurityError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>            jwt_manager<span style="color:#f92672">.</span>verify_token(token)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> exc_info<span style="color:#f92672">.</span>value<span style="color:#f92672">.</span>error_code <span style="color:#f92672">==</span> ErrorCode<span style="color:#f92672">.</span>TOKEN_EXPIRED
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_invalid_token</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that invalid tokens are rejected.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        invalid_token <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;invalid.token.here&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(SecurityError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>            jwt_manager<span style="color:#f92672">.</span>verify_token(invalid_token)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> exc_info<span style="color:#f92672">.</span>value<span style="color:#f92672">.</span>error_code <span style="color:#f92672">==</span> ErrorCode<span style="color:#f92672">.</span>INVALID_TOKEN
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestAuthService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test authentication service.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@pytest.fixture</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">auth_service</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Create auth service with mock repository.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        mock_repository <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> AuthService(mock_repository)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_successful_authentication</span>(self, auth_service):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test successful user authentication.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        session <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>        request <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>        request<span style="color:#f92672">.</span>client<span style="color:#f92672">.</span>host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;192.168.1.1&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Mock user</span>
+</span></span><span style="display:flex;"><span>        hashed_password <span style="color:#f92672">=</span> password_manager<span style="color:#f92672">.</span>hash_password(<span style="color:#e6db74">&#34;password123&#34;</span>)
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> User(
+</span></span><span style="display:flex;"><span>            id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>            email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>            hashed_password<span style="color:#f92672">=</span>hashed_password,
+</span></span><span style="display:flex;"><span>            is_active<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        auth_service<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>get_by_email<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> user
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Mock rate limiter</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> patch(<span style="color:#e6db74">&#39;neodyme.services.auth_service.rate_limiter&#39;</span>) <span style="color:#66d9ef">as</span> mock_rate_limiter:
+</span></span><span style="display:flex;"><span>            mock_rate_limiter<span style="color:#f92672">.</span>check_rate_limit <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>            mock_rate_limiter<span style="color:#f92672">.</span>record_successful_attempt <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> auth_service<span style="color:#f92672">.</span>authenticate_user(
+</span></span><span style="display:flex;"><span>                session, <span style="color:#e6db74">&#34;test@example.com&#34;</span>, <span style="color:#e6db74">&#34;password123&#34;</span>, request
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify result</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;access_token&#34;</span> <span style="color:#f92672">in</span> result
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;refresh_token&#34;</span> <span style="color:#f92672">in</span> result
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> result[<span style="color:#e6db74">&#34;user&#34;</span>]<span style="color:#f92672">.</span>email <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;test@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify rate limiter was called</span>
+</span></span><span style="display:flex;"><span>        mock_rate_limiter<span style="color:#f92672">.</span>record_successful_attempt<span style="color:#f92672">.</span>assert_called_once()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_failed_authentication</span>(self, auth_service):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test failed authentication with wrong password.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        session <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>        request <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>        request<span style="color:#f92672">.</span>client<span style="color:#f92672">.</span>host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;192.168.1.1&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Mock user with different password</span>
+</span></span><span style="display:flex;"><span>        hashed_password <span style="color:#f92672">=</span> password_manager<span style="color:#f92672">.</span>hash_password(<span style="color:#e6db74">&#34;different_password&#34;</span>)
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> User(
+</span></span><span style="display:flex;"><span>            id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>            email<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>            hashed_password<span style="color:#f92672">=</span>hashed_password,
+</span></span><span style="display:flex;"><span>            is_active<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        auth_service<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>get_by_email<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> user
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Mock rate limiter</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> patch(<span style="color:#e6db74">&#39;neodyme.services.auth_service.rate_limiter&#39;</span>) <span style="color:#66d9ef">as</span> mock_rate_limiter:
+</span></span><span style="display:flex;"><span>            mock_rate_limiter<span style="color:#f92672">.</span>check_rate_limit <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>            mock_rate_limiter<span style="color:#f92672">.</span>record_failed_attempt <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(SecurityError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">await</span> auth_service<span style="color:#f92672">.</span>authenticate_user(
+</span></span><span style="display:flex;"><span>                    session, <span style="color:#e6db74">&#34;test@example.com&#34;</span>, <span style="color:#e6db74">&#34;wrong_password&#34;</span>, request
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify error</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> exc_info<span style="color:#f92672">.</span>value<span style="color:#f92672">.</span>error_code <span style="color:#f92672">==</span> ErrorCode<span style="color:#f92672">.</span>INVALID_CREDENTIALS
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify failed attempt was recorded</span>
+</span></span><span style="display:flex;"><span>        mock_rate_limiter<span style="color:#f92672">.</span>record_failed_attempt<span style="color:#f92672">.</span>assert_called_once()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_authentication_nonexistent_user</span>(self, auth_service):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test authentication with non-existent user.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        session <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>        request <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Mock no user found</span>
+</span></span><span style="display:flex;"><span>        auth_service<span style="color:#f92672">.</span>user_repository<span style="color:#f92672">.</span>get_by_email<span style="color:#f92672">.</span>return_value <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> patch(<span style="color:#e6db74">&#39;neodyme.services.auth_service.rate_limiter&#39;</span>) <span style="color:#66d9ef">as</span> mock_rate_limiter:
+</span></span><span style="display:flex;"><span>            mock_rate_limiter<span style="color:#f92672">.</span>check_rate_limit <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(SecurityError) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">await</span> auth_service<span style="color:#f92672">.</span>authenticate_user(
+</span></span><span style="display:flex;"><span>                    session, <span style="color:#e6db74">&#34;nonexistent@example.com&#34;</span>, <span style="color:#e6db74">&#34;password&#34;</span>, request
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> exc_info<span style="color:#f92672">.</span>value<span style="color:#f92672">.</span>error_code <span style="color:#f92672">==</span> ErrorCode<span style="color:#f92672">.</span>INVALID_CREDENTIALS
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;Invalid email or password&#34;</span> <span style="color:#f92672">in</span> exc_info<span style="color:#f92672">.</span>value<span style="color:#f92672">.</span>user_message
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest.mark.asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestRateLimiting</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test rate limiting functionality.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_rate_limit_allows_normal_usage</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that normal usage is allowed.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">from</span> neodyme.core.rate_limiting <span style="color:#f92672">import</span> RateLimiter
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        rate_limiter <span style="color:#f92672">=</span> RateLimiter()
+</span></span><span style="display:flex;"><span>        request <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>        request<span style="color:#f92672">.</span>client<span style="color:#f92672">.</span>host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;192.168.1.1&#34;</span>
+</span></span><span style="display:flex;"><span>        request<span style="color:#f92672">.</span>headers <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Should allow normal number of attempts</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">3</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> rate_limiter<span style="color:#f92672">.</span>check_rate_limit(request, max_attempts<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, window_minutes<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_rate_limit_blocks_excessive_attempts</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that excessive attempts are blocked.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">from</span> neodyme.core.rate_limiting <span style="color:#f92672">import</span> RateLimiter
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> HTTPException
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        rate_limiter <span style="color:#f92672">=</span> RateLimiter()
+</span></span><span style="display:flex;"><span>        request <span style="color:#f92672">=</span> AsyncMock()
+</span></span><span style="display:flex;"><span>        request<span style="color:#f92672">.</span>client<span style="color:#f92672">.</span>host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;192.168.1.1&#34;</span>
+</span></span><span style="display:flex;"><span>        request<span style="color:#f92672">.</span>headers <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Make maximum allowed attempts</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> rate_limiter<span style="color:#f92672">.</span>check_rate_limit(request, max_attempts<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, window_minutes<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Next attempt should be blocked</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> pytest<span style="color:#f92672">.</span>raises(HTTPException) <span style="color:#66d9ef">as</span> exc_info:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> rate_limiter<span style="color:#f92672">.</span>check_rate_limit(request, max_attempts<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, window_minutes<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> exc_info<span style="color:#f92672">.</span>value<span style="color:#f92672">.</span>status_code <span style="color:#f92672">==</span> <span style="color:#ae81ff">429</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#e6db74">&#34;Too many attempts&#34;</span> <span style="color:#f92672">in</span> exc_info<span style="color:#f92672">.</span>value<span style="color:#f92672">.</span>detail</span></span></code></pre></div><p><strong>Why comprehensive security testing is essential:</strong></p>
+<ul>
+<li><strong>Password security verification</strong> - Tests ensure passwords are actually hashed securely and strength validation works</li>
+<li><strong>Token lifecycle testing</strong> - Verifies that tokens are created, verified, and expire correctly</li>
+<li><strong>Authentication flow testing</strong> - Ensures the complete authentication process works under various conditions</li>
+<li><strong>Rate limiting validation</strong> - Confirms that brute force protection actually blocks attacks</li>
+<li><strong>Error handling verification</strong> - Tests that security errors provide appropriate information without leaking sensitive data</li>
+</ul>
+<h2 id="what-youve-learned">What You&rsquo;ve Learned<a class="anchor" href="#what-youve-learned">#</a></h2>
+<p>By the end of this chapter, you understand:</p>
+<p>✅ <strong>Why security theater fails against real attacks</strong> - and how professional security provides actual protection through defense in depth<br>
+✅ <strong>Password security fundamentals</strong> - including bcrypt hashing, strength validation, and timing attack protection<br>
+✅ <strong>JWT token management</strong> - creating, verifying, and refreshing tokens securely while preventing common attacks<br>
+✅ <strong>Rate limiting and attack prevention</strong> - protecting against brute force attacks and resource exhaustion<br>
+✅ <strong>Authorization and permission systems</strong> - controlling access to resources with fine-grained permissions<br>
+✅ <strong>Secure API endpoint design</strong> - implementing endpoints that are protected against unauthorized access</p>
+<p>More importantly, you&rsquo;ve built a security system that protects against real-world attacks while maintaining usability and performance.</p>
+<h2 id="building-blocks-for-next-chapters">Building Blocks for Next Chapters<a class="anchor" href="#building-blocks-for-next-chapters">#</a></h2>
+<p>This security foundation gives us:</p>
+<ul>
+<li><strong>HTTP handling</strong> ← Chapter 1: FastAPI basics</li>
+<li><strong>Data persistence</strong> ← Chapter 2: Database integration</li>
+<li><strong>Input validation</strong> ← Chapter 3: Request/response validation</li>
+<li><strong>Schema evolution</strong> ← Chapter 4: Database migrations</li>
+<li><strong>Clean architecture</strong> ← Chapter 5: Service layer organization</li>
+<li><strong>Error handling</strong> ← Chapter 6: Professional error management</li>
+<li><strong>Security</strong> ← You are here</li>
+<li><strong>Configuration</strong> ← Chapter 8: Environment-aware configuration management</li>
+</ul>
+<h2 id="exercises">Exercises<a class="anchor" href="#exercises">#</a></h2>
+<ol>
+<li><strong>Implement password reset</strong> - Add secure password reset with time-limited tokens</li>
+<li><strong>Add two-factor authentication</strong> - Implement TOTP-based 2FA for enhanced security</li>
+<li><strong>Create API key authentication</strong> - Add API key support for service-to-service authentication</li>
+<li><strong>Build session management</strong> - Add session tracking and device management</li>
+<li><strong>Implement OAuth integration</strong> - Add Google/GitHub OAuth for social login</li>
+</ol>
+<h2 id="resources-for-deeper-learning">Resources for Deeper Learning<a class="anchor" href="#resources-for-deeper-learning">#</a></h2>
+<h3 id="authentication-and-security-fundamentals">Authentication and Security Fundamentals<a class="anchor" href="#authentication-and-security-fundamentals">#</a></h3>
+<ul>
+<li><strong>OWASP Authentication Guide</strong>: Comprehensive authentication security practices - <a href="https://owasp.org/www-project-authentication-cheat-sheet/">https://owasp.org/www-project-authentication-cheat-sheet/</a></li>
+<li><strong>JWT Best Practices</strong>: Secure JWT implementation guidelines - <a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-jwt-bcp/">https://auth0.com/blog/a-look-at-the-latest-draft-for-jwt-bcp/</a></li>
+<li><strong>Password Hashing Guide</strong>: Why and how to hash passwords securely - <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html</a></li>
+</ul>
+<h3 id="security-implementation">Security Implementation<a class="anchor" href="#security-implementation">#</a></h3>
+<ul>
+<li><strong>FastAPI Security Documentation</strong>: Framework-specific security patterns - <a href="https://fastapi.tiangolo.com/tutorial/security/">https://fastapi.tiangolo.com/tutorial/security/</a></li>
+<li><strong>Python Cryptography</strong>: Secure cryptographic operations in Python - <a href="https://cryptography.io/en/latest/">https://cryptography.io/en/latest/</a></li>
+<li><strong>Passlib Documentation</strong>: Password hashing library best practices - <a href="https://passlib.readthedocs.io/en/stable/">https://passlib.readthedocs.io/en/stable/</a></li>
+</ul>
+<h3 id="attack-prevention">Attack Prevention<a class="anchor" href="#attack-prevention">#</a></h3>
+<ul>
+<li><strong>Rate Limiting Strategies</strong>: Preventing abuse and attacks - <a href="https://cloud.google.com/architecture/rate-limiting-strategies-techniques">https://cloud.google.com/architecture/rate-limiting-strategies-techniques</a></li>
+<li><strong>OWASP Top 10</strong>: Common web application security risks - <a href="https://owasp.org/www-project-top-ten/">https://owasp.org/www-project-top-ten/</a></li>
+<li><strong>Web Security Academy</strong>: Interactive security learning - <a href="https://portswigger.net/web-security">https://portswigger.net/web-security</a></li>
+</ul>
+<h3 id="authorization-and-access-control">Authorization and Access Control<a class="anchor" href="#authorization-and-access-control">#</a></h3>
+<ul>
+<li><strong>RBAC vs ABAC</strong>: Role-based vs attribute-based access control - <a href="https://www.okta.com/identity-101/role-based-access-control-vs-attribute-based-access-control/">https://www.okta.com/identity-101/role-based-access-control-vs-attribute-based-access-control/</a></li>
+<li><strong>Principle of Least Privilege</strong>: Security through minimal access - <a href="https://www.cisa.gov/uscert/bsi/articles/knowledge/principles/least-privilege">https://www.cisa.gov/uscert/bsi/articles/knowledge/principles/least-privilege</a></li>
+<li><strong>OAuth 2.0 Security</strong>: Modern authorization patterns - <a href="https://oauth.net/2/">https://oauth.net/2/</a></li>
+</ul>
+<h3 id="why-these-resources-matter">Why These Resources Matter<a class="anchor" href="#why-these-resources-matter">#</a></h3>
+<ul>
+<li><strong>Security fundamentals</strong>: Understanding core security principles prevents you from making common mistakes that lead to breaches</li>
+<li><strong>Attack awareness</strong>: Learning about attack vectors helps you design defenses against real threats, not theoretical ones</li>
+<li><strong>Implementation guidance</strong>: Security is one area where following established patterns is critical - don&rsquo;t innovate on security basics</li>
+<li><strong>Compliance understanding</strong>: Many industries have security requirements that proper authentication and authorization help satisfy</li>
+</ul>
+<p><strong>Pro Tip</strong>: Start with OWASP resources to understand common vulnerabilities, then focus on proper implementation of authentication and authorization patterns before adding advanced features.</p>
+<h2 id="next-configuration-management">Next: Configuration Management<a class="anchor" href="#next-configuration-management">#</a></h2>
+<p>You have a secure application that protects against real attacks, but now you need to deploy it across different environments. How do you manage database URLs, API keys, and security settings across development, staging, and production? How do you keep secrets secure while making configuration maintainable?</p>
+<p>In Chapter 8, we&rsquo;ll explore configuration management that works reliably across all deployment environments.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Preview of Chapter 8</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Settings</span>(BaseSettings):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Environment-aware configuration with validation.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Database</span>
+</span></span><span style="display:flex;"><span>    database_url: PostgresDsn
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Security</span>
+</span></span><span style="display:flex;"><span>    secret_key: SecretStr
+</span></span><span style="display:flex;"><span>    jwt_algorithm: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;HS256&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># External Services</span>
+</span></span><span style="display:flex;"><span>    email_smtp_host: str
+</span></span><span style="display:flex;"><span>    email_smtp_port: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">587</span>
+</span></span><span style="display:flex;"><span>    email_username: str
+</span></span><span style="display:flex;"><span>    email_password: SecretStr
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Config</span>:
+</span></span><span style="display:flex;"><span>        env_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.env&#34;</span>
+</span></span><span style="display:flex;"><span>        case_sensitive <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span></span></span></code></pre></div><p>We&rsquo;ll explore how to build configuration systems that prevent deployment errors while keeping sensitive information secure.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/neodyme/docs/chapter-6/" class="flex align-center">
+        <img src="/neodyme/icons/backward.svg" class="book-icon" alt="Previous" title="Chapter 6" />
+        <span>Chapter 6</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/neodyme/docs/chapter-8/" class="flex align-center">
+        <span>Chapter 8</span>
+        <img src="/neodyme/icons/forward.svg" class="book-icon" alt="Next" title="Chapter 8" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+
+ 
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-security-theater-vs-real-protection">The Problem: Security Theater vs Real Protection</a></li>
+    <li><a href="#why-simple-security-fails-against-real-attacks">Why &ldquo;Simple&rdquo; Security Fails Against Real Attacks</a></li>
+    <li><a href="#the-professional-security-solution-defense-in-depth">The Professional Security Solution: Defense in Depth</a></li>
+    <li><a href="#implementing-rate-limiting-and-attack-prevention">Implementing Rate Limiting and Attack Prevention</a></li>
+    <li><a href="#building-the-authentication-service">Building the Authentication Service</a></li>
+    <li><a href="#authorization-and-permission-management">Authorization and Permission Management</a></li>
+    <li><a href="#secure-api-endpoints">Secure API Endpoints</a></li>
+    <li><a href="#testing-security-implementation">Testing Security Implementation</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#authentication-and-security-fundamentals">Authentication and Security Fundamentals</a></li>
+        <li><a href="#security-implementation">Security Implementation</a></li>
+        <li><a href="#attack-prevention">Attack Prevention</a></li>
+        <li><a href="#authorization-and-access-control">Authorization and Access Control</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-configuration-management">Next: Configuration Management</a></li>
+  </ul>
+</nav>
+
+
+
+  </div>
+</aside>
+
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

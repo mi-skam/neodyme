@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chapter 4: &ldquo;I Need My Database to Evolve Over Time&rdquo;#
+Your user management system works perfectly—in development. But there&rsquo;s a looming problem that will eventually destroy your application: database schema changes. You&rsquo;ll need to add new fields, modify existing ones, create new tables, and update constraints. Without proper migrations, these changes will break production systems and lose customer data.
+Imagine this scenario: You deploy a new version of your app that expects a phone_number field on users, but the production database doesn&rsquo;t have that column yet. Your app crashes immediately. Users can&rsquo;t log in, new registrations fail, and you&rsquo;re scrambling to fix it while your business loses money by the minute.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/chapter-4/">
+  <meta property="og:site_name" content="Neodyme Documentation">
+  <meta property="og:title" content="Chapter 4">
+  <meta property="og:description" content="Chapter 4: “I Need My Database to Evolve Over Time”# Your user management system works perfectly—in development. But there’s a looming problem that will eventually destroy your application: database schema changes. You’ll need to add new fields, modify existing ones, create new tables, and update constraints. Without proper migrations, these changes will break production systems and lose customer data.
+Imagine this scenario: You deploy a new version of your app that expects a phone_number field on users, but the production database doesn’t have that column yet. Your app crashes immediately. Users can’t log in, new registrations fail, and you’re scrambling to fix it while your business loses money by the minute.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Chapter 4 | Neodyme Documentation</title>
+<link rel="icon" href="/neodyme/favicon.png" >
+<link rel="manifest" href="/neodyme/manifest.json">
+<link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/chapter-4/">
+<link rel="stylesheet" href="/neodyme/book.min.c098be6fdb8410d437a0799e694b206fa639685582089c583ae6ac07afec1ff8.css" integrity="sha256-wJi&#43;b9uEENQ3oHmeaUsgb6Y5aFWCCJxYOuasB6/sH/g=" crossorigin="anonymous">
+
+
+  <script defer src="/neodyme/fuse.min.js"></script>
+  <script defer src="/neodyme/en.search.min.f64f4d2b3193917ebd07e82190bf6e6a2f23d6e670fb678260875bd442e5cf4d.js" integrity="sha256-9k9NKzGTkX69B&#43;ghkL9uai8j1uZw&#43;2eCYIdb1ELlz00=" crossorigin="anonymous"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/neodyme/"><span>Neodyme Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-1/" class="">
+      Chapter 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-2/" class="">
+      Chapter 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-3/" class="">
+      Chapter 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-4/" class="active">
+      Chapter 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-5/" class="">
+      Chapter 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-6/" class="">
+      Chapter 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-7/" class="">
+      Chapter 7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-8/" class="">
+      Chapter 8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-9/" class="">
+      Chapter 9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-10/" class="">
+      Chapter 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Chapter 4</h3>
+
+  <label for="toc-control">
+    
+    <img src="/neodyme/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-schema-changes-are-inevitable-and-dangerous">The Problem: Schema Changes Are Inevitable and Dangerous</a></li>
+    <li><a href="#why-manual-database-updates-dont-scale">Why Manual Database Updates Don&rsquo;t Scale</a></li>
+    <li><a href="#the-alembic-solution-automated-database-evolution">The Alembic Solution: Automated Database Evolution</a></li>
+    <li><a href="#understanding-migration-fundamentals">Understanding Migration Fundamentals</a>
+      <ul>
+        <li><a href="#the-migration-lifecycle">The Migration Lifecycle</a></li>
+        <li><a href="#migration-file-anatomy">Migration File Anatomy</a></li>
+      </ul>
+    </li>
+    <li><a href="#setting-up-migrations-in-neodyme">Setting Up Migrations in Neodyme</a>
+      <ul>
+        <li><a href="#step-1-alembic-configuration">Step 1: Alembic Configuration</a></li>
+        <li><a href="#step-2-version-numbering-strategy">Step 2: Version Numbering Strategy</a></li>
+      </ul>
+    </li>
+    <li><a href="#hands-on-creating-your-first-migration">Hands-On: Creating Your First Migration</a>
+      <ul>
+        <li><a href="#step-1-initialize-alembic-in-your-project">Step 1: Initialize Alembic in Your Project</a></li>
+        <li><a href="#step-2-configure-your-environment">Step 2: Configure Your Environment</a></li>
+        <li><a href="#step-3-create-your-initial-migration">Step 3: Create Your Initial Migration</a></li>
+        <li><a href="#step-4-apply-the-migration">Step 4: Apply the Migration</a></li>
+        <li><a href="#step-5-add-a-new-field-schema-evolution">Step 5: Add a New Field (Schema Evolution)</a></li>
+      </ul>
+    </li>
+    <li><a href="#advanced-migration-patterns">Advanced Migration Patterns</a>
+      <ul>
+        <li><a href="#data-migrations">Data Migrations</a></li>
+        <li><a href="#index-migrations-for-performance">Index Migrations for Performance</a></li>
+      </ul>
+    </li>
+    <li><a href="#migration-management-in-production">Migration Management in Production</a>
+      <ul>
+        <li><a href="#pre-deployment-checklist">Pre-Deployment Checklist</a></li>
+        <li><a href="#deployment-strategies">Deployment Strategies</a></li>
+      </ul>
+    </li>
+    <li><a href="#testing-migrations">Testing Migrations</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#alembic-and-migration-patterns">Alembic and Migration Patterns</a></li>
+        <li><a href="#production-deployment-strategies">Production Deployment Strategies</a></li>
+        <li><a href="#performance-and-safety">Performance and Safety</a></li>
+        <li><a href="#testing-and-quality-assurance">Testing and Quality Assurance</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-building-clean-architecture-that-scales">Next: Building Clean Architecture That Scales</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="chapter-4-i-need-my-database-to-evolve-over-time">Chapter 4: &ldquo;I Need My Database to Evolve Over Time&rdquo;<a class="anchor" href="#chapter-4-i-need-my-database-to-evolve-over-time">#</a></h1>
+<p>Your user management system works perfectly—in development. But there&rsquo;s a looming problem that will eventually destroy your application: database schema changes. You&rsquo;ll need to add new fields, modify existing ones, create new tables, and update constraints. Without proper migrations, these changes will break production systems and lose customer data.</p>
+<p>Imagine this scenario: You deploy a new version of your app that expects a <code>phone_number</code> field on users, but the production database doesn&rsquo;t have that column yet. Your app crashes immediately. Users can&rsquo;t log in, new registrations fail, and you&rsquo;re scrambling to fix it while your business loses money by the minute.</p>
+<h2 id="the-problem-schema-changes-are-inevitable-and-dangerous">The Problem: Schema Changes Are Inevitable and Dangerous<a class="anchor" href="#the-problem-schema-changes-are-inevitable-and-dangerous">#</a></h2>
+<p>Let me ask you: Have you ever had to manually run SQL commands on a production database to update its structure? If so, you&rsquo;ve experienced the terror of realizing that one mistake could destroy years of customer data with no way to undo it.</p>
+<p>Here&rsquo;s what happens when you don&rsquo;t have proper database migrations:</p>
+<p><strong>Development vs Production Drift:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- Your development database (after adding features)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> users (
+</span></span><span style="display:flex;"><span>    id INTEGER <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>,
+</span></span><span style="display:flex;"><span>    email VARCHAR(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">UNIQUE</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>    full_name VARCHAR(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>    phone_number VARCHAR(<span style="color:#ae81ff">20</span>),  <span style="color:#75715e">-- New field you added
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    is_active BOOLEAN <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">TRUE</span>,
+</span></span><span style="display:flex;"><span>    created_at <span style="color:#66d9ef">TIMESTAMP</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>    updated_at <span style="color:#66d9ef">TIMESTAMP</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Production database (still the old version)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> users (
+</span></span><span style="display:flex;"><span>    id INTEGER <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>,
+</span></span><span style="display:flex;"><span>    email VARCHAR(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">UNIQUE</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>    full_name VARCHAR(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- Missing phone_number field!
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    is_active BOOLEAN <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">TRUE</span>,
+</span></span><span style="display:flex;"><span>    created_at <span style="color:#66d9ef">TIMESTAMP</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>    updated_at <span style="color:#66d9ef">TIMESTAMP</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>
+</span></span><span style="display:flex;"><span>);</span></span></code></pre></div><p>When your new code runs against the old database:</p>
+<ul>
+<li><strong>Application crashes</strong> - Code expecting <code>phone_number</code> field gets database errors and crashes immediately upon deployment</li>
+<li><strong>Data corruption</strong> - INSERT statements fail because they try to insert into non-existent columns, leaving your application in an inconsistent state</li>
+<li><strong>Rollback nightmares</strong> - Rolling back the application doesn&rsquo;t fix the database schema, so you can&rsquo;t easily revert to a working state</li>
+<li><strong>Manual intervention required</strong> - Someone has to frantically run SQL commands in production while users can&rsquo;t access your application</li>
+<li><strong>Data loss potential</strong> - Manual schema changes without proper backups can destroy customer data permanently</li>
+</ul>
+<h2 id="why-manual-database-updates-dont-scale">Why Manual Database Updates Don&rsquo;t Scale<a class="anchor" href="#why-manual-database-updates-dont-scale">#</a></h2>
+<p>Traditional database management looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- Manual schema updates - error-prone and dangerous
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- Step 1: Add new column (hope you don&#39;t make a typo)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> users <span style="color:#66d9ef">ADD</span> <span style="color:#66d9ef">COLUMN</span> phone_number VARCHAR(<span style="color:#ae81ff">20</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Step 2: Update existing data (hope your WHERE clause is correct)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">UPDATE</span> users <span style="color:#66d9ef">SET</span> phone_number <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">WHERE</span> phone_number <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Step 3: Add constraints (hope this doesn&#39;t lock your table for hours)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">INDEX</span> idx_users_phone <span style="color:#66d9ef">ON</span> users(phone_number);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Step 4: Hope you remembered to do this on all environments
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-- (development, staging, production, team member machines)</span></span></span></code></pre></div><p><strong>What&rsquo;s catastrophically wrong with this approach:</strong></p>
+<ul>
+<li><strong>No version control</strong> - Schema changes aren&rsquo;t tracked in git, so you can&rsquo;t see what changed or when</li>
+<li><strong>No repeatability</strong> - Each environment might have slightly different schemas because manual steps were executed differently</li>
+<li><strong>No rollback strategy</strong> - If something goes wrong, you have no automated way to undo schema changes</li>
+<li><strong>Team coordination nightmares</strong> - New team members can&rsquo;t get a working database without someone manually running migration scripts</li>
+<li><strong>Production deployment terror</strong> - Every deployment requires coordinating code changes with manual database updates, often requiring maintenance windows</li>
+<li><strong>Data loss from mistakes</strong> - Typos in ALTER statements can drop columns, delete data, or corrupt indexes</li>
+<li><strong>Locking issues</strong> - Large table alterations can lock your database for hours, making your application unavailable</li>
+</ul>
+<p>This approach works for toy projects but fails catastrophically when you have real users, multiple environments, and team members.</p>
+<h2 id="the-alembic-solution-automated-database-evolution">The Alembic Solution: Automated Database Evolution<a class="anchor" href="#the-alembic-solution-automated-database-evolution">#</a></h2>
+<p>Database migrations solve these problems by treating schema changes as code that can be versioned, tested, and applied automatically. Alembic, the migration tool used by SQLAlchemy (and therefore neodyme), provides:</p>
+<ul>
+<li><strong>Version control for schemas</strong> - Every schema change is a numbered migration file that&rsquo;s tracked in git</li>
+<li><strong>Automatic generation</strong> - Migrations are generated by comparing your models to the current database schema</li>
+<li><strong>Safe deployment</strong> - Migrations can be tested in development and staging before being applied to production</li>
+<li><strong>Rollback capability</strong> - Every migration can be reversed if something goes wrong</li>
+<li><strong>Team synchronization</strong> - All developers get the same database schema by running the same migration files</li>
+</ul>
+<p>But here&rsquo;s the key insight: Alembic integrates seamlessly with SQLModel, so your Python model changes automatically become database migrations.</p>
+<h2 id="understanding-migration-fundamentals">Understanding Migration Fundamentals<a class="anchor" href="#understanding-migration-fundamentals">#</a></h2>
+<p>Before diving into neodyme&rsquo;s implementation, let&rsquo;s understand what migrations actually do:</p>
+<h3 id="the-migration-lifecycle">The Migration Lifecycle<a class="anchor" href="#the-migration-lifecycle">#</a></h3>
+<pre tabindex="0"><code>Development:
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  Change Model   │───▶│  Generate       │───▶│  Test Migration │
+│  in Python      │    │  Migration      │    │  Locally        │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+
+Production:
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  Deploy Code    │───▶│  Run Migrations │───▶│  Application    │
+│  + Migrations   │    │  Automatically  │    │  Uses New Schema│
+└─────────────────┘    └─────────────────┘    └─────────────────┘</code></pre><p><strong>Each migration file contains:</strong></p>
+<ol>
+<li><strong>Upgrade function</strong> - SQL commands to apply the change (add column, create index, etc.)</li>
+<li><strong>Downgrade function</strong> - SQL commands to reverse the change (remove column, drop index, etc.)</li>
+<li><strong>Version information</strong> - Unique identifier and dependencies on previous migrations</li>
+<li><strong>Metadata</strong> - Description, timestamp, and author information</li>
+</ol>
+<h3 id="migration-file-anatomy">Migration File Anatomy<a class="anchor" href="#migration-file-anatomy">#</a></h3>
+<p>Here&rsquo;s what a typical migration looks like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;Add phone number to users
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Revision ID: 2024011012345_abc123
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Revises: 2024010987654_def456
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Create Date: 2024-01-10 12:34:56.789012
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> alembic <span style="color:#f92672">import</span> op
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sqlalchemy <span style="color:#66d9ef">as</span> sa
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Revision identifiers</span>
+</span></span><span style="display:flex;"><span>revision <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;2024011012345_abc123&#39;</span>
+</span></span><span style="display:flex;"><span>down_revision <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;2024010987654_def456&#39;</span>
+</span></span><span style="display:flex;"><span>branch_labels <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>depends_on <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upgrade</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Add phone_number column to users table.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This SQL will be executed when applying the migration</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>add_column(<span style="color:#e6db74">&#39;users&#39;</span>, 
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;phone_number&#39;</span>, sa<span style="color:#f92672">.</span>String(length<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create an index for performance</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>create_index(<span style="color:#e6db74">&#39;idx_users_phone&#39;</span>, <span style="color:#e6db74">&#39;users&#39;</span>, [<span style="color:#e6db74">&#39;phone_number&#39;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">downgrade</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Remove phone_number column from users table.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This SQL will be executed when rolling back the migration</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>drop_index(<span style="color:#e6db74">&#39;idx_users_phone&#39;</span>, table_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;users&#39;</span>)
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>drop_column(<span style="color:#e6db74">&#39;users&#39;</span>, <span style="color:#e6db74">&#39;phone_number&#39;</span>)</span></span></code></pre></div><p><strong>Why this structure is crucial for production systems:</strong></p>
+<ul>
+<li><strong>Bidirectional changes</strong> - You can move forward or backward through schema versions safely</li>
+<li><strong>Atomic operations</strong> - Each migration is applied as a single database transaction, so partial failures don&rsquo;t leave your database in an inconsistent state</li>
+<li><strong>Dependency tracking</strong> - Migrations form a chain, so Alembic knows exactly which changes depend on which others</li>
+<li><strong>Descriptive comments</strong> - Future developers (including you) can understand what each migration does and why</li>
+</ul>
+<h2 id="setting-up-migrations-in-neodyme">Setting Up Migrations in Neodyme<a class="anchor" href="#setting-up-migrations-in-neodyme">#</a></h2>
+<p>Let&rsquo;s examine how neodyme configures Alembic for production use:</p>
+<h3 id="step-1-alembic-configuration">Step 1: Alembic Configuration<a class="anchor" href="#step-1-alembic-configuration">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s alembic/env.py - production-ready migration environment</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> asyncio
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> alembic <span style="color:#f92672">import</span> context
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.ext.asyncio <span style="color:#f92672">import</span> async_engine_from_config
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> SQLModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Import all models so Alembic can see them</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.models <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.config <span style="color:#f92672">import</span> settings
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This tells Alembic to use your SQLModel metadata</span>
+</span></span><span style="display:flex;"><span>target_metadata <span style="color:#f92672">=</span> SQLModel<span style="color:#f92672">.</span>metadata
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_url</span>() <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Get database URL from application settings.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> settings<span style="color:#f92672">.</span>database_url
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run_async_migrations</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Run migrations using async database connection.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    connectable <span style="color:#f92672">=</span> async_engine_from_config(
+</span></span><span style="display:flex;"><span>        config<span style="color:#f92672">.</span>get_section(config<span style="color:#f92672">.</span>config_ini_section, {}),
+</span></span><span style="display:flex;"><span>        prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sqlalchemy.&#34;</span>,
+</span></span><span style="display:flex;"><span>        url<span style="color:#f92672">=</span>get_url(),
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">with</span> connectable<span style="color:#f92672">.</span>connect() <span style="color:#66d9ef">as</span> connection:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> connection<span style="color:#f92672">.</span>run_sync(do_run_migrations)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> connectable<span style="color:#f92672">.</span>dispose()</span></span></code></pre></div><p><strong>Why this configuration is essential for modern applications:</strong></p>
+<ul>
+<li><strong>Async support</strong> - Migrations work with async database connections, matching your application&rsquo;s architecture</li>
+<li><strong>Settings integration</strong> - Database URL comes from the same configuration system your app uses, ensuring consistency</li>
+<li><strong>Model discovery</strong> - Alembic automatically discovers all your SQLModel models by importing them</li>
+<li><strong>Connection management</strong> - Proper async connection handling prevents resource leaks during migration runs</li>
+</ul>
+<h3 id="step-2-version-numbering-strategy">Step 2: Version Numbering Strategy<a class="anchor" href="#step-2-version-numbering-strategy">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s alembic.ini - timestamp-based versioning</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">version_num_format</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">%(year)d%(month).2d%(day).2d_%(hour).2d%(minute).2d_%(rev)s</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Example generated filenames:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 20240110_1430_abc123_add_phone_number.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 20240115_0945_def456_create_orders_table.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 20240120_1615_ghi789_add_user_indexes.py</span></span></span></code></pre></div><p><strong>Why timestamp-based versioning prevents merge conflicts:</strong></p>
+<ul>
+<li><strong>Chronological ordering</strong> - Migrations are applied in the order they were created, not alphabetical order</li>
+<li><strong>Team coordination</strong> - Multiple developers can create migrations simultaneously without conflicts</li>
+<li><strong>Deployment safety</strong> - Production deployments apply migrations in the correct temporal sequence</li>
+<li><strong>Debugging assistance</strong> - You can easily identify when a migration was created and correlate it with code changes</li>
+</ul>
+<h2 id="hands-on-creating-your-first-migration">Hands-On: Creating Your First Migration<a class="anchor" href="#hands-on-creating-your-first-migration">#</a></h2>
+<p>Let&rsquo;s walk through the complete migration workflow:</p>
+<h3 id="step-1-initialize-alembic-in-your-project">Step 1: Initialize Alembic in Your Project<a class="anchor" href="#step-1-initialize-alembic-in-your-project">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Initialize Alembic in your project directory</span>
+</span></span><span style="display:flex;"><span>alembic init alembic
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This creates:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># alembic/</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ├── env.py          # Migration environment configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ├── script.py.mako  # Template for new migration files</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># └── versions/       # Directory where migration files are stored</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># alembic.ini         # Alembic configuration file</span></span></span></code></pre></div><h3 id="step-2-configure-your-environment">Step 2: Configure Your Environment<a class="anchor" href="#step-2-configure-your-environment">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># alembic/env.py - configure for your application</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> SQLModel
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> your_app.models <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>  <span style="color:#75715e"># Import all your models</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> your_app.config <span style="color:#f92672">import</span> settings
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>target_metadata <span style="color:#f92672">=</span> SQLModel<span style="color:#f92672">.</span>metadata
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_url</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> settings<span style="color:#f92672">.</span>database_url</span></span></code></pre></div><h3 id="step-3-create-your-initial-migration">Step 3: Create Your Initial Migration<a class="anchor" href="#step-3-create-your-initial-migration">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Generate a migration based on your current models</span>
+</span></span><span style="display:flex;"><span>alembic revision --autogenerate -m <span style="color:#e6db74">&#34;Initial user table&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Alembic compares your models to an empty database and generates:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># alembic/versions/20240110_1430_abc123_initial_user_table.py</span></span></span></code></pre></div><p>The generated migration will look like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;Initial user table
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Revision ID: 20240110_1430_abc123
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Revises: 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Create Date: 2024-01-10 14:30:00.123456
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> alembic <span style="color:#f92672">import</span> op
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sqlalchemy <span style="color:#66d9ef">as</span> sa
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>revision <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;20240110_1430_abc123&#39;</span>
+</span></span><span style="display:flex;"><span>down_revision <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>branch_labels <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>depends_on <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upgrade</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Create users table with all required fields and constraints.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>create_table(<span style="color:#e6db74">&#39;users&#39;</span>,
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;id&#39;</span>, sa<span style="color:#f92672">.</span>Integer(), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>),
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;email&#39;</span>, sa<span style="color:#f92672">.</span>String(length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>),
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;full_name&#39;</span>, sa<span style="color:#f92672">.</span>String(length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>),
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;hashed_password&#39;</span>, sa<span style="color:#f92672">.</span>String(length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>),
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;is_active&#39;</span>, sa<span style="color:#f92672">.</span>Boolean(), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>),
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;created_at&#39;</span>, sa<span style="color:#f92672">.</span>DateTime(), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>),
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;updated_at&#39;</span>, sa<span style="color:#f92672">.</span>DateTime(), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>),
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>PrimaryKeyConstraint(<span style="color:#e6db74">&#39;id&#39;</span>)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>create_index(<span style="color:#e6db74">&#39;ix_users_email&#39;</span>, <span style="color:#e6db74">&#39;users&#39;</span>, [<span style="color:#e6db74">&#39;email&#39;</span>], unique<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">downgrade</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Drop users table and all associated indexes.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>drop_index(<span style="color:#e6db74">&#39;ix_users_email&#39;</span>, table_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;users&#39;</span>)
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>drop_table(<span style="color:#e6db74">&#39;users&#39;</span>)</span></span></code></pre></div><p><strong>Notice how Alembic automatically:</strong></p>
+<ul>
+<li><strong>Creates all columns</strong> with correct types and constraints</li>
+<li><strong>Adds indexes</strong> that were defined in your SQLModel</li>
+<li><strong>Includes primary keys</strong> and foreign key relationships</li>
+<li><strong>Generates rollback code</strong> that exactly reverses the changes</li>
+</ul>
+<h3 id="step-4-apply-the-migration">Step 4: Apply the Migration<a class="anchor" href="#step-4-apply-the-migration">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Apply the migration to your database</span>
+</span></span><span style="display:flex;"><span>alembic upgrade head
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Output:</span>
+</span></span><span style="display:flex;"><span>INFO  <span style="color:#f92672">[</span>alembic.runtime.migration<span style="color:#f92672">]</span> Context impl SQLiteImpl.
+</span></span><span style="display:flex;"><span>INFO  <span style="color:#f92672">[</span>alembic.runtime.migration<span style="color:#f92672">]</span> Will assume non-transactional DDL.
+</span></span><span style="display:flex;"><span>INFO  <span style="color:#f92672">[</span>alembic.runtime.migration<span style="color:#f92672">]</span> Running upgrade  -&gt; 20240110_1430_abc123, Initial user table</span></span></code></pre></div><p>Your database now has the users table with all the correct structure.</p>
+<h3 id="step-5-add-a-new-field-schema-evolution">Step 5: Add a New Field (Schema Evolution)<a class="anchor" href="#step-5-add-a-new-field-schema-evolution">#</a></h3>
+<p>Now let&rsquo;s add a phone number field to demonstrate schema evolution:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Update your User model</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(UserBase, table<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    id: int <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    hashed_password: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    phone_number: str <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>)  <span style="color:#75715e"># New field!</span>
+</span></span><span style="display:flex;"><span>    created_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow, nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    updated_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow, nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)</span></span></code></pre></div><p>Generate the migration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alembic revision --autogenerate -m <span style="color:#e6db74">&#34;Add phone number to users&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Alembic detects the model change and generates:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># alembic/versions/20240115_0945_def456_add_phone_number_to_users.py</span></span></span></code></pre></div><p>The generated migration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;Add phone number to users
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Revision ID: 20240115_0945_def456
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Revises: 20240110_1430_abc123
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Create Date: 2024-01-15 09:45:00.123456
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> alembic <span style="color:#f92672">import</span> op
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sqlalchemy <span style="color:#66d9ef">as</span> sa
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>revision <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;20240115_0945_def456&#39;</span>
+</span></span><span style="display:flex;"><span>down_revision <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;20240110_1430_abc123&#39;</span>  <span style="color:#75715e"># Links to previous migration</span>
+</span></span><span style="display:flex;"><span>branch_labels <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>depends_on <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upgrade</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Add phone_number column to users table.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>add_column(<span style="color:#e6db74">&#39;users&#39;</span>, 
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;phone_number&#39;</span>, sa<span style="color:#f92672">.</span>String(length<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">downgrade</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Remove phone_number column from users table.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>drop_column(<span style="color:#e6db74">&#39;users&#39;</span>, <span style="color:#e6db74">&#39;phone_number&#39;</span>)</span></span></code></pre></div><p>Apply the migration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alembic upgrade head
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Output:</span>
+</span></span><span style="display:flex;"><span>INFO  <span style="color:#f92672">[</span>alembic.runtime.migration<span style="color:#f92672">]</span> Running upgrade 20240110_1430_abc123 -&gt; 20240115_0945_def456, Add phone number to users</span></span></code></pre></div><p><strong>Your database now has the phone_number column, and all existing users have NULL values for this field (which is safe).</strong></p>
+<h2 id="advanced-migration-patterns">Advanced Migration Patterns<a class="anchor" href="#advanced-migration-patterns">#</a></h2>
+<p>Real applications need more complex migration scenarios:</p>
+<h3 id="data-migrations">Data Migrations<a class="anchor" href="#data-migrations">#</a></h3>
+<p>Sometimes you need to migrate existing data, not just schema:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;Populate default phone numbers
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Revision ID: 20240120_1615_ghi789
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Revises: 20240115_0945_def456
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Create Date: 2024-01-20 16:15:00.123456
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> alembic <span style="color:#f92672">import</span> op
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sqlalchemy <span style="color:#66d9ef">as</span> sa
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>revision <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;20240120_1615_ghi789&#39;</span>
+</span></span><span style="display:flex;"><span>down_revision <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;20240115_0945_def456&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upgrade</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Set default phone number for existing users.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Get a connection to execute custom SQL</span>
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> op<span style="color:#f92672">.</span>get_bind()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Update existing users with a default phone number</span>
+</span></span><span style="display:flex;"><span>    connection<span style="color:#f92672">.</span>execute(
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>text(<span style="color:#e6db74">&#34;UPDATE users SET phone_number = &#39;Not provided&#39; WHERE phone_number IS NULL&#34;</span>)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Now make the field required (since all users have values)</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>alter_column(<span style="color:#e6db74">&#39;users&#39;</span>, <span style="color:#e6db74">&#39;phone_number&#39;</span>, nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">downgrade</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Revert phone number requirement and clear default values.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>alter_column(<span style="color:#e6db74">&#39;users&#39;</span>, <span style="color:#e6db74">&#39;phone_number&#39;</span>, nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> op<span style="color:#f92672">.</span>get_bind()
+</span></span><span style="display:flex;"><span>    connection<span style="color:#f92672">.</span>execute(
+</span></span><span style="display:flex;"><span>        sa<span style="color:#f92672">.</span>text(<span style="color:#e6db74">&#34;UPDATE users SET phone_number = NULL WHERE phone_number = &#39;Not provided&#39;&#34;</span>)
+</span></span><span style="display:flex;"><span>    )</span></span></code></pre></div><p><strong>Why data migrations require special care:</strong></p>
+<ul>
+<li><strong>Production safety</strong> - Data migrations run against live customer data, so they must be thoroughly tested</li>
+<li><strong>Performance considerations</strong> - Updating millions of records can lock your database for hours</li>
+<li><strong>Rollback complexity</strong> - Reversing data changes is more complex than reversing schema changes</li>
+<li><strong>Testing requirements</strong> - Data migrations should be tested with production-like data volumes</li>
+</ul>
+<h3 id="index-migrations-for-performance">Index Migrations for Performance<a class="anchor" href="#index-migrations-for-performance">#</a></h3>
+<p>Adding indexes to large tables requires careful planning:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;Add index for user email searches
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Revision ID: 20240125_1000_jkl012
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Revises: 20240120_1615_ghi789
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Create Date: 2024-01-25 10:00:00.123456
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> alembic <span style="color:#f92672">import</span> op
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>revision <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;20240125_1000_jkl012&#39;</span>
+</span></span><span style="display:flex;"><span>down_revision <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;20240120_1615_ghi789&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upgrade</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Add index for faster email searches.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create index concurrently to avoid blocking production traffic</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>create_index(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;idx_users_email_search&#39;</span>, 
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;users&#39;</span>, 
+</span></span><span style="display:flex;"><span>        [<span style="color:#e6db74">&#39;email&#39;</span>], 
+</span></span><span style="display:flex;"><span>        postgresql_concurrently<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>  <span style="color:#75715e"># PostgreSQL-specific optimization</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">downgrade</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Remove email search index.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    op<span style="color:#f92672">.</span>drop_index(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;idx_users_email_search&#39;</span>, 
+</span></span><span style="display:flex;"><span>        table_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;users&#39;</span>,
+</span></span><span style="display:flex;"><span>        postgresql_concurrently<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    )</span></span></code></pre></div><p><strong>Why index creation needs special handling:</strong></p>
+<ul>
+<li><strong>Locking concerns</strong> - Normal index creation locks the table, making your application unavailable</li>
+<li><strong>Concurrent creation</strong> - PostgreSQL supports creating indexes without blocking reads/writes</li>
+<li><strong>Performance impact</strong> - Large indexes can take hours to build and consume significant disk space</li>
+<li><strong>Query plan changes</strong> - New indexes can change how the database executes queries, sometimes making them slower</li>
+</ul>
+<h2 id="migration-management-in-production">Migration Management in Production<a class="anchor" href="#migration-management-in-production">#</a></h2>
+<p>Production migration deployment requires careful orchestration:</p>
+<h3 id="pre-deployment-checklist">Pre-Deployment Checklist<a class="anchor" href="#pre-deployment-checklist">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 1. Check current database version</span>
+</span></span><span style="display:flex;"><span>alembic current
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. See what migrations will be applied</span>
+</span></span><span style="display:flex;"><span>alembic history --verbose
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Test migrations on staging environment first</span>
+</span></span><span style="display:flex;"><span>alembic upgrade head --sql &gt; migration.sql  <span style="color:#75715e"># Generate SQL for review</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Backup production database before migration</span>
+</span></span><span style="display:flex;"><span>pg_dump production_db &gt; backup_<span style="color:#66d9ef">$(</span>date +%Y%m%d_%H%M%S<span style="color:#66d9ef">)</span>.sql
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. Apply migrations during maintenance window</span>
+</span></span><span style="display:flex;"><span>alembic upgrade head</span></span></code></pre></div><h3 id="deployment-strategies">Deployment Strategies<a class="anchor" href="#deployment-strategies">#</a></h3>
+<p><strong>Strategy 1: Maintenance Window Deployment</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 1. Put application in maintenance mode</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Stop all application instances</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Run migrations</span>
+</span></span><span style="display:flex;"><span>alembic upgrade head
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Deploy new application code</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. Start application instances</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 6. Remove maintenance mode</span></span></span></code></pre></div><p><strong>Strategy 2: Blue-Green Deployment with Compatible Migrations</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 1. Ensure migrations are backward compatible</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Apply migrations to production (while old code still runs)</span>
+</span></span><span style="display:flex;"><span>alembic upgrade head
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Deploy new application code gradually</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Old and new code work with the same schema</span></span></span></code></pre></div><p><strong>Why deployment strategy matters for business continuity:</strong></p>
+<ul>
+<li><strong>Downtime minimization</strong> - Blue-green deployments can achieve zero-downtime schema changes</li>
+<li><strong>Rollback capability</strong> - You need to be able to revert both code and schema changes if problems occur</li>
+<li><strong>Data safety</strong> - Migrations should never put customer data at risk</li>
+<li><strong>Performance impact</strong> - Large migrations during peak hours can degrade application performance</li>
+</ul>
+<h2 id="testing-migrations">Testing Migrations<a class="anchor" href="#testing-migrations">#</a></h2>
+<p>Migration testing prevents production disasters:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># tests/test_migrations.py - comprehensive migration testing</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pytest
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> alembic <span style="color:#f92672">import</span> command
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> alembic.config <span style="color:#f92672">import</span> Config
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> create_engine
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> SQLModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestMigrations</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Test that migrations work correctly.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@pytest.fixture</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">alembic_config</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Create Alembic configuration for testing.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        config <span style="color:#f92672">=</span> Config(<span style="color:#e6db74">&#34;alembic.ini&#34;</span>)
+</span></span><span style="display:flex;"><span>        config<span style="color:#f92672">.</span>set_main_option(<span style="color:#e6db74">&#34;sqlalchemy.url&#34;</span>, <span style="color:#e6db74">&#34;sqlite:///test_migration.db&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> config
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_upgrade_and_downgrade</span>(self, alembic_config):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that migrations can be applied and reverted.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Start with empty database</span>
+</span></span><span style="display:flex;"><span>        command<span style="color:#f92672">.</span>upgrade(alembic_config, <span style="color:#e6db74">&#34;head&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify tables exist</span>
+</span></span><span style="display:flex;"><span>        engine <span style="color:#f92672">=</span> create_engine(<span style="color:#e6db74">&#34;sqlite:///test_migration.db&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> engine<span style="color:#f92672">.</span>dialect<span style="color:#f92672">.</span>has_table(engine<span style="color:#f92672">.</span>connect(), <span style="color:#e6db74">&#34;users&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Test downgrade</span>
+</span></span><span style="display:flex;"><span>        command<span style="color:#f92672">.</span>downgrade(alembic_config, <span style="color:#e6db74">&#34;base&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify tables are gone</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">assert</span> <span style="color:#f92672">not</span> engine<span style="color:#f92672">.</span>dialect<span style="color:#f92672">.</span>has_table(engine<span style="color:#f92672">.</span>connect(), <span style="color:#e6db74">&#34;users&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_data_migration_preserves_existing_data</span>(self, alembic_config):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Test that data migrations don&#39;t lose customer data.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Apply initial migration</span>
+</span></span><span style="display:flex;"><span>        command<span style="color:#f92672">.</span>upgrade(alembic_config, <span style="color:#e6db74">&#34;20240110_1430_abc123&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Insert test data</span>
+</span></span><span style="display:flex;"><span>        engine <span style="color:#f92672">=</span> create_engine(<span style="color:#e6db74">&#34;sqlite:///test_migration.db&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> engine<span style="color:#f92672">.</span>connect() <span style="color:#66d9ef">as</span> conn:
+</span></span><span style="display:flex;"><span>            conn<span style="color:#f92672">.</span>execute(
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;INSERT INTO users (email, full_name, hashed_password, is_active, created_at, updated_at) &#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;VALUES (&#39;test@example.com&#39;, &#39;Test User&#39;, &#39;hashed&#39;, true, datetime(&#39;now&#39;), datetime(&#39;now&#39;))&#34;</span>
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Apply data migration</span>
+</span></span><span style="display:flex;"><span>        command<span style="color:#f92672">.</span>upgrade(alembic_config, <span style="color:#e6db74">&#34;20240120_1615_ghi789&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify data still exists with new field</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> engine<span style="color:#f92672">.</span>connect() <span style="color:#66d9ef">as</span> conn:
+</span></span><span style="display:flex;"><span>            result <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#34;SELECT email, phone_number FROM users WHERE email = &#39;test@example.com&#39;&#34;</span>)
+</span></span><span style="display:flex;"><span>            row <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span>fetchone()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">assert</span> row[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;test@example.com&#39;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">assert</span> row[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Not provided&#39;</span>  <span style="color:#75715e"># Default value from migration</span></span></span></code></pre></div><p><strong>Why migration testing is critical:</strong></p>
+<ul>
+<li><strong>Data integrity verification</strong> - Ensures customer data survives schema changes</li>
+<li><strong>Rollback validation</strong> - Confirms that downgrade migrations actually work</li>
+<li><strong>Performance testing</strong> - Large data sets can reveal migration performance problems</li>
+<li><strong>Edge case detection</strong> - Tests catch scenarios that might not occur in development</li>
+</ul>
+<h2 id="what-youve-learned">What You&rsquo;ve Learned<a class="anchor" href="#what-youve-learned">#</a></h2>
+<p>By the end of this chapter, you understand:</p>
+<p>✅ <strong>Why manual database updates are dangerous</strong> - and lead to data loss, downtime, and deployment failures<br>
+✅ <strong>How Alembic automates schema evolution</strong> - using version-controlled migration files generated from model changes<br>
+✅ <strong>The migration lifecycle</strong> - from model changes to production deployment with proper testing<br>
+✅ <strong>Advanced migration patterns</strong> - including data migrations, index creation, and performance considerations<br>
+✅ <strong>Production deployment strategies</strong> - that minimize downtime and maximize safety<br>
+✅ <strong>Migration testing approaches</strong> - that catch problems before they reach production</p>
+<p>More importantly, you&rsquo;ve established a foundation for safe database evolution that will serve your application throughout its lifetime.</p>
+<h2 id="building-blocks-for-next-chapters">Building Blocks for Next Chapters<a class="anchor" href="#building-blocks-for-next-chapters">#</a></h2>
+<p>This migration foundation gives us:</p>
+<ul>
+<li><strong>HTTP handling</strong> ← Chapter 1: FastAPI basics</li>
+<li><strong>Data persistence</strong> ← Chapter 2: Database integration</li>
+<li><strong>Input validation</strong> ← Chapter 3: Request/response validation</li>
+<li><strong>Schema evolution</strong> ← You are here</li>
+<li><strong>Clean architecture</strong> ← Chapter 5: Organizing code that scales</li>
+</ul>
+<h2 id="exercises">Exercises<a class="anchor" href="#exercises">#</a></h2>
+<ol>
+<li><strong>Create a migration</strong>: Add a <code>last_login</code> timestamp field to the User model and generate a migration</li>
+<li><strong>Test rollback</strong>: Apply your migration, then roll it back and verify the field is gone</li>
+<li><strong>Data migration</strong>: Create a migration that populates default values for existing records</li>
+<li><strong>Performance test</strong>: Create a large table and measure how long index creation takes</li>
+<li><strong>Migration conflict</strong>: Have two people create migrations simultaneously and see how Alembic handles conflicts</li>
+</ol>
+<h2 id="resources-for-deeper-learning">Resources for Deeper Learning<a class="anchor" href="#resources-for-deeper-learning">#</a></h2>
+<h3 id="alembic-and-migration-patterns">Alembic and Migration Patterns<a class="anchor" href="#alembic-and-migration-patterns">#</a></h3>
+<ul>
+<li><strong>Alembic Official Documentation</strong>: Comprehensive guide to database migrations - <a href="https://alembic.sqlalchemy.org/">https://alembic.sqlalchemy.org/</a></li>
+<li><strong>SQLAlchemy Migration Cookbook</strong>: Advanced migration patterns and recipes - <a href="https://alembic.sqlalchemy.org/en/latest/cookbook.html">https://alembic.sqlalchemy.org/en/latest/cookbook.html</a></li>
+<li><strong>Database Migration Best Practices</strong>: Industry patterns for safe schema evolution - <a href="https://www.braintreepayments.com/blog/safe-database-migrations/">https://www.braintreepayments.com/blog/safe-database-migrations/</a></li>
+</ul>
+<h3 id="production-deployment-strategies">Production Deployment Strategies<a class="anchor" href="#production-deployment-strategies">#</a></h3>
+<ul>
+<li><strong>Blue-Green Deployments</strong>: Zero-downtime deployment patterns - <a href="https://martinfowler.com/bliki/BlueGreenDeployment.html">https://martinfowler.com/bliki/BlueGreenDeployment.html</a></li>
+<li><strong>Database Deployment Strategies</strong>: Coordinating schema and application changes - <a href="https://www.liquibase.com/database-deployment-strategies">https://www.liquibase.com/database-deployment-strategies</a></li>
+<li><strong>Rolling Updates</strong>: Gradual deployment techniques for databases - <a href="https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/">https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/</a></li>
+</ul>
+<h3 id="performance-and-safety">Performance and Safety<a class="anchor" href="#performance-and-safety">#</a></h3>
+<ul>
+<li><strong>PostgreSQL Concurrent Index Creation</strong>: Non-blocking index strategies - <a href="https://www.postgresql.org/docs/current/sql-createindex.html#SQL-CREATEINDEX-CONCURRENTLY">https://www.postgresql.org/docs/current/sql-createindex.html#SQL-CREATEINDEX-CONCURRENTLY</a></li>
+<li><strong>Large Table Migrations</strong>: Handling schema changes on big datasets - <a href="https://github.com/github/gh-ost">https://github.com/github/gh-ost</a></li>
+<li><strong>Database Backup Strategies</strong>: Protecting data during migrations - <a href="https://www.postgresql.org/docs/current/backup.html">https://www.postgresql.org/docs/current/backup.html</a></li>
+</ul>
+<h3 id="testing-and-quality-assurance">Testing and Quality Assurance<a class="anchor" href="#testing-and-quality-assurance">#</a></h3>
+<ul>
+<li><strong>Migration Testing Patterns</strong>: Ensuring migration safety - <a href="https://www.alembic.readthedocs.io/en/latest/cookbook.html#test-current-database-revision-is-head">https://www.alembic.readthedocs.io/en/latest/cookbook.html#test-current-database-revision-is-head</a></li>
+<li><strong>Database Testing with Docker</strong>: Isolated test environments - <a href="https://docs.docker.com/samples/postgres/">https://docs.docker.com/samples/postgres/</a></li>
+<li><strong>Property-Based Migration Testing</strong>: Using Hypothesis for migration validation - <a href="https://hypothesis.readthedocs.io/">https://hypothesis.readthedocs.io/</a></li>
+</ul>
+<h3 id="why-these-resources-matter">Why These Resources Matter<a class="anchor" href="#why-these-resources-matter">#</a></h3>
+<ul>
+<li><strong>Alembic mastery</strong>: Understanding migration tools prevents production disasters</li>
+<li><strong>Deployment patterns</strong>: Safe deployment strategies protect customer data and minimize downtime</li>
+<li><strong>Performance optimization</strong>: Large-scale migration techniques keep applications responsive</li>
+<li><strong>Testing strategies</strong>: Comprehensive testing catches migration bugs before production</li>
+</ul>
+<p><strong>Pro Tip</strong>: Start with simple migrations to understand the workflow, then gradually explore advanced patterns like concurrent index creation and data migrations as your application scales.</p>
+<h2 id="next-building-clean-architecture-that-scales">Next: Building Clean Architecture That Scales<a class="anchor" href="#next-building-clean-architecture-that-scales">#</a></h2>
+<p>You have a solid foundation with HTTP handling, database persistence, validation, and schema evolution. But as your application grows, you&rsquo;ll face new challenges: How do you organize complex business logic? How do you keep your code testable when workflows span multiple systems? How do you build features that don&rsquo;t break existing functionality?</p>
+<p>In Chapter 5, we&rsquo;ll explore the repository pattern, service layers, and dependency injection that keep large applications maintainable.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Preview of Chapter 5</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Business logic layer that coordinates multiple repositories and external services.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, user_repo: UserRepository, email_service: EmailService):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>user_repo <span style="color:#f92672">=</span> user_repo
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>email_service <span style="color:#f92672">=</span> email_service
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register_user</span>(self, user_data: UserCreate) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Complex workflow: validation, creation, welcome email, analytics</span>
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>user_repo<span style="color:#f92672">.</span>create(user_data)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>email_service<span style="color:#f92672">.</span>send_welcome_email(user<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>analytics<span style="color:#f92672">.</span>track_registration(user<span style="color:#f92672">.</span>id)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(user)</span></span></code></pre></div><p>We&rsquo;ll explore how neodyme&rsquo;s layered architecture enables complex workflows while keeping individual components simple, testable, and reusable.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/neodyme/docs/chapter-3/" class="flex align-center">
+        <img src="/neodyme/icons/backward.svg" class="book-icon" alt="Previous" title="Chapter 3" />
+        <span>Chapter 3</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/neodyme/docs/chapter-5/" class="flex align-center">
+        <span>Chapter 5</span>
+        <img src="/neodyme/icons/forward.svg" class="book-icon" alt="Next" title="Chapter 5" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+
+ 
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-schema-changes-are-inevitable-and-dangerous">The Problem: Schema Changes Are Inevitable and Dangerous</a></li>
+    <li><a href="#why-manual-database-updates-dont-scale">Why Manual Database Updates Don&rsquo;t Scale</a></li>
+    <li><a href="#the-alembic-solution-automated-database-evolution">The Alembic Solution: Automated Database Evolution</a></li>
+    <li><a href="#understanding-migration-fundamentals">Understanding Migration Fundamentals</a>
+      <ul>
+        <li><a href="#the-migration-lifecycle">The Migration Lifecycle</a></li>
+        <li><a href="#migration-file-anatomy">Migration File Anatomy</a></li>
+      </ul>
+    </li>
+    <li><a href="#setting-up-migrations-in-neodyme">Setting Up Migrations in Neodyme</a>
+      <ul>
+        <li><a href="#step-1-alembic-configuration">Step 1: Alembic Configuration</a></li>
+        <li><a href="#step-2-version-numbering-strategy">Step 2: Version Numbering Strategy</a></li>
+      </ul>
+    </li>
+    <li><a href="#hands-on-creating-your-first-migration">Hands-On: Creating Your First Migration</a>
+      <ul>
+        <li><a href="#step-1-initialize-alembic-in-your-project">Step 1: Initialize Alembic in Your Project</a></li>
+        <li><a href="#step-2-configure-your-environment">Step 2: Configure Your Environment</a></li>
+        <li><a href="#step-3-create-your-initial-migration">Step 3: Create Your Initial Migration</a></li>
+        <li><a href="#step-4-apply-the-migration">Step 4: Apply the Migration</a></li>
+        <li><a href="#step-5-add-a-new-field-schema-evolution">Step 5: Add a New Field (Schema Evolution)</a></li>
+      </ul>
+    </li>
+    <li><a href="#advanced-migration-patterns">Advanced Migration Patterns</a>
+      <ul>
+        <li><a href="#data-migrations">Data Migrations</a></li>
+        <li><a href="#index-migrations-for-performance">Index Migrations for Performance</a></li>
+      </ul>
+    </li>
+    <li><a href="#migration-management-in-production">Migration Management in Production</a>
+      <ul>
+        <li><a href="#pre-deployment-checklist">Pre-Deployment Checklist</a></li>
+        <li><a href="#deployment-strategies">Deployment Strategies</a></li>
+      </ul>
+    </li>
+    <li><a href="#testing-migrations">Testing Migrations</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#alembic-and-migration-patterns">Alembic and Migration Patterns</a></li>
+        <li><a href="#production-deployment-strategies">Production Deployment Strategies</a></li>
+        <li><a href="#performance-and-safety">Performance and Safety</a></li>
+        <li><a href="#testing-and-quality-assurance">Testing and Quality Assurance</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-building-clean-architecture-that-scales">Next: Building Clean Architecture That Scales</a></li>
+  </ul>
+</nav>
+
+
+
+  </div>
+</aside>
+
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

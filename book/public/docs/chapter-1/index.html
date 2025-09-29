@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chapter 1: &ldquo;I Need a Web API That Actually Works&rdquo;#
+Picture this: You&rsquo;ve just been asked to build an API for your company&rsquo;s new mobile app. &ldquo;Simple enough,&rdquo; you think. &ldquo;I&rsquo;ve done the Flask tutorial.&rdquo; But then the questions start coming:
+&ldquo;Will it generate documentation automatically?&rdquo;
+&ldquo;Can it handle 1000 concurrent users?&rdquo;
+&ldquo;How do we validate the JSON requests?&rdquo;
+&ldquo;What about type safety?&rdquo;
+Suddenly, that simple Flask tutorial doesn&rsquo;t seem so helpful anymore.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/chapter-1/">
+  <meta property="og:site_name" content="Neodyme Documentation">
+  <meta property="og:title" content="Chapter 1">
+  <meta property="og:description" content="Chapter 1: “I Need a Web API That Actually Works”# Picture this: You’ve just been asked to build an API for your company’s new mobile app. “Simple enough,” you think. “I’ve done the Flask tutorial.” But then the questions start coming:
+“Will it generate documentation automatically?”
+“Can it handle 1000 concurrent users?”
+“How do we validate the JSON requests?”
+“What about type safety?”
+Suddenly, that simple Flask tutorial doesn’t seem so helpful anymore.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Chapter 1 | Neodyme Documentation</title>
+<link rel="icon" href="/neodyme/favicon.png" >
+<link rel="manifest" href="/neodyme/manifest.json">
+<link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/chapter-1/">
+<link rel="stylesheet" href="/neodyme/book.min.c098be6fdb8410d437a0799e694b206fa639685582089c583ae6ac07afec1ff8.css" integrity="sha256-wJi&#43;b9uEENQ3oHmeaUsgb6Y5aFWCCJxYOuasB6/sH/g=" crossorigin="anonymous">
+
+
+  <script defer src="/neodyme/fuse.min.js"></script>
+  <script defer src="/neodyme/en.search.min.f64f4d2b3193917ebd07e82190bf6e6a2f23d6e670fb678260875bd442e5cf4d.js" integrity="sha256-9k9NKzGTkX69B&#43;ghkL9uai8j1uZw&#43;2eCYIdb1ELlz00=" crossorigin="anonymous"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/neodyme/"><span>Neodyme Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-1/" class="active">
+      Chapter 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-2/" class="">
+      Chapter 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-3/" class="">
+      Chapter 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-4/" class="">
+      Chapter 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-5/" class="">
+      Chapter 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-6/" class="">
+      Chapter 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-7/" class="">
+      Chapter 7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-8/" class="">
+      Chapter 8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-9/" class="">
+      Chapter 9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-10/" class="">
+      Chapter 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Chapter 1</h3>
+
+  <label for="toc-control">
+    
+    <img src="/neodyme/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-every-backend-developer-faces">The Problem Every Backend Developer Faces</a></li>
+    <li><a href="#why-building-real-apis-is-hard">Why Building Real APIs Is Hard</a></li>
+    <li><a href="#enter-fastapi-the-missing-piece">Enter FastAPI: The Missing Piece</a></li>
+    <li><a href="#building-your-first-real-api">Building Your First Real API</a>
+      <ul>
+        <li><a href="#step-1-the-application-factory-pattern">Step 1: The Application Factory Pattern</a></li>
+        <li><a href="#step-2-understanding-the-magic">Step 2: Understanding the Magic</a></li>
+        <li><a href="#step-3-the-requestresponse-flow">Step 3: The Request/Response Flow</a></li>
+      </ul>
+    </li>
+    <li><a href="#a-question-for-you">A Question for You</a></li>
+    <li><a href="#hands-on-build-your-first-endpoint">Hands-On: Build Your First Endpoint</a>
+      <ul>
+        <li><a href="#1-the-simplest-possible-start">1. The Simplest Possible Start</a></li>
+        <li><a href="#2-adding-type-hints-the-secret-sauce">2. Adding Type Hints (The Secret Sauce)</a></li>
+        <li><a href="#3-adding-production-patterns">3. Adding Production Patterns</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-neodyme-approach-learning-from-production-code">The Neodyme Approach: Learning from Production Code</a>
+      <ul>
+        <li><a href="#what-is-the-factory-pattern-and-why-should-you-care">What Is the Factory Pattern (And Why Should You Care)?</a></li>
+        <li><a href="#why-this-matters-for-you">Why This Matters for You</a></li>
+      </ul>
+    </li>
+    <li><a href="#api-documentation-magic">API Documentation Magic</a>
+      <ul>
+        <li><a href="#alternative-documentation-styles">Alternative Documentation Styles</a></li>
+      </ul>
+    </li>
+    <li><a href="#error-handling-that-actually-helps">Error Handling That Actually Helps</a></li>
+    <li><a href="#performance-why-async-matters-and-when-it-doesnt">Performance: Why <code>async</code> Matters (And When It Doesn’t)</a>
+      <ul>
+        <li><a href="#seeing-the-difference">Seeing the Difference</a></li>
+        <li><a href="#a-real-world-question">A Real-World Question</a></li>
+      </ul>
+    </li>
+    <li><a href="#architecture-overview">Architecture Overview</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#design-patterns-factory-pattern">Design Patterns (Factory Pattern)</a></li>
+        <li><a href="#async-programming-in-python">Async Programming in Python</a></li>
+        <li><a href="#fastapi-fundamentals">FastAPI Fundamentals</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-connecting-to-a-database">Next: Connecting to a Database</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="chapter-1-i-need-a-web-api-that-actually-works">Chapter 1: &ldquo;I Need a Web API That Actually Works&rdquo;<a class="anchor" href="#chapter-1-i-need-a-web-api-that-actually-works">#</a></h1>
+<p>Picture this: You&rsquo;ve just been asked to build an API for your company&rsquo;s new mobile app. &ldquo;Simple enough,&rdquo; you think. &ldquo;I&rsquo;ve done the Flask tutorial.&rdquo; But then the questions start coming:</p>
+<p><em>&ldquo;Will it generate documentation automatically?&rdquo;</em><br>
+<em>&ldquo;Can it handle 1000 concurrent users?&rdquo;</em><br>
+<em>&ldquo;How do we validate the JSON requests?&rdquo;</em><br>
+<em>&ldquo;What about type safety?&rdquo;</em></p>
+<p>Suddenly, that simple Flask tutorial doesn&rsquo;t seem so helpful anymore.</p>
+<h2 id="the-problem-every-backend-developer-faces">The Problem Every Backend Developer Faces<a class="anchor" href="#the-problem-every-backend-developer-faces">#</a></h2>
+<p>If you&rsquo;ve written Python scripts or worked through web framework tutorials, you know the basics. But there&rsquo;s a gulf between tutorial code and production-ready APIs. What exactly is missing?</p>
+<p>Let me ask you this: Have you ever written code like this?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Typical tutorial code - looks so simple!</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hello</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello World!&#34;</span></span></span></code></pre></div><p>Here&rsquo;s what this innocent-looking code doesn&rsquo;t handle:</p>
+<ul>
+<li><strong>What happens when someone sends invalid data?</strong> Without validation, your API will crash or return inconsistent results when users send malformed JSON, wrong data types, or missing fields.</li>
+<li><strong>How do other developers know what endpoints exist?</strong> Manual documentation becomes outdated instantly, leading to integration delays and frustrated frontend teams.</li>
+<li><strong>Can it handle multiple requests simultaneously?</strong> Flask&rsquo;s development server processes requests one at a time, creating bottlenecks under any real load.</li>
+<li><strong>How do you know if the response format is correct?</strong> Without type checking, you might accidentally return different data structures from the same endpoint, breaking client applications.</li>
+</ul>
+<p>The real question isn&rsquo;t &ldquo;Can I make an API?&rdquo; It&rsquo;s &ldquo;Can I make an API that won&rsquo;t embarrass me in production?&rdquo;</p>
+<h2 id="why-building-real-apis-is-hard">Why Building Real APIs Is Hard<a class="anchor" href="#why-building-real-apis-is-hard">#</a></h2>
+<p>Think about what happens when you deploy to production. Your API needs to:</p>
+<ol>
+<li><strong>Handle real traffic</strong> - Not just you clicking refresh in the browser. Real users send hundreds of concurrent requests, retry failed requests, and expect sub-second response times.</li>
+<li><strong>Validate input</strong> - Users will send garbage data, guaranteed. They&rsquo;ll send strings where you expect numbers, skip required fields, or inject malicious content trying to break your system.</li>
+<li><strong>Document itself</strong> - Your frontend team needs to know how to use it. Manual documentation becomes outdated the moment you change an endpoint, leading to integration bugs and wasted developer time.</li>
+<li><strong>Handle errors gracefully</strong> - When (not if) things go wrong, users need helpful error messages, not cryptic stack traces that expose your internal system details.</li>
+<li><strong>Perform well</strong> - Slow APIs make users angry and cost money. Every 100ms of additional latency can reduce conversions by 1% in e-commerce applications.</li>
+</ol>
+<p>Most tutorials skip these details because they&rsquo;re &ldquo;advanced topics.&rdquo; But here&rsquo;s the secret: with the right tools, they don&rsquo;t have to be.</p>
+<h2 id="enter-fastapi-the-missing-piece">Enter FastAPI: The Missing Piece<a class="anchor" href="#enter-fastapi-the-missing-piece">#</a></h2>
+<p>What if I told you there&rsquo;s a way to get all of these features almost for free? FastAPI emerged from a simple observation: modern Python has everything we need to build great APIs, we just need to use it properly.</p>
+<p>Think about what makes good Python code:</p>
+<ul>
+<li><strong>Type hints</strong> tell us what goes where - and FastAPI uses these to automatically validate requests and generate documentation, eliminating entire categories of bugs</li>
+<li><strong>Async/await</strong> handles multiple operations efficiently - allowing your API to serve thousands of concurrent users instead of dozens</li>
+<li><strong>Standards</strong> make integration easier - FastAPI generates OpenAPI specifications that work with every major API tool and client library</li>
+</ul>
+<p>FastAPI takes these Python features you already know and turns them into API superpowers. Instead of writing boilerplate validation code, documentation, and error handling, you write clean Python functions and get production features automatically.</p>
+<p>But enough theory. Let&rsquo;s see how this works in practice.</p>
+<h2 id="building-your-first-real-api">Building Your First Real API<a class="anchor" href="#building-your-first-real-api">#</a></h2>
+<h3 id="step-1-the-application-factory-pattern">Step 1: The Application Factory Pattern<a class="anchor" href="#step-1-the-application-factory-pattern">#</a></h3>
+<p>Instead of creating the app globally, neodyme uses a factory function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># src/neodyme/main.py (simplified)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_app</span>() <span style="color:#f92672">-&gt;</span> FastAPI:
+</span></span><span style="display:flex;"><span>    app <span style="color:#f92672">=</span> FastAPI(
+</span></span><span style="display:flex;"><span>        title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Neodyme API&#34;</span>,
+</span></span><span style="display:flex;"><span>        version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0.1.0&#34;</span>,
+</span></span><span style="display:flex;"><span>        debug<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        docs_url<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/docs&#34;</span>,     <span style="color:#75715e"># Swagger UI</span>
+</span></span><span style="display:flex;"><span>        redoc_url<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/redoc&#34;</span>,   <span style="color:#75715e"># ReDoc documentation</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/health&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">health_check</span>() <span style="color:#f92672">-&gt;</span> dict[str, str]:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;healthy&#34;</span>}
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> app
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create the app instance</span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> create_app()</span></span></code></pre></div><p><strong>Why this pattern?</strong></p>
+<ul>
+<li><strong>Testable</strong>: Can create different app instances for testing</li>
+<li><strong>Configurable</strong>: Different settings for dev/prod</li>
+<li><strong>Clean</strong>: Separates setup from usage</li>
+</ul>
+<h3 id="step-2-understanding-the-magic">Step 2: Understanding the Magic<a class="anchor" href="#step-2-understanding-the-magic">#</a></h3>
+<p>When you define this endpoint:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/health&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">health_check</span>() <span style="color:#f92672">-&gt;</span> dict[str, str]:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;healthy&#34;</span>}</span></span></code></pre></div><p>Something remarkable happens. FastAPI looks at your function and automatically:</p>
+<ol>
+<li><strong>Validates</strong> the response matches <code>dict[str, str]</code></li>
+<li><strong>Serializes</strong> to JSON</li>
+<li><strong>Documents</strong> in OpenAPI schema</li>
+<li><strong>Generates</strong> interactive docs</li>
+</ol>
+<p>But how does this actually work under the hood?</p>
+<h3 id="step-3-the-requestresponse-flow">Step 3: The Request/Response Flow<a class="anchor" href="#step-3-the-requestresponse-flow">#</a></h3>
+<p>When someone visits your API, here&rsquo;s what happens:</p>
+<pre tabindex="0"><code>    Client Browser                    FastAPI                     Your Function
+         |                              |                              |
+         |--- GET /health -------------&gt;|                              |
+         |                              |                              |
+         |                              |--- Route matching ---------&gt;|
+         |                              |                              |
+         |                              |&lt;-- {&#34;status&#34;: &#34;healthy&#34;} ---|
+         |                              |                              |
+         |                              |--- Validate response ------&gt;|
+         |                              |                              |
+         |                              |--- Convert to JSON --------&gt;|
+         |                              |                              |
+         |&lt;-- HTTP 200 + JSON ---------|                              |</code></pre><p>Notice something important here: You wrote a simple Python function, but FastAPI handled all the web stuff. This is the power of having the framework do the heavy lifting.</p>
+<h2 id="a-question-for-you">A Question for You<a class="anchor" href="#a-question-for-you">#</a></h2>
+<p>Before we go further, let me ask: Have you ever had to manually write API documentation? Or debug why your API returns different data types inconsistently?</p>
+<p>If yes, you&rsquo;ll appreciate what comes next. If no, consider yourself lucky—FastAPI will save you from ever experiencing that pain.</p>
+<h2 id="hands-on-build-your-first-endpoint">Hands-On: Build Your First Endpoint<a class="anchor" href="#hands-on-build-your-first-endpoint">#</a></h2>
+<p>Now that you understand the theory, let&rsquo;s get our hands dirty. I&rsquo;m going to walk you through building a real API step by step. Don&rsquo;t worry about understanding every detail yet—we&rsquo;ll explain the concepts as we go.</p>
+<h3 id="1-the-simplest-possible-start">1. The Simplest Possible Start<a class="anchor" href="#1-the-simplest-possible-start">#</a></h3>
+<p>First, let&rsquo;s create something that actually works:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># main.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;My API&#34;</span>, version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.0.0&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">root</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Hello, World!&#34;</span>}</span></span></code></pre></div><p><strong>Stop and think</strong>: What&rsquo;s different about this compared to Flask? Notice the <code>async</code> keyword and the automatic JSON conversion. These aren&rsquo;t accidents—they&rsquo;re design choices that make your life easier.</p>
+<h3 id="2-adding-type-hints-the-secret-sauce">2. Adding Type Hints (The Secret Sauce)<a class="anchor" href="#2-adding-type-hints-the-secret-sauce">#</a></h3>
+<p>Now let&rsquo;s see what happens when we add type information:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;My API&#34;</span>, version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.0.0&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">root</span>() <span style="color:#f92672">-&gt;</span> dict[str, str]:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Hello, World!&#34;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/time&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">current_time</span>() <span style="color:#f92672">-&gt;</span> dict[str, datetime]:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;current_time&#34;</span>: datetime<span style="color:#f92672">.</span>now()}</span></span></code></pre></div><p><strong>Here&rsquo;s what just happened</strong>: By adding <code>-&gt; dict[str, str]</code>, you told FastAPI exactly what this endpoint returns. FastAPI will now:</p>
+<ul>
+<li><strong>Validate that your function actually returns that format</strong> - preventing runtime errors where you accidentally return the wrong data type</li>
+<li><strong>Generate proper documentation</strong> - so frontend developers know exactly what to expect from your API</li>
+<li><strong>Give helpful error messages if something goes wrong</strong> - instead of generic 500 errors, you get specific information about what type was expected vs what was returned</li>
+</ul>
+<p>This type information serves three critical purposes: it prevents bugs (by catching type mismatches early), improves developer experience (through better documentation), and enables automatic serialization (FastAPI knows how to convert your Python objects to JSON).</p>
+<h3 id="3-adding-production-patterns">3. Adding Production Patterns<a class="anchor" href="#3-adding-production-patterns">#</a></h3>
+<p>Real APIs need health checks for monitoring. Let&rsquo;s add one:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/health&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">health_check</span>() <span style="color:#f92672">-&gt;</span> dict[str, str]:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;healthy&#34;</span>, <span style="color:#e6db74">&#34;service&#34;</span>: <span style="color:#e6db74">&#34;my-api&#34;</span>}</span></span></code></pre></div><p><strong>Why health checks matter</strong>: In production, your deployment system needs to know if your API is running properly. Load balancers use health checks to decide whether to send traffic to your server, monitoring systems use them to trigger alerts when services fail, and deployment tools use them to determine if a new version started successfully. Without a health check, these systems can&rsquo;t distinguish between &ldquo;server is starting up&rdquo; and &ldquo;server is broken.&rdquo;</p>
+<h2 id="the-neodyme-approach-learning-from-production-code">The Neodyme Approach: Learning from Production Code<a class="anchor" href="#the-neodyme-approach-learning-from-production-code">#</a></h2>
+<p>Now that you&rsquo;ve built your first API, let&rsquo;s look at how neodyme—a production-ready FastAPI project—structures things. You might wonder: &ldquo;Why not just put everything in one file like my simple example?&rdquo;</p>
+<p>The answer lies in a fundamental principle: <strong>Code you write once becomes code you maintain forever.</strong></p>
+<h3 id="what-is-the-factory-pattern-and-why-should-you-care">What Is the Factory Pattern (And Why Should You Care)?<a class="anchor" href="#what-is-the-factory-pattern-and-why-should-you-care">#</a></h3>
+<p>Before we dive into neodyme&rsquo;s code, let&rsquo;s address a key concept you&rsquo;ll see: the factory pattern.</p>
+<p>Think of it like this: Instead of building a car directly in your driveway every time you need one, you have a car factory that knows how to build cars with different options. The factory pattern works the same way—instead of creating objects directly, you have a function that creates them for you.</p>
+<p><strong>Why is this useful for APIs?</strong></p>
+<ul>
+<li><strong>Testing</strong>: You can create different versions of your app for tests. This means you can test against a separate database, mock external services, or use different configurations without affecting your production code.</li>
+<li><strong>Configuration</strong>: Different settings for development vs production. Your local environment needs debug mode and SQLite, while production needs optimized settings and PostgreSQL—the factory pattern makes this seamless.</li>
+<li><strong>Flexibility</strong>: Easy to modify how your app is created. When you need to add new middleware, change database connections, or integrate new services, you only modify the factory function instead of hunting through scattered code.</li>
+</ul>
+<p>Here&rsquo;s how neodyme implements this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Simplified version of neodyme&#39;s main.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> collections.abc <span style="color:#f92672">import</span> AsyncGenerator
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> contextlib <span style="color:#f92672">import</span> asynccontextmanager
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This function manages startup and shutdown</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@asynccontextmanager</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lifespan</span>(app: FastAPI) <span style="color:#f92672">-&gt;</span> AsyncGenerator[<span style="color:#66d9ef">None</span>, <span style="color:#66d9ef">None</span>]:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Startup: initialize database, connections, etc.</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;🚀 Starting up...&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">yield</span>  <span style="color:#75715e"># This is where your app runs</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Shutdown: cleanup resources</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;🔽 Shutting down...&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_app</span>() <span style="color:#f92672">-&gt;</span> FastAPI:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;This is the factory function - it creates our app&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    app <span style="color:#f92672">=</span> FastAPI(
+</span></span><span style="display:flex;"><span>        title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Neodyme API&#34;</span>,
+</span></span><span style="display:flex;"><span>        version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0.1.0&#34;</span>,
+</span></span><span style="display:flex;"><span>        lifespan<span style="color:#f92672">=</span>lifespan,  <span style="color:#75715e"># Manages startup/shutdown</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/health&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">health_check</span>() <span style="color:#f92672">-&gt;</span> dict[str, str]:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;healthy&#34;</span>}
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> app
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create the app instance using our factory</span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> create_app()</span></span></code></pre></div><p><strong>Let&rsquo;s break this down:</strong></p>
+<ol>
+<li>
+<p><strong>The <code>lifespan</code> function</strong>: This handles what happens when your API starts up and shuts down. In production, you might need to connect to databases, initialize caches, or clean up resources. Without proper lifecycle management, you risk database connection leaks, zombie processes, or corrupted data during shutdowns.</p>
+</li>
+<li>
+<p><strong>The <code>create_app</code> factory</strong>: This function creates and configures your FastAPI app. Because it&rsquo;s a function, you can call it with different parameters for testing or different environments. This prevents the common problem of having hardcoded values that work in development but break in production.</p>
+</li>
+<li>
+<p><strong>The <code>yield</code> keyword</strong>: This is Python&rsquo;s way of saying &ldquo;pause here and come back later.&rdquo; Everything before <code>yield</code> happens at startup, everything after happens at shutdown. This guarantees that cleanup code runs even if your application crashes or is forcibly terminated.</p>
+</li>
+</ol>
+<h3 id="why-this-matters-for-you">Why This Matters for You<a class="anchor" href="#why-this-matters-for-you">#</a></h3>
+<p>You might think: &ldquo;This seems more complicated than my simple example.&rdquo; And you&rsquo;re right—it is more code. But consider what you gain:</p>
+<ul>
+<li><strong>Reliability</strong>: Proper startup/shutdown handling prevents resource leaks that can crash your server after hours or days of operation</li>
+<li><strong>Testability</strong>: You can create test versions of your app easily, which means faster development cycles and fewer production bugs</li>
+<li><strong>Maintainability</strong>: Clear separation between app creation and app usage means adding new features or changing configurations becomes predictable and safe</li>
+</ul>
+<p>Think of it as the difference between a bicycle and a car. The bicycle is simpler, but the car has safety features, comfort, and can handle longer journeys. Your API will need to go on long journeys.</p>
+<h2 id="api-documentation-magic">API Documentation Magic<a class="anchor" href="#api-documentation-magic">#</a></h2>
+<p>Here&rsquo;s where FastAPI really shines. Start your server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uvicorn main:app --reload</span></span></code></pre></div><p>Now open your browser and visit <code>http://localhost:8000/docs</code>. What you&rsquo;ll see might surprise you.</p>
+<p><strong>Interactive Documentation - Automatically Generated</strong></p>
+<pre tabindex="0"><code>┌─────────────────────────────────────────────────────┐
+│                  Swagger UI                         │
+├─────────────────────────────────────────────────────┤
+│  GET /health                                        │
+│  ├─ Try it out [Button]                             │
+│  ├─ Parameters: none                                │
+│  ├─ Responses:                                      │
+│  │  └─ 200: {&#34;status&#34;: &#34;string&#34;}                    │
+│  └─ Execute [Button]                                │
+├─────────────────────────────────────────────────────┤
+│  GET /time                                          │
+│  ├─ Try it out [Button]                             │
+│  ├─ Parameters: none                                │
+│  ├─ Response Schema:                                │
+│  │  └─ {&#34;current_time&#34;: &#34;2024-01-01T12:00:00&#34;}      │
+│  └─ Execute [Button]                                │
+└─────────────────────────────────────────────────────┘</code></pre><p><strong>Think about what just happened</strong>: You wrote Python functions with type hints, and FastAPI created:</p>
+<ul>
+<li><strong>Interactive documentation</strong> that stays perfectly synchronized with your code because it&rsquo;s generated from the same source</li>
+<li><strong>Request/response examples</strong> that are always accurate because they&rsquo;re derived from your actual type definitions</li>
+<li><strong>A testing interface</strong> that lets developers experiment with your API without writing separate test scripts</li>
+<li><strong>OpenAPI specification</strong> that works with every major API tool, client generator, and testing framework</li>
+</ul>
+<p>All automatically. No separate documentation files that become outdated, no manual updates when code changes (because the docs are generated from the code), no forgetting to document new endpoints (because undocumented endpoints literally cannot exist).</p>
+<p><strong>Try This</strong>: Click &ldquo;Try it out&rdquo; on any endpoint and hit &ldquo;Execute.&rdquo; You&rsquo;re now testing your API directly from the documentation. Your frontend developers will love this because they can understand and test your API without reading code or asking you questions.</p>
+<h3 id="alternative-documentation-styles">Alternative Documentation Styles<a class="anchor" href="#alternative-documentation-styles">#</a></h3>
+<p>FastAPI also provides ReDoc at <code>http://localhost:8000/redoc</code>:</p>
+<pre tabindex="0"><code>┌─────────────────────────────────────────────────────┐
+│                    ReDoc                            │
+├─────────────────────────────────────────────────────┤
+│  API Reference                                      │
+│                                                     │
+│  ▼ Health Check                                     │
+│    GET /health                                      │
+│    Returns the health status of the API            │
+│                                                     │
+│    Response 200                                     │
+│    {                                                │
+│      &#34;status&#34;: &#34;string&#34;                             │
+│    }                                                │
+│                                                     │
+│  ▼ Time                                             │
+│    GET /time                                        │
+│    Returns current server time                      │
+└─────────────────────────────────────────────────────┘</code></pre><p><strong>The Point</strong>: You get professional API documentation in multiple formats without writing a single line of documentation code.</p>
+<h2 id="error-handling-that-actually-helps">Error Handling That Actually Helps<a class="anchor" href="#error-handling-that-actually-helps">#</a></h2>
+<p>FastAPI provides meaningful errors by default:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, HTTPException
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/users/</span><span style="color:#e6db74">{user_id}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_user</span>(user_id: int) <span style="color:#f92672">-&gt;</span> dict[str, str]:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> user_id <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(
+</span></span><span style="display:flex;"><span>            status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">400</span>, 
+</span></span><span style="display:flex;"><span>            detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;User ID must be positive&#34;</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;user_id&#34;</span>: str(user_id)}</span></span></code></pre></div><p><strong>Try it</strong>: Visit <code>/users/abc</code> and see the automatic validation error.</p>
+<h2 id="performance-why-async-matters-and-when-it-doesnt">Performance: Why <code>async</code> Matters (And When It Doesn&rsquo;t)<a class="anchor" href="#performance-why-async-matters-and-when-it-doesnt">#</a></h2>
+<p>You&rsquo;ve probably noticed the <code>async</code> keyword in our examples. Let me ask you a question: What happens when your API needs to wait for something?</p>
+<p>Consider this scenario: Your API needs to fetch data from another service. With traditional synchronous code, your entire server waits while that request completes. It&rsquo;s like having one checkout line at a grocery store—everyone waits for the person in front to finish completely, even if they&rsquo;re just standing there waiting for a price check.</p>
+<p>FastAPI&rsquo;s async support is like having a smart checkout system that can process multiple customers simultaneously. When one customer needs a price check, the cashier can start scanning items for the next customer instead of standing idle.</p>
+<h3 id="seeing-the-difference">Seeing the Difference<a class="anchor" href="#seeing-the-difference">#</a></h3>
+<p>Here&rsquo;s a simple example to illustrate:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> asyncio
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/fast&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fast_endpoint</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Non-blocking operation - server can handle other requests</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> asyncio<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.1</span>)  <span style="color:#75715e"># Simulates waiting for database/API</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Fast response&#34;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/slow&#34;</span>)  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">slow_endpoint</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Blocking operation - server must wait</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span>    time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.1</span>)  <span style="color:#75715e"># Simulates blocking operation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Slower response&#34;</span>}</span></span></code></pre></div><p><strong>The difference becomes clear under load</strong>:</p>
+<pre tabindex="0"><code>Single Request Performance:
+┌──────────────┬─────────────┬─────────────┐
+│ Endpoint     │ Time        │ Blocking?   │
+├──────────────┼─────────────┼─────────────┤
+│ /fast (async)│ ~100ms      │ No          │
+│ /slow (sync) │ ~100ms      │ Yes         │
+└──────────────┴─────────────┴─────────────┘
+
+100 Concurrent Requests:
+┌──────────────┬─────────────┬─────────────┐
+│ Endpoint     │ Total Time  │ Throughput  │
+├──────────────┼─────────────┼─────────────┤
+│ /fast (async)│ ~200ms      │ ~500 req/s  │
+│ /slow (sync) │ ~10s        │ ~10 req/s   │
+└──────────────┴─────────────┴─────────────┘</code></pre><p><strong>When to use <code>async</code>:</strong></p>
+<ul>
+<li><strong>Database queries</strong> - Because waiting for disk reads shouldn&rsquo;t block other users</li>
+<li><strong>External API calls</strong> - Because network latency shouldn&rsquo;t paralyze your entire application</li>
+<li><strong>File operations</strong> - Because reading/writing files involves slow disk I/O</li>
+<li><strong>Any I/O-bound work</strong> - Basically, anything that involves waiting for something outside your CPU</li>
+</ul>
+<p><strong>When NOT to use <code>async</code>:</strong></p>
+<ul>
+<li><strong>CPU-intensive calculations</strong> - Because the CPU is actually busy and can&rsquo;t do other work anyway</li>
+<li><strong>Simple data transformations</strong> - Because they complete instantly and don&rsquo;t benefit from concurrency</li>
+<li><strong>In-memory operations</strong> - Because they&rsquo;re already fast and don&rsquo;t involve waiting</li>
+</ul>
+<p><strong>The FastAPI Secret</strong>: Even if you use regular <code>def</code> functions, FastAPI is smart enough to run them in a thread pool, so your API still handles multiple requests. But <code>async</code> is more efficient for I/O operations because it doesn&rsquo;t require creating new threads (which consume memory and CPU overhead) for each concurrent operation.</p>
+<h3 id="a-real-world-question">A Real-World Question<a class="anchor" href="#a-real-world-question">#</a></h3>
+<p>Think about your current or past projects: How many times have you had to call external APIs or databases? If the answer is &ldquo;often,&rdquo; then async programming will make your applications significantly faster and more responsive under load.</p>
+<p>But here&rsquo;s the key insight: You don&rsquo;t need to understand all the details of async programming to benefit from it. FastAPI handles most of the complexity for you, and the performance gains are automatic once you use the <code>async</code>/<code>await</code> keywords correctly.</p>
+<h2 id="architecture-overview">Architecture Overview<a class="anchor" href="#architecture-overview">#</a></h2>
+<p>Here&rsquo;s how the pieces fit together:</p>
+<pre tabindex="0"><code>┌─────────────────────────────────────────┐
+│              FastAPI App                │
+├─────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────────┐   │
+│  │   Routes    │  │   Middleware    │   │
+│  │ /health     │  │ - CORS          │   │
+│  │ /users      │  │ - Auth          │   │
+│  │ /docs       │  │ - Logging       │   │
+│  └─────────────┘  └─────────────────┘   │
+├─────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────────┐   │
+│  │ Validation  │  │ Serialization   │   │
+│  │ (Pydantic)  │  │ (JSON)          │   │
+│  └─────────────┘  └─────────────────┘   │
+├─────────────────────────────────────────┤
+│           ASGI Server (Uvicorn)         │
+└─────────────────────────────────────────┘
+                    │
+                    ▼
+            HTTP Requests/Responses</code></pre><h2 id="what-youve-learned">What You&rsquo;ve Learned<a class="anchor" href="#what-youve-learned">#</a></h2>
+<p>By the end of this chapter, you understand:</p>
+<p>✅ <strong>Why simple tutorial code isn&rsquo;t enough</strong> for production APIs<br>
+✅ <strong>How FastAPI solves common API problems</strong> automatically<br>
+✅ <strong>The factory pattern</strong> and why it matters for maintainable code<br>
+✅ <strong>Type hints as API documentation</strong> and validation<br>
+✅ <strong>When and why to use async</strong> in your endpoints<br>
+✅ <strong>Automatic documentation generation</strong> with Swagger UI and ReDoc</p>
+<p>More importantly, you&rsquo;ve built your first production-ready API foundation.</p>
+<h2 id="building-blocks-for-next-chapters">Building Blocks for Next Chapters<a class="anchor" href="#building-blocks-for-next-chapters">#</a></h2>
+<p>This foundation gives us:</p>
+<ul>
+<li><strong>HTTP handling</strong> ← You are here</li>
+<li><strong>Request validation</strong> ← Chapter 2: Adding a database</li>
+<li><strong>Database integration</strong> ← Chapter 3: User management</li>
+<li><strong>Error handling</strong> ← Chapter 6: Professional error handling</li>
+</ul>
+<h2 id="exercises">Exercises<a class="anchor" href="#exercises">#</a></h2>
+<ol>
+<li><strong>Add a new endpoint</strong>: Create <code>/info</code> that returns your API name and version</li>
+<li><strong>Add path parameters</strong>: Create <code>/greet/{name}</code> that returns a personalized greeting</li>
+<li><strong>Add query parameters</strong>: Create <code>/search?q=term&amp;limit=10</code> that accepts search terms</li>
+<li><strong>Explore the docs</strong>: Visit <code>/docs</code> and try out your endpoints</li>
+<li><strong>Experiment with async</strong>: Try adding a slow endpoint and test it with multiple concurrent requests</li>
+</ol>
+<h2 id="resources-for-deeper-learning">Resources for Deeper Learning<a class="anchor" href="#resources-for-deeper-learning">#</a></h2>
+<h3 id="design-patterns-factory-pattern">Design Patterns (Factory Pattern)<a class="anchor" href="#design-patterns-factory-pattern">#</a></h3>
+<ul>
+<li><strong>Refactoring Guru - Factory Method</strong>: Comprehensive explanation of the factory pattern with practical examples - <a href="https://refactoring.guru/design-patterns/factory-method">https://refactoring.guru/design-patterns/factory-method</a></li>
+<li><strong>DigitalOcean - Factory Design Pattern in Java</strong>: Clear examples of factory pattern benefits - <a href="https://www.digitalocean.com/community/tutorials/factory-design-pattern-in-java">https://www.digitalocean.com/community/tutorials/factory-design-pattern-in-java</a></li>
+<li><strong>GeeksforGeeks - Design Patterns Tutorial</strong>: Overview of all design patterns including factory - <a href="https://www.geeksforgeeks.org/system-design/software-design-patterns/">https://www.geeksforgeeks.org/system-design/software-design-patterns/</a></li>
+</ul>
+<h3 id="async-programming-in-python">Async Programming in Python<a class="anchor" href="#async-programming-in-python">#</a></h3>
+<ul>
+<li><strong>FastAPI Official Docs - Concurrency and async/await</strong>: The definitive guide to async in FastAPI - <a href="https://fastapi.tiangolo.com/async/">https://fastapi.tiangolo.com/async/</a></li>
+<li><strong>Dead Simple: When to Use Async in FastAPI</strong>: Practical guide on when to use async vs sync - <a href="https://hughesadam87.medium.com/dead-simple-when-to-use-async-in-fastapi-0e3259acea6f">https://hughesadam87.medium.com/dead-simple-when-to-use-async-in-fastapi-0e3259acea6f</a></li>
+<li><strong>Real Python - Using FastAPI to Build Python Web APIs</strong>: Comprehensive tutorial with async examples - <a href="https://realpython.com/fastapi-python-web-apis/">https://realpython.com/fastapi-python-web-apis/</a></li>
+</ul>
+<h3 id="fastapi-fundamentals">FastAPI Fundamentals<a class="anchor" href="#fastapi-fundamentals">#</a></h3>
+<ul>
+<li><strong>Real Python - Get Started With FastAPI</strong>: Beginner-friendly introduction to FastAPI - <a href="https://realpython.com/get-started-with-fastapi/">https://realpython.com/get-started-with-fastapi/</a></li>
+<li><strong>GeeksforGeeks - FastAPI Tutorial</strong>: Complete FastAPI tutorial covering all basics - <a href="https://www.geeksforgeeks.org/python/fastapi-tutorial/">https://www.geeksforgeeks.org/python/fastapi-tutorial/</a></li>
+<li><strong>FastAPI Async Guide</strong>: Advanced async patterns and best practices - <a href="https://www.mindbowser.com/fastapi-async-api-guide/">https://www.mindbowser.com/fastapi-async-api-guide/</a></li>
+</ul>
+<h3 id="why-these-resources-matter">Why These Resources Matter<a class="anchor" href="#why-these-resources-matter">#</a></h3>
+<ul>
+<li><strong>Factory Pattern</strong>: Understanding this pattern will help you write more maintainable and testable code</li>
+<li><strong>Async Programming</strong>: Critical for building high-performance APIs that can handle real-world traffic</li>
+<li><strong>FastAPI Specifics</strong>: The framework has many features beyond what we covered—these resources will help you explore them</li>
+</ul>
+<p><strong>Pro Tip</strong>: Don&rsquo;t try to read everything at once. Bookmark these resources and return to them as you encounter specific challenges in your API development journey.</p>
+<h2 id="next-connecting-to-a-database">Next: Connecting to a Database<a class="anchor" href="#next-connecting-to-a-database">#</a></h2>
+<p>Your API can handle HTTP requests beautifully, but it&rsquo;s not storing anything yet. In Chapter 2, we&rsquo;ll add persistent storage using SQLModel and see how neodyme manages database connections properly.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Preview of Chapter 2</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/users/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(user: UserCreate) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This will actually save to a database</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># and validate the input automatically</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span></span></span></code></pre></div><p>We&rsquo;ll explore how type hints become even more powerful when connected to a database, and why neodyme chose SQLModel over raw SQL or traditional ORMs.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+    </span>
+    <span>
+    
+      <a href="/neodyme/docs/chapter-2/" class="flex align-center">
+        <span>Chapter 2</span>
+        <img src="/neodyme/icons/forward.svg" class="book-icon" alt="Next" title="Chapter 2" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+
+ 
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-every-backend-developer-faces">The Problem Every Backend Developer Faces</a></li>
+    <li><a href="#why-building-real-apis-is-hard">Why Building Real APIs Is Hard</a></li>
+    <li><a href="#enter-fastapi-the-missing-piece">Enter FastAPI: The Missing Piece</a></li>
+    <li><a href="#building-your-first-real-api">Building Your First Real API</a>
+      <ul>
+        <li><a href="#step-1-the-application-factory-pattern">Step 1: The Application Factory Pattern</a></li>
+        <li><a href="#step-2-understanding-the-magic">Step 2: Understanding the Magic</a></li>
+        <li><a href="#step-3-the-requestresponse-flow">Step 3: The Request/Response Flow</a></li>
+      </ul>
+    </li>
+    <li><a href="#a-question-for-you">A Question for You</a></li>
+    <li><a href="#hands-on-build-your-first-endpoint">Hands-On: Build Your First Endpoint</a>
+      <ul>
+        <li><a href="#1-the-simplest-possible-start">1. The Simplest Possible Start</a></li>
+        <li><a href="#2-adding-type-hints-the-secret-sauce">2. Adding Type Hints (The Secret Sauce)</a></li>
+        <li><a href="#3-adding-production-patterns">3. Adding Production Patterns</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-neodyme-approach-learning-from-production-code">The Neodyme Approach: Learning from Production Code</a>
+      <ul>
+        <li><a href="#what-is-the-factory-pattern-and-why-should-you-care">What Is the Factory Pattern (And Why Should You Care)?</a></li>
+        <li><a href="#why-this-matters-for-you">Why This Matters for You</a></li>
+      </ul>
+    </li>
+    <li><a href="#api-documentation-magic">API Documentation Magic</a>
+      <ul>
+        <li><a href="#alternative-documentation-styles">Alternative Documentation Styles</a></li>
+      </ul>
+    </li>
+    <li><a href="#error-handling-that-actually-helps">Error Handling That Actually Helps</a></li>
+    <li><a href="#performance-why-async-matters-and-when-it-doesnt">Performance: Why <code>async</code> Matters (And When It Doesn’t)</a>
+      <ul>
+        <li><a href="#seeing-the-difference">Seeing the Difference</a></li>
+        <li><a href="#a-real-world-question">A Real-World Question</a></li>
+      </ul>
+    </li>
+    <li><a href="#architecture-overview">Architecture Overview</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#design-patterns-factory-pattern">Design Patterns (Factory Pattern)</a></li>
+        <li><a href="#async-programming-in-python">Async Programming in Python</a></li>
+        <li><a href="#fastapi-fundamentals">FastAPI Fundamentals</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-connecting-to-a-database">Next: Connecting to a Database</a></li>
+  </ul>
+</nav>
+
+
+
+  </div>
+</aside>
+
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

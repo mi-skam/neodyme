@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Building Neodyme: A Modern Python Backend Journey#
+Problem-Solution &#43; Progressive Complexity Structure
+Book Overview#
+This book teaches modern Python backend development by building &ldquo;Neodyme&rdquo; - a production-ready FastAPI application. Each chapter solves real problems developers face, building complexity progressively while maintaining practical focus.
+Target Audience#
+Intermediate Python developers who want to build professional backends using modern tools and patterns.
+
+Part I: Foundation Problems (Core Backend Basics)#
+Chapter 1: &ldquo;I Need a Web API That Actually Works&rdquo;#
+Problem: Creating a reliable HTTP API that handles requests properly">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/">
+  <meta property="og:site_name" content="Neodyme Documentation">
+  <meta property="og:title" content="Building Neodyme: A Modern Python Backend Journey">
+  <meta property="og:description" content="Building Neodyme: A Modern Python Backend Journey# Problem-Solution &#43; Progressive Complexity Structure
+Book Overview# This book teaches modern Python backend development by building “Neodyme” - a production-ready FastAPI application. Each chapter solves real problems developers face, building complexity progressively while maintaining practical focus.
+Target Audience# Intermediate Python developers who want to build professional backends using modern tools and patterns.
+Part I: Foundation Problems (Core Backend Basics)# Chapter 1: “I Need a Web API That Actually Works”# Problem: Creating a reliable HTTP API that handles requests properly">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+<title>Building Neodyme: A Modern Python Backend Journey | Neodyme Documentation</title>
+<link rel="icon" href="/neodyme/favicon.png" >
+<link rel="manifest" href="/neodyme/manifest.json">
+<link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/">
+<link rel="stylesheet" href="/neodyme/book.min.c098be6fdb8410d437a0799e694b206fa639685582089c583ae6ac07afec1ff8.css" integrity="sha256-wJi&#43;b9uEENQ3oHmeaUsgb6Y5aFWCCJxYOuasB6/sH/g=" crossorigin="anonymous">
+
+
+  <script defer src="/neodyme/fuse.min.js"></script>
+  <script defer src="/neodyme/en.search.min.f64f4d2b3193917ebd07e82190bf6e6a2f23d6e670fb678260875bd442e5cf4d.js" integrity="sha256-9k9NKzGTkX69B&#43;ghkL9uai8j1uZw&#43;2eCYIdb1ELlz00=" crossorigin="anonymous"></script>
+<link rel="alternate" type="application/rss+xml" href="https://mi-skam.github.io/neodyme/docs/index.xml" title="Neodyme Documentation" />
+
+  
+</head>
+<body dir="ltr" class="book-kind-section book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/neodyme/"><span>Neodyme Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-1/" class="">
+      Chapter 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-2/" class="">
+      Chapter 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-3/" class="">
+      Chapter 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-4/" class="">
+      Chapter 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-5/" class="">
+      Chapter 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-6/" class="">
+      Chapter 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-7/" class="">
+      Chapter 7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-8/" class="">
+      Chapter 8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-9/" class="">
+      Chapter 9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-10/" class="">
+      Chapter 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Building Neodyme: A Modern Python Backend Journey</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="building-neodyme-a-modern-python-backend-journey">Building Neodyme: A Modern Python Backend Journey<a class="anchor" href="#building-neodyme-a-modern-python-backend-journey">#</a></h1>
+<p><em>Problem-Solution + Progressive Complexity Structure</em></p>
+<h2 id="book-overview">Book Overview<a class="anchor" href="#book-overview">#</a></h2>
+<p>This book teaches modern Python backend development by building &ldquo;Neodyme&rdquo; - a production-ready FastAPI application. Each chapter solves real problems developers face, building complexity progressively while maintaining practical focus.</p>
+<h2 id="target-audience">Target Audience<a class="anchor" href="#target-audience">#</a></h2>
+<p>Intermediate Python developers who want to build professional backends using modern tools and patterns.</p>
+<hr>
+<h2 id="part-i-foundation-problems-core-backend-basics"><strong>Part I: Foundation Problems (Core Backend Basics)</strong><a class="anchor" href="#part-i-foundation-problems-core-backend-basics">#</a></h2>
+<h3 id="chapter-1-i-need-a-web-api-that-actually-works">Chapter 1: &ldquo;I Need a Web API That Actually Works&rdquo;<a class="anchor" href="#chapter-1-i-need-a-web-api-that-actually-works">#</a></h3>
+<p><strong>Problem</strong>: Creating a reliable HTTP API that handles requests properly</p>
+<ul>
+<li><strong>Pain Point</strong>: Basic Flask/Django tutorials don&rsquo;t teach production patterns</li>
+<li><strong>Theory</strong>: HTTP fundamentals, ASGI vs WSGI, automatic documentation</li>
+<li><strong>Simple Solution</strong>: Single FastAPI endpoint with proper response models</li>
+<li><strong>What You Learn</strong>: FastAPI basics, app structure, automatic documentation</li>
+</ul>
+<h3 id="chapter-2-i-need-to-store-data-that-persists">Chapter 2: &ldquo;I Need to Store Data That Persists&rdquo;<a class="anchor" href="#chapter-2-i-need-to-store-data-that-persists">#</a></h3>
+<p><strong>Problem</strong>: Moving beyond in-memory storage to real databases</p>
+<ul>
+<li><strong>Pain Point</strong>: Raw SQL is tedious, ORMs are confusing, async is hard</li>
+<li><strong>Theory</strong>: ORM patterns, async database operations, SQLModel benefits</li>
+<li><strong>Simple Solution</strong>: Single User model with basic CRUD</li>
+<li><strong>What You Learn</strong>: SQLModel basics, database connections, async patterns</li>
+</ul>
+<h3 id="chapter-3-i-need-to-validate-data-without-going-crazy">Chapter 3: &ldquo;I Need to Validate Data Without Going Crazy&rdquo;<a class="anchor" href="#chapter-3-i-need-to-validate-data-without-going-crazy">#</a></h3>
+<p><strong>Problem</strong>: Ensuring data integrity without writing endless validation code</p>
+<ul>
+<li><strong>Pain Point</strong>: Manual validation is error-prone and repetitive</li>
+<li><strong>Theory</strong>: Schema validation, serialization, type safety</li>
+<li><strong>Simple Solution</strong>: Pydantic models for request/response validation</li>
+<li><strong>What You Learn</strong>: Pydantic integration, request/response models, automatic validation</li>
+</ul>
+<h3 id="chapter-4-i-need-my-database-to-evolve-over-time">Chapter 4: &ldquo;I Need My Database to Evolve Over Time&rdquo;<a class="anchor" href="#chapter-4-i-need-my-database-to-evolve-over-time">#</a></h3>
+<p><strong>Problem</strong>: Managing database schema changes without losing data</p>
+<ul>
+<li><strong>Pain Point</strong>: Manual schema changes break in production</li>
+<li><strong>Theory</strong>: Database migrations, version control for schemas</li>
+<li><strong>Simple Solution</strong>: Alembic integration with SQLModel</li>
+<li><strong>What You Learn</strong>: Migration patterns, Alembic workflow, schema evolution</li>
+</ul>
+<hr>
+<h2 id="part-ii-integration-problems-system-design"><strong>Part II: Integration Problems (System Design)</strong><a class="anchor" href="#part-ii-integration-problems-system-design">#</a></h2>
+<h3 id="chapter-5-i-need-clean-architecture-that-scales">Chapter 5: &ldquo;I Need Clean Architecture That Scales&rdquo;<a class="anchor" href="#chapter-5-i-need-clean-architecture-that-scales">#</a></h3>
+<p><strong>Problem</strong>: Organizing code so it doesn&rsquo;t become a mess</p>
+<ul>
+<li><strong>Pain Point</strong>: Everything in one file doesn&rsquo;t work long-term</li>
+<li><strong>Theory</strong>: Repository pattern, dependency injection, layered architecture</li>
+<li><strong>What You Learn</strong>: Repository pattern, clean architecture, dependency management</li>
+</ul>
+<h3 id="chapter-6-i-need-to-handle-errors-like-a-professional">Chapter 6: &ldquo;I Need to Handle Errors Like a Professional&rdquo;<a class="anchor" href="#chapter-6-i-need-to-handle-errors-like-a-professional">#</a></h3>
+<p><strong>Problem</strong>: Graceful error handling and debugging</p>
+<ul>
+<li><strong>Pain Point</strong>: Cryptic 500 errors and poor error messages</li>
+<li><strong>Theory</strong>: Exception hierarchies, structured logging, error standardization</li>
+<li><strong>What You Learn</strong>: Exception design, error middleware, debugging strategies</li>
+</ul>
+<h3 id="chapter-7-i-need-security-that-actually-protects">Chapter 7: &ldquo;I Need Security That Actually Protects&rdquo;<a class="anchor" href="#chapter-7-i-need-security-that-actually-protects">#</a></h3>
+<p><strong>Problem</strong>: Authentication and authorization without security holes</p>
+<ul>
+<li><strong>Pain Point</strong>: Rolling your own auth is dangerous</li>
+<li><strong>Theory</strong>: Password hashing, JWT tokens, security best practices</li>
+<li><strong>What You Learn</strong>: Security fundamentals, hashing, token management</li>
+</ul>
+<h3 id="chapter-8-i-need-configuration-that-works-everywhere">Chapter 8: &ldquo;I Need Configuration That Works Everywhere&rdquo;<a class="anchor" href="#chapter-8-i-need-configuration-that-works-everywhere">#</a></h3>
+<p><strong>Problem</strong>: Managing settings across development, testing, and production</p>
+<ul>
+<li><strong>Pain Point</strong>: Hard-coded values break deployments</li>
+<li><strong>Theory</strong>: 12-factor configuration, environment management</li>
+<li><strong>What You Learn</strong>: Configuration patterns, environment management, deployment prep</li>
+</ul>
+<hr>
+<h2 id="part-iii-real-world-problems-production-concerns"><strong>Part III: Real-World Problems (Production Concerns)</strong><a class="anchor" href="#part-iii-real-world-problems-production-concerns">#</a></h2>
+<h3 id="chapter-9-i-need-tests-that-give-me-confidence">Chapter 9: &ldquo;I Need Tests That Give Me Confidence&rdquo;<a class="anchor" href="#chapter-9-i-need-tests-that-give-me-confidence">#</a></h3>
+<p><strong>Problem</strong>: Testing async code and database operations</p>
+<ul>
+<li><strong>Pain Point</strong>: Testing databases and HTTP endpoints is complex</li>
+<li><strong>Theory</strong>: Test strategies, fixtures, mocking, async testing</li>
+<li><strong>What You Learn</strong>: pytest patterns, async testing, test databases</li>
+</ul>
+<h3 id="chapter-10-i-need-deployment-that-actually-works">Chapter 10: &ldquo;I Need Deployment That Actually Works&rdquo;<a class="anchor" href="#chapter-10-i-need-deployment-that-actually-works">#</a></h3>
+<p><strong>Problem</strong>: Getting from laptop to production</p>
+<ul>
+<li><strong>Pain Point</strong>: &ldquo;Works on my machine&rdquo; syndrome</li>
+<li><strong>Theory</strong>: Containerization, process management, health checks</li>
+<li><strong>What You Learn</strong>: Docker patterns, deployment strategies, production configuration</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+
+ 
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

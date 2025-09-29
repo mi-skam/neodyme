@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chapter 10: &ldquo;I Need Deployment That Actually Works&rdquo;#
+Your neodyme application is secure, well-tested, and properly configured. But now comes the moment of truth: getting it running reliably in production. You&rsquo;ve probably deployed applications before, only to discover they work perfectly on your laptop but fail mysteriously in production.
+&ldquo;It works on my machine&rdquo; becomes &ldquo;why does the container keep crashing?&rdquo; Database connections fail, environment variables are missing, health checks timeout, and the application that passed all tests can&rsquo;t even start in production.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/chapter-10/">
+  <meta property="og:site_name" content="Neodyme Documentation">
+  <meta property="og:title" content="Chapter 10">
+  <meta property="og:description" content="Chapter 10: “I Need Deployment That Actually Works”# Your neodyme application is secure, well-tested, and properly configured. But now comes the moment of truth: getting it running reliably in production. You’ve probably deployed applications before, only to discover they work perfectly on your laptop but fail mysteriously in production.
+“It works on my machine” becomes “why does the container keep crashing?” Database connections fail, environment variables are missing, health checks timeout, and the application that passed all tests can’t even start in production.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Chapter 10 | Neodyme Documentation</title>
+<link rel="icon" href="/neodyme/favicon.png" >
+<link rel="manifest" href="/neodyme/manifest.json">
+<link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/chapter-10/">
+<link rel="stylesheet" href="/neodyme/book.min.c098be6fdb8410d437a0799e694b206fa639685582089c583ae6ac07afec1ff8.css" integrity="sha256-wJi&#43;b9uEENQ3oHmeaUsgb6Y5aFWCCJxYOuasB6/sH/g=" crossorigin="anonymous">
+
+
+  <script defer src="/neodyme/fuse.min.js"></script>
+  <script defer src="/neodyme/en.search.min.f64f4d2b3193917ebd07e82190bf6e6a2f23d6e670fb678260875bd442e5cf4d.js" integrity="sha256-9k9NKzGTkX69B&#43;ghkL9uai8j1uZw&#43;2eCYIdb1ELlz00=" crossorigin="anonymous"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/neodyme/"><span>Neodyme Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-1/" class="">
+      Chapter 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-2/" class="">
+      Chapter 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-3/" class="">
+      Chapter 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-4/" class="">
+      Chapter 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-5/" class="">
+      Chapter 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-6/" class="">
+      Chapter 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-7/" class="">
+      Chapter 7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-8/" class="">
+      Chapter 8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-9/" class="">
+      Chapter 9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-10/" class="active">
+      Chapter 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Chapter 10</h3>
+
+  <label for="toc-control">
+    
+    <img src="/neodyme/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-deployment-surprises-that-break-everything">The Problem: Deployment Surprises That Break Everything</a></li>
+    <li><a href="#why-just-run-it-in-docker-isnt-enough">Why &ldquo;Just Run It in Docker&rdquo; Isn&rsquo;t Enough</a></li>
+    <li><a href="#the-professional-deployment-solution-production-ready-containers">The Professional Deployment Solution: Production-Ready Containers</a></li>
+    <li><a href="#application-startup-and-health-checks">Application Startup and Health Checks</a></li>
+    <li><a href="#health-monitoring-and-observability">Health Monitoring and Observability</a></li>
+    <li><a href="#container-orchestration-and-deployment">Container Orchestration and Deployment</a></li>
+    <li><a href="#deployment-automation-and-cicd">Deployment Automation and CI/CD</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#container-best-practices">Container Best Practices</a></li>
+        <li><a href="#container-orchestration">Container Orchestration</a></li>
+        <li><a href="#cicd-and-automation">CI/CD and Automation</a></li>
+        <li><a href="#production-operations">Production Operations</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-production-monitoring-and-observability">Next: Production Monitoring and Observability</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="chapter-10-i-need-deployment-that-actually-works">Chapter 10: &ldquo;I Need Deployment That Actually Works&rdquo;<a class="anchor" href="#chapter-10-i-need-deployment-that-actually-works">#</a></h1>
+<p>Your neodyme application is secure, well-tested, and properly configured. But now comes the moment of truth: getting it running reliably in production. You&rsquo;ve probably deployed applications before, only to discover they work perfectly on your laptop but fail mysteriously in production.</p>
+<p><em>&ldquo;It works on my machine&rdquo; becomes &ldquo;why does the container keep crashing?&rdquo; Database connections fail, environment variables are missing, health checks timeout, and the application that passed all tests can&rsquo;t even start in production.</em></p>
+<p>This is the deployment reality that breaks so many applications: <strong>code that works everywhere except where it needs to work most</strong>. The question isn&rsquo;t whether deployment will be challenging—it&rsquo;s whether your deployment strategy will make problems visible and fixable, or hide them until they cause outages.</p>
+<h2 id="the-problem-deployment-surprises-that-break-everything">The Problem: Deployment Surprises That Break Everything<a class="anchor" href="#the-problem-deployment-surprises-that-break-everything">#</a></h2>
+<p>Let me ask you: Have you ever spent hours debugging a deployment failure only to discover it was caused by a missing environment variable that worked fine in development? If so, you&rsquo;ve experienced the pain of deployment surprises.</p>
+<p>Here&rsquo;s what deployment typically looks like when it&rsquo;s not properly planned:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># What seems like it should work but fails in production</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Local development script</span>
+</span></span><span style="display:flex;"><span>export DATABASE_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sqlite:///./dev.db&#34;</span>
+</span></span><span style="display:flex;"><span>export SECRET_KEY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dev-secret-key&#34;</span>
+</span></span><span style="display:flex;"><span>export DEBUG<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;True&#34;</span>
+</span></span><span style="display:flex;"><span>python main<span style="color:#f92672">.</span>py  <span style="color:#75715e"># Works perfectly!</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Production deployment script</span>
+</span></span><span style="display:flex;"><span>export DATABASE_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;postgresql://user:pass@prod-db/app&#34;</span>
+</span></span><span style="display:flex;"><span>export SECRET_KEY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;prod-secret&#34;</span>  <span style="color:#75715e"># Oops, too short!</span>
+</span></span><span style="display:flex;"><span>export DEBUG<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;False&#34;</span>
+</span></span><span style="display:flex;"><span>python main<span style="color:#f92672">.</span>py  <span style="color:#75715e"># Crashes with validation error!</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Docker attempt</span>
+</span></span><span style="display:flex;"><span>FROM python:<span style="color:#ae81ff">3.11</span>
+</span></span><span style="display:flex;"><span>COPY <span style="color:#f92672">.</span> <span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>RUN pip install <span style="color:#f92672">-</span>r requirements<span style="color:#f92672">.</span>txt
+</span></span><span style="display:flex;"><span>CMD [<span style="color:#e6db74">&#34;python&#34;</span>, <span style="color:#e6db74">&#34;main.py&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Container builds but crashes at runtime with permission errors</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Production environment</span>
+</span></span><span style="display:flex;"><span>server:<span style="color:#f92672">~</span><span style="color:#960050;background-color:#1e0010">$</span> python main<span style="color:#f92672">.</span>py
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ModuleNotFoundError</span>: No module named <span style="color:#e6db74">&#39;neodyme&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># PYTHONPATH not set correctly</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Load balancer health check</span>
+</span></span><span style="display:flex;"><span>curl http:<span style="color:#f92672">//</span>app:<span style="color:#ae81ff">8000</span><span style="color:#f92672">/</span>health
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Connection refused - app listening on localhost instead of 0.0.0.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Database connection</span>
+</span></span><span style="display:flex;"><span>sqlalchemy<span style="color:#f92672">.</span>exc<span style="color:#f92672">.</span>OperationalError: could <span style="color:#f92672">not</span> connect to server
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Database credentials work locally but fail in production network</span></span></span></code></pre></div><p><strong>Why this ad-hoc approach creates systematic deployment failures:</strong></p>
+<ul>
+<li><strong>Environment inconsistency</strong> - Development environments differ from production in ways that aren&rsquo;t discovered until deployment</li>
+<li><strong>Dependency version drift</strong> - Local development uses different package versions than production, causing unexpected behavior</li>
+<li><strong>Network configuration differences</strong> - Applications that work with localhost fail when they need to accept connections from load balancers</li>
+<li><strong>Permission and security issues</strong> - Containers running as root work locally but violate production security policies</li>
+<li><strong>Resource limitation surprises</strong> - Applications that work with unlimited local resources fail when they hit production memory or CPU limits</li>
+<li><strong>Configuration validation gaps</strong> - Configuration that&rsquo;s never validated until production deployment causes startup failures</li>
+</ul>
+<p>The fundamental problem is <strong>treating deployment as an afterthought</strong>. Deployment isn&rsquo;t just running your code somewhere else—it&rsquo;s running your code in a completely different environment with different constraints, security requirements, and failure modes.</p>
+<h2 id="why-just-run-it-in-docker-isnt-enough">Why &ldquo;Just Run It in Docker&rdquo; Isn&rsquo;t Enough<a class="anchor" href="#why-just-run-it-in-docker-isnt-enough">#</a></h2>
+<p>The naive approach to containerization looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># Dockerfile that works locally but fails in production</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span> <span style="color:#e6db74">python:3.11</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy everything (including secrets, cache files, and dev dependencies)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . /app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span> <span style="color:#e6db74">/app</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install everything as root</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pip install -r requirements.txt<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Run as root (security vulnerability)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;python&#34;</span>, <span style="color:#e6db74">&#34;main.py&#34;</span>]</span></span></code></pre></div><p><strong>This approach fails because:</strong></p>
+<ul>
+<li><strong>Security vulnerabilities</strong> - Running containers as root violates security best practices and enables privilege escalation attacks</li>
+<li><strong>Image size bloat</strong> - Including development files, cache directories, and unnecessary dependencies creates huge images that are slow to deploy</li>
+<li><strong>Secret exposure</strong> - Copying the entire directory includes sensitive files like .env files with secrets</li>
+<li><strong>Build optimization absence</strong> - No layer caching optimization means every code change requires rebuilding the entire environment</li>
+<li><strong>Health check missing</strong> - Container orchestrators can&rsquo;t determine if the application is healthy and ready for traffic</li>
+<li><strong>Resource limits undefined</strong> - Containers can consume unlimited resources, causing node failures in production</li>
+<li><strong>Signal handling broken</strong> - Applications don&rsquo;t handle shutdown signals properly, causing data loss during deployments</li>
+</ul>
+<h2 id="the-professional-deployment-solution-production-ready-containers">The Professional Deployment Solution: Production-Ready Containers<a class="anchor" href="#the-professional-deployment-solution-production-ready-containers">#</a></h2>
+<p>Professional deployment builds containers that work reliably in production environments. Here&rsquo;s how neodyme implements this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># Dockerfile - Multi-stage production build</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Stage 1: Build dependencies</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span> <span style="color:#e6db74">python:3.11-slim</span> <span style="color:#66d9ef">as</span> <span style="color:#e6db74">builder</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install build dependencies</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    gcc <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    postgresql-client <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Create virtual environment</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> python -m venv /opt/venv<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/opt/venv/bin:</span>$PATH<span style="color:#e6db74">&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy and install Python dependencies</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> requirements.txt .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pip install --no-cache-dir --upgrade pip <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    pip install --no-cache-dir -r requirements.txt<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Stage 2: Production runtime</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span> <span style="color:#e6db74">python:3.11-slim</span> <span style="color:#66d9ef">as</span> <span style="color:#e6db74">production</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install runtime dependencies only</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    postgresql-client <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    curl <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> rm -rf /var/lib/apt/lists/* <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> apt-get clean<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Create non-root user for security</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> groupadd -r appuser <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    useradd -r -g appuser appuser <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    mkdir -p /app <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    chown appuser:appuser /app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy virtual environment from builder stage</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>builder /opt/venv /opt/venv<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/opt/venv/bin:</span>$PATH<span style="color:#e6db74">&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Set working directory</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span> <span style="color:#e6db74">/app</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy application code (excluding development files)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --chown<span style="color:#f92672">=</span>appuser:appuser neodyme/ neodyme/<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --chown<span style="color:#f92672">=</span>appuser:appuser alembic/ alembic/<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --chown<span style="color:#f92672">=</span>appuser:appuser alembic.ini .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --chown<span style="color:#f92672">=</span>appuser:appuser pyproject.toml .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --chown<span style="color:#f92672">=</span>appuser:appuser docker/ docker/<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Switch to non-root user</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">USER</span> <span style="color:#e6db74">appuser</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Set Python path</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> PYTHONPATH<span style="color:#f92672">=</span>/app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> PYTHONUNBUFFERED<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Health check endpoint</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">HEALTHCHECK</span> --interval<span style="color:#f92672">=</span>30s --timeout<span style="color:#f92672">=</span>10s --start-period<span style="color:#f92672">=</span>60s --retries<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    CMD curl -f http://localhost:8000/health <span style="color:#f92672">||</span> exit <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Expose port</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span> <span style="color:#e6db74">8000</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Use custom entrypoint for proper startup sequence</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;python&#34;</span>, <span style="color:#e6db74">&#34;docker/entrypoint.py&#34;</span>]</span></span></code></pre></div><p><strong>Why this multi-stage approach creates reliable deployments:</strong></p>
+<ul>
+<li><strong>Security hardening</strong> - Non-root user execution prevents privilege escalation and follows security best practices</li>
+<li><strong>Optimized image size</strong> - Multi-stage build separates build dependencies from runtime, creating smaller production images</li>
+<li><strong>Layer caching optimization</strong> - Dependencies are installed in separate layers, speeding up rebuilds when only application code changes</li>
+<li><strong>Health check integration</strong> - Built-in health checks enable container orchestrators to manage application lifecycle properly</li>
+<li><strong>Signal handling</strong> - Custom entrypoint ensures proper shutdown behavior during deployments</li>
+<li><strong>Resource awareness</strong> - Environment variables and limits can be configured for different deployment environments</li>
+</ul>
+<h2 id="application-startup-and-health-checks">Application Startup and Health Checks<a class="anchor" href="#application-startup-and-health-checks">#</a></h2>
+<p>Production applications need robust startup sequences and health monitoring:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># docker/entrypoint.py - Production-ready startup sequence</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> asyncio
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> signal
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> logging
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Optional
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add application to Python path</span>
+</span></span><span style="display:flex;"><span>sys<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;/app&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.config <span style="color:#f92672">import</span> settings
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.startup <span style="color:#f92672">import</span> run_startup_checks
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.main <span style="color:#f92672">import</span> app
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Configure logging for container environment</span>
+</span></span><span style="display:flex;"><span>logging<span style="color:#f92672">.</span>basicConfig(
+</span></span><span style="display:flex;"><span>    level<span style="color:#f92672">=</span>getattr(logging, settings<span style="color:#f92672">.</span>log_level<span style="color:#f92672">.</span>value),
+</span></span><span style="display:flex;"><span>    format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%(asctime)s</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">%(name)s</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">%(levelname)s</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">%(message)s</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    handlers<span style="color:#f92672">=</span>[logging<span style="color:#f92672">.</span>StreamHandler(sys<span style="color:#f92672">.</span>stdout)]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>logger <span style="color:#f92672">=</span> logging<span style="color:#f92672">.</span>getLogger(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">GracefulShutdown</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Handle graceful shutdown for container environments.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>shutdown_event <span style="color:#f92672">=</span> asyncio<span style="color:#f92672">.</span>Event()
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>server_task: Optional[asyncio<span style="color:#f92672">.</span>Task] <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setup_signal_handlers</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Set up signal handlers for graceful shutdown.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> sig <span style="color:#f92672">in</span> (signal<span style="color:#f92672">.</span>SIGTERM, signal<span style="color:#f92672">.</span>SIGINT):
+</span></span><span style="display:flex;"><span>            signal<span style="color:#f92672">.</span>signal(sig, self<span style="color:#f92672">.</span>_signal_handler)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_signal_handler</span>(self, signum, frame):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Handle shutdown signals.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Received signal </span><span style="color:#e6db74">{</span>signum<span style="color:#e6db74">}</span><span style="color:#e6db74">, initiating graceful shutdown...&#34;</span>)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>shutdown_event<span style="color:#f92672">.</span>set()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wait_for_shutdown</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Wait for shutdown signal.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>shutdown_event<span style="color:#f92672">.</span>wait()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">shutdown_server</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Shutdown server gracefully.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>server_task:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Shutting down server...&#34;</span>)
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>server_task<span style="color:#f92672">.</span>cancel()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">await</span> self<span style="color:#f92672">.</span>server_task
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">except</span> asyncio<span style="color:#f92672">.</span>CancelledError:
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Server shutdown completed&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HealthChecker</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Health check functionality for container orchestration.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@staticmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_application_health</span>():
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Comprehensive application health check.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Check database connectivity</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">from</span> neodyme.core.database <span style="color:#f92672">import</span> engine
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> text
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">with</span> engine<span style="color:#f92672">.</span>begin() <span style="color:#66d9ef">as</span> conn:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">await</span> conn<span style="color:#f92672">.</span>execute(text(<span style="color:#e6db74">&#34;SELECT 1&#34;</span>))
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Check configuration</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> settings<span style="color:#f92672">.</span>secret_key:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#34;Secret key not configured&#34;</span>)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Add more health checks as needed</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Health check failed: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Main application startup sequence.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Starting Neodyme API v</span><span style="color:#e6db74">{</span>settings<span style="color:#f92672">.</span>app_version<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Environment: </span><span style="color:#e6db74">{</span>settings<span style="color:#f92672">.</span>environment<span style="color:#f92672">.</span>value<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Python path: </span><span style="color:#e6db74">{</span>sys<span style="color:#f92672">.</span>path<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Set up graceful shutdown handling</span>
+</span></span><span style="display:flex;"><span>    shutdown_handler <span style="color:#f92672">=</span> GracefulShutdown()
+</span></span><span style="display:flex;"><span>    shutdown_handler<span style="color:#f92672">.</span>setup_signal_handlers()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run comprehensive startup validation</span>
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Running startup validation...&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">await</span> run_startup_checks():
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">&#34;Startup validation failed - exiting&#34;</span>)
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Startup validation completed successfully&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run database migrations if needed</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> settings<span style="color:#f92672">.</span>environment <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;testing&#34;</span>:
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Checking database migrations...&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> run_migrations()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Start the application server</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">import</span> uvicorn
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">from</span> uvicorn.config <span style="color:#f92672">import</span> Config
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">from</span> uvicorn.server <span style="color:#f92672">import</span> Server
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Configure uvicorn for production</span>
+</span></span><span style="display:flex;"><span>        config <span style="color:#f92672">=</span> Config(
+</span></span><span style="display:flex;"><span>            app<span style="color:#f92672">=</span>app,
+</span></span><span style="display:flex;"><span>            host<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0.0.0.0&#34;</span>,  <span style="color:#75715e"># Listen on all interfaces</span>
+</span></span><span style="display:flex;"><span>            port<span style="color:#f92672">=</span>int(os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;PORT&#34;</span>, <span style="color:#e6db74">&#34;8000&#34;</span>)),
+</span></span><span style="display:flex;"><span>            log_level<span style="color:#f92672">=</span>settings<span style="color:#f92672">.</span>log_level<span style="color:#f92672">.</span>value<span style="color:#f92672">.</span>lower(),
+</span></span><span style="display:flex;"><span>            access_log<span style="color:#f92672">=</span>settings<span style="color:#f92672">.</span>debug,
+</span></span><span style="display:flex;"><span>            reload<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,  <span style="color:#75715e"># Never reload in production</span>
+</span></span><span style="display:flex;"><span>            workers<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,  <span style="color:#75715e"># Single worker for async apps</span>
+</span></span><span style="display:flex;"><span>            loop<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;uvloop&#34;</span> <span style="color:#66d9ef">if</span> sys<span style="color:#f92672">.</span>platform <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;win32&#34;</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;asyncio&#34;</span>,
+</span></span><span style="display:flex;"><span>            lifespan<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;on&#34;</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        server <span style="color:#f92672">=</span> Server(config)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Create server task</span>
+</span></span><span style="display:flex;"><span>        shutdown_handler<span style="color:#f92672">.</span>server_task <span style="color:#f92672">=</span> asyncio<span style="color:#f92672">.</span>create_task(server<span style="color:#f92672">.</span>serve())
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Server started on http://0.0.0.0:</span><span style="color:#e6db74">{</span>config<span style="color:#f92672">.</span>port<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Wait for shutdown signal</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> shutdown_handler<span style="color:#f92672">.</span>wait_for_shutdown()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Graceful shutdown</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> shutdown_handler<span style="color:#f92672">.</span>shutdown_server()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">KeyboardInterrupt</span>:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Received keyboard interrupt&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Application startup failed: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, exc_info<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">finally</span>:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Application shutdown completed&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run_migrations</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Run database migrations during startup.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">from</span> alembic.config <span style="color:#f92672">import</span> Config
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">from</span> alembic <span style="color:#f92672">import</span> command
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Configure alembic for container environment</span>
+</span></span><span style="display:flex;"><span>        alembic_cfg <span style="color:#f92672">=</span> Config(<span style="color:#e6db74">&#34;/app/alembic.ini&#34;</span>)
+</span></span><span style="display:flex;"><span>        alembic_cfg<span style="color:#f92672">.</span>set_main_option(<span style="color:#e6db74">&#34;sqlalchemy.url&#34;</span>, str(settings<span style="color:#f92672">.</span>database_url))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run migrations</span>
+</span></span><span style="display:flex;"><span>        command<span style="color:#f92672">.</span>upgrade(alembic_cfg, <span style="color:#e6db74">&#34;head&#34;</span>)
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Database migrations completed successfully&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span>error(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Database migration failed: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Run the application</span>
+</span></span><span style="display:flex;"><span>    asyncio<span style="color:#f92672">.</span>run(main())</span></span></code></pre></div><p><strong>Why robust startup sequences prevent deployment failures:</strong></p>
+<ul>
+<li><strong>Startup validation</strong> - Application validates all dependencies before accepting traffic, failing fast if configuration is invalid</li>
+<li><strong>Database migration integration</strong> - Migrations run automatically during deployment, ensuring schema consistency</li>
+<li><strong>Graceful shutdown handling</strong> - Proper signal handling prevents data loss during container restarts and deployments</li>
+<li><strong>Health check implementation</strong> - Real health checks verify application readiness, not just process existence</li>
+<li><strong>Comprehensive logging</strong> - Structured logging provides visibility into startup sequence and failure points</li>
+</ul>
+<h2 id="health-monitoring-and-observability">Health Monitoring and Observability<a class="anchor" href="#health-monitoring-and-observability">#</a></h2>
+<p>Production applications need comprehensive health monitoring:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># routes/health.py - Production health monitoring</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> APIRouter, Depends, status
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.responses <span style="color:#f92672">import</span> JSONResponse
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timedelta
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Dict, Any, Optional
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> asyncio
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> psutil
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.config <span style="color:#f92672">import</span> settings
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.database <span style="color:#f92672">import</span> get_async_session
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neodyme.core.startup <span style="color:#f92672">import</span> startup_validator
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> APIRouter(tags<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;health&#34;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HealthMonitor</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Comprehensive health monitoring for production.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>start_time <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow()
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>last_health_check <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>health_history <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_basic_health</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Basic health check for load balancer probes.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Quick application health check</span>
+</span></span><span style="display:flex;"><span>            uptime <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow() <span style="color:#f92672">-</span> self<span style="color:#f92672">.</span>start_time
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;healthy&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat(),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;uptime_seconds&#34;</span>: int(uptime<span style="color:#f92672">.</span>total_seconds()),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;version&#34;</span>: settings<span style="color:#f92672">.</span>app_version,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;environment&#34;</span>: settings<span style="color:#f92672">.</span>environment<span style="color:#f92672">.</span>value
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;unhealthy&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;error&#34;</span>: str(e),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_detailed_health</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Detailed health check for monitoring systems.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        health_data <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;healthy&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat(),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;checks&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run all health checks</span>
+</span></span><span style="display:flex;"><span>        checks <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>            (<span style="color:#e6db74">&#34;database&#34;</span>, self<span style="color:#f92672">.</span>_check_database),
+</span></span><span style="display:flex;"><span>            (<span style="color:#e6db74">&#34;memory&#34;</span>, self<span style="color:#f92672">.</span>_check_memory),
+</span></span><span style="display:flex;"><span>            (<span style="color:#e6db74">&#34;disk&#34;</span>, self<span style="color:#f92672">.</span>_check_disk),
+</span></span><span style="display:flex;"><span>            (<span style="color:#e6db74">&#34;external_services&#34;</span>, self<span style="color:#f92672">.</span>_check_external_services)
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        overall_healthy <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> check_name, check_func <span style="color:#f92672">in</span> checks:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                check_result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> check_func()
+</span></span><span style="display:flex;"><span>                health_data[<span style="color:#e6db74">&#34;checks&#34;</span>][check_name] <span style="color:#f92672">=</span> check_result
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> check_result[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;healthy&#34;</span>:
+</span></span><span style="display:flex;"><span>                    overall_healthy <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>                    
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>                health_data[<span style="color:#e6db74">&#34;checks&#34;</span>][check_name] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;error&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Health check failed: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                overall_healthy <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        health_data[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;healthy&#34;</span> <span style="color:#66d9ef">if</span> overall_healthy <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;unhealthy&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Store health history</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>last_health_check <span style="color:#f92672">=</span> health_data
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>health_history<span style="color:#f92672">.</span>append({
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;timestamp&#34;</span>: health_data[<span style="color:#e6db74">&#34;timestamp&#34;</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: health_data[<span style="color:#e6db74">&#34;status&#34;</span>]
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Keep only last 100 health checks</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(self<span style="color:#f92672">.</span>health_history) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>health_history <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>health_history[<span style="color:#f92672">-</span><span style="color:#ae81ff">100</span>:]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> health_data
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_check_database</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Check database connectivity and performance.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">from</span> neodyme.core.database <span style="color:#f92672">import</span> engine
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> text
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            start_time <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">with</span> engine<span style="color:#f92672">.</span>begin() <span style="color:#66d9ef">as</span> conn:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Test basic connectivity</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">await</span> conn<span style="color:#f92672">.</span>execute(text(<span style="color:#e6db74">&#34;SELECT 1&#34;</span>))
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Test application tables</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">await</span> conn<span style="color:#f92672">.</span>execute(text(<span style="color:#e6db74">&#34;SELECT COUNT(*) FROM users LIMIT 1&#34;</span>))
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            response_time <span style="color:#f92672">=</span> (time<span style="color:#f92672">.</span>time() <span style="color:#f92672">-</span> start_time) <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>  <span style="color:#75715e"># Convert to milliseconds</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;healthy&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;response_time_ms&#34;</span>: round(response_time, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;pool_size&#34;</span>: engine<span style="color:#f92672">.</span>pool<span style="color:#f92672">.</span>size(),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;checked_out_connections&#34;</span>: engine<span style="color:#f92672">.</span>pool<span style="color:#f92672">.</span>checkedout(),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;unhealthy&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;error&#34;</span>: str(e),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_check_memory</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Check memory usage.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            process <span style="color:#f92672">=</span> psutil<span style="color:#f92672">.</span>Process()
+</span></span><span style="display:flex;"><span>            memory_info <span style="color:#f92672">=</span> process<span style="color:#f92672">.</span>memory_info()
+</span></span><span style="display:flex;"><span>            memory_percent <span style="color:#f92672">=</span> process<span style="color:#f92672">.</span>memory_percent()
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Memory usage thresholds</span>
+</span></span><span style="display:flex;"><span>            warning_threshold <span style="color:#f92672">=</span> <span style="color:#ae81ff">80.0</span>  <span style="color:#75715e"># 80%</span>
+</span></span><span style="display:flex;"><span>            critical_threshold <span style="color:#f92672">=</span> <span style="color:#ae81ff">95.0</span>  <span style="color:#75715e"># 95%</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> memory_percent <span style="color:#f92672">&gt;</span> critical_threshold:
+</span></span><span style="display:flex;"><span>                status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;critical&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> memory_percent <span style="color:#f92672">&gt;</span> warning_threshold:
+</span></span><span style="display:flex;"><span>                status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;warning&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;healthy&#34;</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: status,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;memory_usage_mb&#34;</span>: round(memory_info<span style="color:#f92672">.</span>rss <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;memory_usage_percent&#34;</span>: round(memory_percent, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;virtual_memory_mb&#34;</span>: round(memory_info<span style="color:#f92672">.</span>vms <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;error&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;error&#34;</span>: str(e),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_check_disk</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Check disk usage.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            disk_usage <span style="color:#f92672">=</span> psutil<span style="color:#f92672">.</span>disk_usage(<span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Disk usage thresholds</span>
+</span></span><span style="display:flex;"><span>            warning_threshold <span style="color:#f92672">=</span> <span style="color:#ae81ff">80.0</span>  <span style="color:#75715e"># 80%</span>
+</span></span><span style="display:flex;"><span>            critical_threshold <span style="color:#f92672">=</span> <span style="color:#ae81ff">95.0</span>  <span style="color:#75715e"># 95%</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            usage_percent <span style="color:#f92672">=</span> (disk_usage<span style="color:#f92672">.</span>used <span style="color:#f92672">/</span> disk_usage<span style="color:#f92672">.</span>total) <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> usage_percent <span style="color:#f92672">&gt;</span> critical_threshold:
+</span></span><span style="display:flex;"><span>                status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;critical&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> usage_percent <span style="color:#f92672">&gt;</span> warning_threshold:
+</span></span><span style="display:flex;"><span>                status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;warning&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;healthy&#34;</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: status,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;disk_usage_percent&#34;</span>: round(usage_percent, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;total_gb&#34;</span>: round(disk_usage<span style="color:#f92672">.</span>total <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;used_gb&#34;</span>: round(disk_usage<span style="color:#f92672">.</span>used <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;free_gb&#34;</span>: round(disk_usage<span style="color:#f92672">.</span>free <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;error&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;error&#34;</span>: str(e),
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_check_external_services</span>(self) <span style="color:#f92672">-&gt;</span> Dict[str, Any]:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Check external service dependencies.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        services <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>        overall_status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;healthy&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check email service</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> settings<span style="color:#f92672">.</span>email_smtp_host:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">import</span> smtplib
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">import</span> socket
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">with</span> smtplib<span style="color:#f92672">.</span>SMTP(settings<span style="color:#f92672">.</span>email_smtp_host, settings<span style="color:#f92672">.</span>email_smtp_port, timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>) <span style="color:#66d9ef">as</span> server:
+</span></span><span style="display:flex;"><span>                    server<span style="color:#f92672">.</span>noop()  <span style="color:#75715e"># Simple connectivity test</span>
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                services[<span style="color:#e6db74">&#34;email&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;healthy&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;host&#34;</span>: settings<span style="color:#f92672">.</span>email_smtp_host,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;port&#34;</span>: settings<span style="color:#f92672">.</span>email_smtp_port
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>                services[<span style="color:#e6db74">&#34;email&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;unhealthy&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;error&#34;</span>: str(e),
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;host&#34;</span>: settings<span style="color:#f92672">.</span>email_smtp_host
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                overall_status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;warning&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check analytics service</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> settings<span style="color:#f92672">.</span>analytics_endpoint:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">import</span> httpx
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">with</span> httpx<span style="color:#f92672">.</span>AsyncClient(timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">5.0</span>) <span style="color:#66d9ef">as</span> client:
+</span></span><span style="display:flex;"><span>                    response <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> client<span style="color:#f92672">.</span>get(str(settings<span style="color:#f92672">.</span>analytics_endpoint))
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status_code <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">500</span>:
+</span></span><span style="display:flex;"><span>                        services[<span style="color:#e6db74">&#34;analytics&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;healthy&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;endpoint&#34;</span>: str(settings<span style="color:#f92672">.</span>analytics_endpoint),
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;response_code&#34;</span>: response<span style="color:#f92672">.</span>status_code
+</span></span><span style="display:flex;"><span>                        }
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                        services[<span style="color:#e6db74">&#34;analytics&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;unhealthy&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;endpoint&#34;</span>: str(settings<span style="color:#f92672">.</span>analytics_endpoint),
+</span></span><span style="display:flex;"><span>                            <span style="color:#e6db74">&#34;response_code&#34;</span>: response<span style="color:#f92672">.</span>status_code
+</span></span><span style="display:flex;"><span>                        }
+</span></span><span style="display:flex;"><span>                        overall_status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;warning&#34;</span>
+</span></span><span style="display:flex;"><span>                        
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>                services[<span style="color:#e6db74">&#34;analytics&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;unhealthy&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;error&#34;</span>: str(e),
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;endpoint&#34;</span>: str(settings<span style="color:#f92672">.</span>analytics_endpoint)
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                overall_status <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;warning&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;status&#34;</span>: overall_status,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;services&#34;</span>: services,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Global health monitor</span>
+</span></span><span style="display:flex;"><span>health_monitor <span style="color:#f92672">=</span> HealthMonitor()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.get</span>(<span style="color:#e6db74">&#34;/health&#34;</span>, status_code<span style="color:#f92672">=</span>status<span style="color:#f92672">.</span>HTTP_200_OK)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">health_check</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Basic health check for load balancers.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    health_data <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> health_monitor<span style="color:#f92672">.</span>get_basic_health()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> health_data[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;healthy&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> JSONResponse(content<span style="color:#f92672">=</span>health_data, status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> JSONResponse(content<span style="color:#f92672">=</span>health_data, status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">503</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.get</span>(<span style="color:#e6db74">&#34;/health/detailed&#34;</span>, status_code<span style="color:#f92672">=</span>status<span style="color:#f92672">.</span>HTTP_200_OK)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">detailed_health_check</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Detailed health check for monitoring systems.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    health_data <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> health_monitor<span style="color:#f92672">.</span>get_detailed_health()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> health_data[<span style="color:#e6db74">&#34;status&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;healthy&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> JSONResponse(content<span style="color:#f92672">=</span>health_data, status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> JSONResponse(content<span style="color:#f92672">=</span>health_data, status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">503</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.get</span>(<span style="color:#e6db74">&#34;/health/ready&#34;</span>, status_code<span style="color:#f92672">=</span>status<span style="color:#f92672">.</span>HTTP_200_OK)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">readiness_check</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Readiness check for Kubernetes.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run startup validation to ensure app is ready</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">await</span> startup_validator<span style="color:#f92672">.</span>validate_all():
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;ready&#34;</span>, <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> JSONResponse(
+</span></span><span style="display:flex;"><span>                content<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;not_ready&#34;</span>, <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()},
+</span></span><span style="display:flex;"><span>                status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">503</span>
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> JSONResponse(
+</span></span><span style="display:flex;"><span>            content<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;error&#34;</span>, <span style="color:#e6db74">&#34;error&#34;</span>: str(e), <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat()},
+</span></span><span style="display:flex;"><span>            status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">503</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.get</span>(<span style="color:#e6db74">&#34;/health/live&#34;</span>, status_code<span style="color:#f92672">=</span>status<span style="color:#f92672">.</span>HTTP_200_OK)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">liveness_check</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Liveness check for Kubernetes.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Simple check that the application is running</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;alive&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat(),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;uptime_seconds&#34;</span>: int((datetime<span style="color:#f92672">.</span>utcnow() <span style="color:#f92672">-</span> health_monitor<span style="color:#f92672">.</span>start_time)<span style="color:#f92672">.</span>total_seconds())
+</span></span><span style="display:flex;"><span>    }</span></span></code></pre></div><p><strong>Why comprehensive health monitoring is essential:</strong></p>
+<ul>
+<li><strong>Load balancer integration</strong> - Simple health checks enable load balancers to route traffic only to healthy instances</li>
+<li><strong>Container orchestration support</strong> - Separate readiness and liveness checks support Kubernetes deployment patterns</li>
+<li><strong>Performance monitoring</strong> - Detailed health checks provide metrics for capacity planning and performance optimization</li>
+<li><strong>Dependency visibility</strong> - External service health checks help diagnose issues with third-party dependencies</li>
+<li><strong>Historical tracking</strong> - Health history enables trend analysis and capacity planning</li>
+</ul>
+<h2 id="container-orchestration-and-deployment">Container Orchestration and Deployment<a class="anchor" href="#container-orchestration-and-deployment">#</a></h2>
+<p>Production deployments need orchestration for reliability and scalability:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># docker-compose.prod.yml - Production container orchestration</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3.8&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">app</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">context</span>: <span style="color:#ae81ff">.</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">target</span>: <span style="color:#ae81ff">production</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;8000:8000&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">ENVIRONMENT=production</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">DATABASE_URL=${DATABASE_URL}</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">SECRET_KEY=${SECRET_KEY}</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">EMAIL_SMTP_HOST=${EMAIL_SMTP_HOST}</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">EMAIL_SMTP_PORT=${EMAIL_SMTP_PORT}</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">EMAIL_SMTP_USERNAME=${EMAIL_SMTP_USERNAME}</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">EMAIL_SMTP_PASSWORD=${EMAIL_SMTP_PASSWORD}</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">EMAIL_FROM_ADDRESS=${EMAIL_FROM_ADDRESS}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">db</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">condition</span>: <span style="color:#ae81ff">service_healthy</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">app-network</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">deploy</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">restart_policy</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">condition</span>: <span style="color:#66d9ef">on</span>-<span style="color:#ae81ff">failure</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">delay</span>: <span style="color:#ae81ff">5s</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">max_attempts</span>: <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">resources</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">limits</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">memory</span>: <span style="color:#ae81ff">512M</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">cpus</span>: <span style="color:#e6db74">&#39;0.5&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">reservations</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">memory</span>: <span style="color:#ae81ff">256M</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">cpus</span>: <span style="color:#e6db74">&#39;0.25&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">healthcheck</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">test</span>: [<span style="color:#e6db74">&#34;CMD&#34;</span>, <span style="color:#e6db74">&#34;curl&#34;</span>, <span style="color:#e6db74">&#34;-f&#34;</span>, <span style="color:#e6db74">&#34;http://localhost:8000/health&#34;</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">interval</span>: <span style="color:#ae81ff">30s</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">timeout</span>: <span style="color:#ae81ff">10s</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">retries</span>: <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">start_period</span>: <span style="color:#ae81ff">60s</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">logging</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">json-file</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">options</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">max-size</span>: <span style="color:#e6db74">&#34;10m&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">max-file</span>: <span style="color:#e6db74">&#34;3&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">db</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">postgres:15-alpine</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_DB=${POSTGRES_DB}</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_USER=${POSTGRES_USER}</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_PASSWORD=${POSTGRES_PASSWORD}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">postgres_data:/var/lib/postgresql/data</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">app-network</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">deploy</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">resources</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">limits</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">memory</span>: <span style="color:#ae81ff">1G</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">cpus</span>: <span style="color:#e6db74">&#39;1.0&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">reservations</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">memory</span>: <span style="color:#ae81ff">512M</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">cpus</span>: <span style="color:#e6db74">&#39;0.5&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">healthcheck</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">test</span>: [<span style="color:#e6db74">&#34;CMD-SHELL&#34;</span>, <span style="color:#e6db74">&#34;pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}&#34;</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">interval</span>: <span style="color:#ae81ff">30s</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">timeout</span>: <span style="color:#ae81ff">10s</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">retries</span>: <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">start_period</span>: <span style="color:#ae81ff">60s</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">nginx</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx:alpine</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;80:80&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;443:443&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./nginx/nginx.conf:/etc/nginx/nginx.conf:ro</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./nginx/ssl:/etc/nginx/ssl:ro</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">app</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">app-network</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">deploy</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">resources</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">limits</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">memory</span>: <span style="color:#ae81ff">128M</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">cpus</span>: <span style="color:#e6db74">&#39;0.25&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">redis</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">redis:7-alpine</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">command</span>: <span style="color:#ae81ff">redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">redis_data:/data</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">app-network</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">deploy</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">resources</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">limits</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">memory</span>: <span style="color:#ae81ff">256M</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">cpus</span>: <span style="color:#e6db74">&#39;0.25&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">healthcheck</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">test</span>: [<span style="color:#e6db74">&#34;CMD&#34;</span>, <span style="color:#e6db74">&#34;redis-cli&#34;</span>, <span style="color:#e6db74">&#34;--raw&#34;</span>, <span style="color:#e6db74">&#34;incr&#34;</span>, <span style="color:#e6db74">&#34;ping&#34;</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">interval</span>: <span style="color:#ae81ff">30s</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">timeout</span>: <span style="color:#ae81ff">10s</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">retries</span>: <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">postgres_data</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">local</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">redis_data</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">local</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">app-network</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">bridge</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#75715e"># nginx/nginx.conf - Production load balancer configuration
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">user</span> <span style="color:#e6db74">nginx</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">worker_processes</span> <span style="color:#e6db74">auto</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">error_log</span> <span style="color:#e6db74">/var/log/nginx/error.log</span> <span style="color:#e6db74">warn</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pid</span> <span style="color:#e6db74">/var/run/nginx.pid</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">events</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">worker_connections</span> <span style="color:#ae81ff">1024</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">use</span> <span style="color:#e6db74">epoll</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">multi_accept</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">http</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">include</span> <span style="color:#e6db74">/etc/nginx/mime.types</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">default_type</span> <span style="color:#e6db74">application/octet-stream</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Logging format
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">log_format</span> <span style="color:#e6db74">main</span> <span style="color:#e6db74">&#39;</span>$remote_addr <span style="color:#e6db74">-</span> $remote_user <span style="color:#e6db74">[</span>$time_local] <span style="color:#e6db74">&#34;</span>$request&#34; <span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;</span>$status $body_bytes_sent <span style="color:#e6db74">&#34;</span>$http_referer&#34; <span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;&#34;</span>$http_user_agent&#34; <span style="color:#e6db74">&#34;</span>$http_x_forwarded_for&#34; <span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;rt=</span>$request_time <span style="color:#e6db74">uct=&#34;</span>$upstream_connect_time&#34; <span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;uht=&#34;</span>$upstream_header_time&#34; <span style="color:#e6db74">urt=&#34;</span>$upstream_response_time&#34;&#39;;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">access_log</span> <span style="color:#e6db74">/var/log/nginx/access.log</span> <span style="color:#e6db74">main</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Performance optimizations
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">sendfile</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">tcp_nopush</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">tcp_nodelay</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">keepalive_timeout</span> <span style="color:#ae81ff">65</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">types_hash_max_size</span> <span style="color:#ae81ff">2048</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Gzip compression
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">gzip</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">gzip_vary</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">gzip_min_length</span> <span style="color:#ae81ff">1024</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">gzip_types</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/atom+xml</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/javascript</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/json</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/ld+json</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/manifest+json</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/rss+xml</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/vnd.geo+json</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/vnd.ms-fontobject</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/x-font-ttf</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/x-web-app-manifest+json</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/xhtml+xml</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">application/xml</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">font/opentype</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">image/bmp</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">image/svg+xml</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">image/x-icon</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">text/cache-manifest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">text/css</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">text/plain</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">text/vcard</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">text/vnd.rim.location.xloc</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">text/vtt</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">text/x-component</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">text/x-cross-domain-policy</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Rate limiting
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">limit_req_zone</span> $binary_remote_addr <span style="color:#e6db74">zone=api:10m</span> <span style="color:#e6db74">rate=10r/s</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">limit_req_zone</span> $binary_remote_addr <span style="color:#e6db74">zone=login:10m</span> <span style="color:#e6db74">rate=5r/m</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Upstream application servers
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">upstream</span> <span style="color:#e6db74">app_servers</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">least_conn</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">server</span> app:<span style="color:#ae81ff">8000</span> <span style="color:#e6db74">max_fails=3</span> <span style="color:#e6db74">fail_timeout=30s</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">keepalive</span> <span style="color:#ae81ff">32</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># HTTP server (redirect to HTTPS)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">server</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">listen</span> <span style="color:#ae81ff">80</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">server_name</span> <span style="color:#e6db74">_</span>;
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Health check endpoint (don&#39;t redirect)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">location</span> <span style="color:#e6db74">/health</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_pass</span> <span style="color:#e6db74">http://app_servers</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Host</span> $host;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Real-IP</span> $remote_addr;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Redirect all other traffic to HTTPS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">location</span> <span style="color:#e6db74">/</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">return</span> <span style="color:#ae81ff">301</span> <span style="color:#e6db74">https://</span>$host$request_uri;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># HTTPS server
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">server</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">listen</span> <span style="color:#ae81ff">443</span> <span style="color:#e6db74">ssl</span> <span style="color:#e6db74">http2</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">server_name</span> <span style="color:#e6db74">_</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># SSL configuration
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">ssl_certificate</span> <span style="color:#e6db74">/etc/nginx/ssl/cert.pem</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ssl_certificate_key</span> <span style="color:#e6db74">/etc/nginx/ssl/key.pem</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ssl_protocols</span> <span style="color:#e6db74">TLSv1.2</span> <span style="color:#e6db74">TLSv1.3</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ssl_ciphers</span> <span style="color:#e6db74">ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ssl_prefer_server_ciphers</span> <span style="color:#66d9ef">off</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ssl_session_cache</span> <span style="color:#e6db74">shared:SSL:10m</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ssl_session_timeout</span> <span style="color:#ae81ff">10m</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Security headers
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">add_header</span> <span style="color:#e6db74">X-Frame-Options</span> <span style="color:#e6db74">&#34;SAMEORIGIN&#34;</span> <span style="color:#e6db74">always</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">add_header</span> <span style="color:#e6db74">X-Content-Type-Options</span> <span style="color:#e6db74">&#34;nosniff&#34;</span> <span style="color:#e6db74">always</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">add_header</span> <span style="color:#e6db74">X-XSS-Protection</span> <span style="color:#e6db74">&#34;1</span>; <span style="color:#f92672">mode=block&#34;</span> <span style="color:#e6db74">always</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">add_header</span> <span style="color:#e6db74">Strict-Transport-Security</span> <span style="color:#e6db74">&#34;max-age=31536000</span>; <span style="color:#f92672">includeSubDomains&#34;</span> <span style="color:#e6db74">always</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># API endpoints
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">location</span> <span style="color:#e6db74">/api</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">limit_req</span> <span style="color:#e6db74">zone=api</span> <span style="color:#e6db74">burst=20</span> <span style="color:#e6db74">nodelay</span>;
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_pass</span> <span style="color:#e6db74">http://app_servers</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Host</span> $host;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Real-IP</span> $remote_addr;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Forwarded-For</span> $proxy_add_x_forwarded_for;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Forwarded-Proto</span> $scheme;
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Timeouts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#f92672">proxy_connect_timeout</span> <span style="color:#e6db74">60s</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_send_timeout</span> <span style="color:#e6db74">60s</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_read_timeout</span> <span style="color:#e6db74">60s</span>;
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Buffering
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#f92672">proxy_buffering</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_buffer_size</span> <span style="color:#ae81ff">4k</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_buffers</span> <span style="color:#ae81ff">8</span> <span style="color:#ae81ff">4k</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Login endpoint with stricter rate limiting
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">location</span> <span style="color:#e6db74">/api/v1/auth/login</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">limit_req</span> <span style="color:#e6db74">zone=login</span> <span style="color:#e6db74">burst=3</span> <span style="color:#e6db74">nodelay</span>;
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_pass</span> <span style="color:#e6db74">http://app_servers</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Host</span> $host;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Real-IP</span> $remote_addr;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Forwarded-For</span> $proxy_add_x_forwarded_for;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Forwarded-Proto</span> $scheme;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Health checks
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">location</span> <span style="color:#e6db74">/health</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_pass</span> <span style="color:#e6db74">http://app_servers</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Host</span> $host;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Real-IP</span> $remote_addr;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">access_log</span> <span style="color:#66d9ef">off</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Static files (if any)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">location</span> <span style="color:#e6db74">/static</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">root</span> <span style="color:#e6db74">/var/www</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">expires</span> <span style="color:#e6db74">1y</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">add_header</span> <span style="color:#e6db74">Cache-Control</span> <span style="color:#e6db74">&#34;public,</span> <span style="color:#e6db74">immutable&#34;</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Why proper container orchestration is critical:</strong></p>
+<ul>
+<li><strong>High availability</strong> - Multiple application replicas ensure service continuity during instance failures</li>
+<li><strong>Load balancing</strong> - Nginx distributes traffic across application instances for better performance</li>
+<li><strong>Resource management</strong> - CPU and memory limits prevent resource exhaustion and noisy neighbor problems</li>
+<li><strong>Health monitoring</strong> - Container health checks enable automatic restart of failed instances</li>
+<li><strong>Security hardening</strong> - SSL termination, security headers, and rate limiting protect against common attacks</li>
+</ul>
+<h2 id="deployment-automation-and-cicd">Deployment Automation and CI/CD<a class="anchor" href="#deployment-automation-and-cicd">#</a></h2>
+<p>Production deployments need automation to reduce human error:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># .github/workflows/deploy.yml - CI/CD pipeline</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">Deploy to Production</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [<span style="color:#ae81ff">main]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">pull_request</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [<span style="color:#ae81ff">main]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">REGISTRY</span>: <span style="color:#ae81ff">ghcr.io</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">IMAGE_NAME</span>: <span style="color:#ae81ff">${{ github.repository }}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">test</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">postgres</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">postgres:15</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">POSTGRES_PASSWORD</span>: <span style="color:#ae81ff">postgres</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">options</span>: &gt;-<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          --health-cmd pg_isready
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          --health-interval 10s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          --health-timeout 5s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          --health-retries 5</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>          - <span style="color:#ae81ff">5432</span>:<span style="color:#ae81ff">5432</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v4</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up Python</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-python@v4</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">python-version</span>: <span style="color:#e6db74">&#39;3.11&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">cache</span>: <span style="color:#e6db74">&#39;pip&#39;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Install dependencies</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        python -m pip install --upgrade pip
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        pip install -r requirements.txt
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        pip install -r requirements-dev.txt</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run linting</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        black --check .
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        isort --check-only .
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        flake8 .
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        mypy .</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run tests</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">DATABASE_URL</span>: <span style="color:#ae81ff">postgresql://postgres:postgres@localhost:5432/test</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">SECRET_KEY</span>: <span style="color:#ae81ff">test-secret-key-32-characters-long</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">EMAIL_SMTP_HOST</span>: <span style="color:#ae81ff">localhost</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">EMAIL_SMTP_PORT</span>: <span style="color:#ae81ff">1025</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">EMAIL_SMTP_USERNAME</span>: <span style="color:#ae81ff">test</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">EMAIL_SMTP_PASSWORD</span>: <span style="color:#ae81ff">test</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">EMAIL_FROM_ADDRESS</span>: <span style="color:#ae81ff">test@example.com</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        pytest --cov=neodyme --cov-report=xml --cov-report=term-missing</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Upload coverage to Codecov</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">codecov/codecov-action@v3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">file</span>: <span style="color:#ae81ff">./coverage.xml</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">security</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v4</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run security scan</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">pypa/gh-action-pip-audit@v1.0.8</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">inputs</span>: <span style="color:#ae81ff">requirements.txt</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run Bandit security scan</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        pip install bandit
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        bandit -r neodyme/ -f json -o bandit-report.json</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Upload security scan results</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/upload-artifact@v3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">name</span>: <span style="color:#ae81ff">security-scan-results</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">path</span>: <span style="color:#ae81ff">bandit-report.json</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">needs</span>: [<span style="color:#ae81ff">test, security]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">outputs</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">image-digest</span>: <span style="color:#ae81ff">${{ steps.build.outputs.digest }}</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v4</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up Docker Buildx</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/setup-buildx-action@v3</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Log in to Container Registry</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/login-action@v3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">registry</span>: <span style="color:#ae81ff">${{ env.REGISTRY }}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">username</span>: <span style="color:#ae81ff">${{ github.actor }}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">password</span>: <span style="color:#ae81ff">${{ secrets.GITHUB_TOKEN }}</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Extract metadata</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">id</span>: <span style="color:#ae81ff">meta</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/metadata-action@v5</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">images</span>: <span style="color:#ae81ff">${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">tags</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          type=ref,event=branch
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          type=ref,event=pr
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          type=sha,prefix={{branch}}-
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          type=raw,value=latest,enable={{is_default_branch}}</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build and push Docker image</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">id</span>: <span style="color:#ae81ff">build</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/build-push-action@v5</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">context</span>: <span style="color:#ae81ff">.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">target</span>: <span style="color:#ae81ff">production</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">push</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">tags</span>: <span style="color:#ae81ff">${{ steps.meta.outputs.tags }}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">labels</span>: <span style="color:#ae81ff">${{ steps.meta.outputs.labels }}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">cache-from</span>: <span style="color:#ae81ff">type=gha</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">cache-to</span>: <span style="color:#ae81ff">type=gha,mode=max</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">platforms</span>: <span style="color:#ae81ff">linux/amd64,linux/arm64</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">deploy</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">needs</span>: <span style="color:#ae81ff">build</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">if</span>: <span style="color:#ae81ff">github.ref == &#39;refs/heads/main&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>: <span style="color:#ae81ff">production</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v4</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Deploy to production</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">IMAGE_DIGEST</span>: <span style="color:#ae81ff">${{ needs.build.outputs.image-digest }}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        # Update deployment configuration with new image
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        sed -i &#34;s|IMAGE_PLACEHOLDER|${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${IMAGE_DIGEST}|g&#34; deploy/production.yml
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        # Deploy using your orchestration platform
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        # This could be Docker Swarm, Kubernetes, or cloud services
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        echo &#34;Deploying image with digest: ${IMAGE_DIGEST}&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run deployment health checks</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        # Wait for deployment to be ready
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        sleep 60
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        # Verify health endpoints
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        curl -f https://api.neodyme.com/health || exit 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        curl -f https://api.neodyme.com/health/ready || exit 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        echo &#34;Deployment health checks passed&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Notify deployment status</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">if</span>: <span style="color:#ae81ff">always()</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        if [ &#34;${{ job.status }}&#34; == &#34;success&#34; ]; then
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          echo &#34;✅ Deployment successful&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        else
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          echo &#34;❌ Deployment failed&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        fi</span></span></span></code></pre></div><p><strong>Why automated deployment pipelines prevent production issues:</strong></p>
+<ul>
+<li><strong>Testing integration</strong> - All code changes are automatically tested before deployment, preventing broken code from reaching production</li>
+<li><strong>Security scanning</strong> - Automated security scans catch vulnerabilities before they&rsquo;re deployed to production environments</li>
+<li><strong>Consistent builds</strong> - Container images are built consistently across environments, eliminating &ldquo;works on my machine&rdquo; problems</li>
+<li><strong>Deployment validation</strong> - Health checks verify that deployments are successful before marking them complete</li>
+<li><strong>Rollback capability</strong> - Failed deployments can be automatically rolled back to previous working versions</li>
+</ul>
+<h2 id="what-youve-learned">What You&rsquo;ve Learned<a class="anchor" href="#what-youve-learned">#</a></h2>
+<p>By the end of this chapter, you understand:</p>
+<p>✅ <strong>Why ad-hoc deployment creates systematic failures</strong> - and how production-ready containers eliminate environment inconsistencies<br>
+✅ <strong>Multi-stage Docker builds for production</strong> - creating secure, optimized containers that work reliably in production environments<br>
+✅ <strong>Application startup and health monitoring</strong> - implementing robust startup sequences and comprehensive health checks<br>
+✅ <strong>Container orchestration patterns</strong> - using Docker Compose and load balancers for high availability and scalability<br>
+✅ <strong>CI/CD automation strategies</strong> - building deployment pipelines that catch issues before they reach production<br>
+✅ <strong>Production monitoring and observability</strong> - implementing health checks and monitoring that enable reliable operations</p>
+<p>More importantly, you&rsquo;ve built a deployment system that gets your application to production safely and keeps it running reliably.</p>
+<h2 id="building-blocks-for-next-chapters">Building Blocks for Next Chapters<a class="anchor" href="#building-blocks-for-next-chapters">#</a></h2>
+<p>This deployment foundation gives us:</p>
+<ul>
+<li><strong>HTTP handling</strong> ← Chapter 1: FastAPI basics</li>
+<li><strong>Data persistence</strong> ← Chapter 2: Database integration</li>
+<li><strong>Input validation</strong> ← Chapter 3: Request/response validation</li>
+<li><strong>Schema evolution</strong> ← Chapter 4: Database migrations</li>
+<li><strong>Clean architecture</strong> ← Chapter 5: Service layer organization</li>
+<li><strong>Error handling</strong> ← Chapter 6: Professional error management</li>
+<li><strong>Security</strong> ← Chapter 7: Authentication and authorization</li>
+<li><strong>Configuration</strong> ← Chapter 8: Environment-aware configuration</li>
+<li><strong>Testing</strong> ← Chapter 9: Comprehensive testing strategies</li>
+<li><strong>Deployment</strong> ← You are here</li>
+<li><strong>Monitoring</strong> ← Chapter 11: Production observability</li>
+</ul>
+<h2 id="exercises">Exercises<a class="anchor" href="#exercises">#</a></h2>
+<ol>
+<li><strong>Add blue-green deployment</strong> - Implement zero-downtime deployments using blue-green deployment patterns</li>
+<li><strong>Create auto-scaling</strong> - Configure horizontal pod autoscaling based on CPU and memory metrics</li>
+<li><strong>Implement secrets management</strong> - Integrate with HashiCorp Vault or cloud secret management services</li>
+<li><strong>Add canary deployments</strong> - Implement gradual rollouts with automatic rollback on error rate increases</li>
+<li><strong>Create disaster recovery</strong> - Build backup and recovery procedures for database and application state</li>
+</ol>
+<h2 id="resources-for-deeper-learning">Resources for Deeper Learning<a class="anchor" href="#resources-for-deeper-learning">#</a></h2>
+<h3 id="container-best-practices">Container Best Practices<a class="anchor" href="#container-best-practices">#</a></h3>
+<ul>
+<li><strong>Docker Best Practices</strong>: Official Docker security and optimization guidelines - <a href="https://docs.docker.com/develop/dev-best-practices/">https://docs.docker.com/develop/dev-best-practices/</a></li>
+<li><strong>Container Security</strong>: Hardening containers for production - <a href="https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html</a></li>
+<li><strong>Multi-stage Builds</strong>: Optimizing Docker images - <a href="https://docs.docker.com/build/building/multi-stage/">https://docs.docker.com/build/building/multi-stage/</a></li>
+</ul>
+<h3 id="container-orchestration">Container Orchestration<a class="anchor" href="#container-orchestration">#</a></h3>
+<ul>
+<li><strong>Docker Compose Production</strong>: Production deployment patterns - <a href="https://docs.docker.com/compose/production/">https://docs.docker.com/compose/production/</a></li>
+<li><strong>Kubernetes Deployment</strong>: Enterprise container orchestration - <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">https://kubernetes.io/docs/concepts/workloads/controllers/deployment/</a></li>
+<li><strong>Health Checks and Probes</strong>: Container health monitoring - <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/">https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/</a></li>
+</ul>
+<h3 id="cicd-and-automation">CI/CD and Automation<a class="anchor" href="#cicd-and-automation">#</a></h3>
+<ul>
+<li><strong>GitHub Actions</strong>: Comprehensive CI/CD automation - <a href="https://docs.github.com/en/actions">https://docs.github.com/en/actions</a></li>
+<li><strong>GitLab CI/CD</strong>: Alternative CI/CD platform - <a href="https://docs.gitlab.com/ee/ci/">https://docs.gitlab.com/ee/ci/</a></li>
+<li><strong>Deployment Strategies</strong>: Blue-green, rolling, and canary deployments - <a href="https://martinfowler.com/bliki/BlueGreenDeployment.html">https://martinfowler.com/bliki/BlueGreenDeployment.html</a></li>
+</ul>
+<h3 id="production-operations">Production Operations<a class="anchor" href="#production-operations">#</a></h3>
+<ul>
+<li><strong>Site Reliability Engineering</strong>: Google&rsquo;s approach to production systems - <a href="https://sre.google/">https://sre.google/</a></li>
+<li><strong>Production Readiness</strong>: Checklist for production deployments - <a href="https://gruntwork.io/devops-checklist/">https://gruntwork.io/devops-checklist/</a></li>
+<li><strong>Incident Response</strong>: Handling production issues effectively - <a href="https://response.pagerduty.com/">https://response.pagerduty.com/</a></li>
+</ul>
+<h3 id="why-these-resources-matter">Why These Resources Matter<a class="anchor" href="#why-these-resources-matter">#</a></h3>
+<ul>
+<li><strong>Container security</strong>: Production containers need proper security hardening to prevent breaches and privilege escalation</li>
+<li><strong>Orchestration patterns</strong>: Understanding orchestration concepts helps you design scalable, reliable deployment architectures</li>
+<li><strong>Automation practices</strong>: CI/CD automation prevents human error and enables rapid, safe deployments</li>
+<li><strong>Production operations</strong>: Learning from SRE practices helps you build systems that stay reliable under real-world conditions</li>
+</ul>
+<p><strong>Pro Tip</strong>: Start with Docker best practices to build secure, optimized containers, then focus on health check patterns that enable reliable orchestration.</p>
+<h2 id="next-production-monitoring-and-observability">Next: Production Monitoring and Observability<a class="anchor" href="#next-production-monitoring-and-observability">#</a></h2>
+<p>You have applications that deploy reliably to production, but now you need to understand how they&rsquo;re performing and quickly diagnose issues when they occur. How do you monitor application performance? How do you track down the root cause of production issues? How do you ensure your applications remain healthy over time?</p>
+<p>In Chapter 11, we&rsquo;ll explore monitoring and observability strategies that give you visibility into production systems.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Preview of Chapter 11</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> structlog
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> prometheus_client <span style="color:#f92672">import</span> Counter, Histogram, Gauge
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Structured logging</span>
+</span></span><span style="display:flex;"><span>logger <span style="color:#f92672">=</span> structlog<span style="color:#f92672">.</span>get_logger()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Application metrics</span>
+</span></span><span style="display:flex;"><span>request_counter <span style="color:#f92672">=</span> Counter(<span style="color:#e6db74">&#39;http_requests_total&#39;</span>, <span style="color:#e6db74">&#39;Total HTTP requests&#39;</span>, [<span style="color:#e6db74">&#39;method&#39;</span>, <span style="color:#e6db74">&#39;endpoint&#39;</span>, <span style="color:#e6db74">&#39;status&#39;</span>])
+</span></span><span style="display:flex;"><span>request_duration <span style="color:#f92672">=</span> Histogram(<span style="color:#e6db74">&#39;http_request_duration_seconds&#39;</span>, <span style="color:#e6db74">&#39;HTTP request duration&#39;</span>)
+</span></span><span style="display:flex;"><span>active_users <span style="color:#f92672">=</span> Gauge(<span style="color:#e6db74">&#39;active_users_total&#39;</span>, <span style="color:#e6db74">&#39;Number of active users&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@router.post</span>(<span style="color:#e6db74">&#34;/users/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(user_data: UserCreate):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Track request metrics</span>
+</span></span><span style="display:flex;"><span>    request_counter<span style="color:#f92672">.</span>labels(method<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span>, endpoint<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/users&#34;</span>, status<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;201&#34;</span>)<span style="color:#f92672">.</span>inc()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Log structured data</span>
+</span></span><span style="display:flex;"><span>    logger<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;User registration started&#34;</span>, user_email<span style="color:#f92672">=</span>user_data<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Application logic...</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span></span></span></code></pre></div><p>We&rsquo;ll explore how to build observability that helps you understand system behavior and solve problems quickly when they occur.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/neodyme/docs/chapter-9/" class="flex align-center">
+        <img src="/neodyme/icons/backward.svg" class="book-icon" alt="Previous" title="Chapter 9" />
+        <span>Chapter 9</span>
+      </a>
+    
+    </span>
+    <span>
+    
+    </span>
+  </div>
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+
+ 
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-deployment-surprises-that-break-everything">The Problem: Deployment Surprises That Break Everything</a></li>
+    <li><a href="#why-just-run-it-in-docker-isnt-enough">Why &ldquo;Just Run It in Docker&rdquo; Isn&rsquo;t Enough</a></li>
+    <li><a href="#the-professional-deployment-solution-production-ready-containers">The Professional Deployment Solution: Production-Ready Containers</a></li>
+    <li><a href="#application-startup-and-health-checks">Application Startup and Health Checks</a></li>
+    <li><a href="#health-monitoring-and-observability">Health Monitoring and Observability</a></li>
+    <li><a href="#container-orchestration-and-deployment">Container Orchestration and Deployment</a></li>
+    <li><a href="#deployment-automation-and-cicd">Deployment Automation and CI/CD</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#container-best-practices">Container Best Practices</a></li>
+        <li><a href="#container-orchestration">Container Orchestration</a></li>
+        <li><a href="#cicd-and-automation">CI/CD and Automation</a></li>
+        <li><a href="#production-operations">Production Operations</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-production-monitoring-and-observability">Next: Production Monitoring and Observability</a></li>
+  </ul>
+</nav>
+
+
+
+  </div>
+</aside>
+
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

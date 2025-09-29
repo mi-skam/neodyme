@@ -1,0 +1,9 @@
+baseURL = 'https://mi-skam.github.io/neodyme/'
+languageCode = 'en-us'
+title = 'Neodyme Documentation'
+theme = 'hugo-book'
+
+[params]
+  BookTheme = 'auto'
+  BookToC = true
+  BookSection = 'docs'

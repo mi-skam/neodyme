@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chapter 2: &ldquo;I Need to Store Data That Persists&rdquo;#
+You&rsquo;ve built an API that handles HTTP requests beautifully. But there&rsquo;s a problem: every time someone restarts your server, all data disappears. Your users create accounts, add content, make purchases—and poof, it&rsquo;s all gone.
+This isn&rsquo;t just inconvenient; it&rsquo;s business-critical. Imagine telling your customers: &ldquo;Sorry, our server restarted, so we lost all your data. Please recreate your account.&rdquo; Your company would be out of business faster than you can say &ldquo;database backup.&rdquo;">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://mi-skam.github.io/neodyme/docs/chapter-2/">
+  <meta property="og:site_name" content="Neodyme Documentation">
+  <meta property="og:title" content="Chapter 2">
+  <meta property="og:description" content="Chapter 2: “I Need to Store Data That Persists”# You’ve built an API that handles HTTP requests beautifully. But there’s a problem: every time someone restarts your server, all data disappears. Your users create accounts, add content, make purchases—and poof, it’s all gone.
+This isn’t just inconvenient; it’s business-critical. Imagine telling your customers: “Sorry, our server restarted, so we lost all your data. Please recreate your account.” Your company would be out of business faster than you can say “database backup.”">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Chapter 2 | Neodyme Documentation</title>
+<link rel="icon" href="/neodyme/favicon.png" >
+<link rel="manifest" href="/neodyme/manifest.json">
+<link rel="canonical" href="https://mi-skam.github.io/neodyme/docs/chapter-2/">
+<link rel="stylesheet" href="/neodyme/book.min.c098be6fdb8410d437a0799e694b206fa639685582089c583ae6ac07afec1ff8.css" integrity="sha256-wJi&#43;b9uEENQ3oHmeaUsgb6Y5aFWCCJxYOuasB6/sH/g=" crossorigin="anonymous">
+
+
+  <script defer src="/neodyme/fuse.min.js"></script>
+  <script defer src="/neodyme/en.search.min.f64f4d2b3193917ebd07e82190bf6e6a2f23d6e670fb678260875bd442e5cf4d.js" integrity="sha256-9k9NKzGTkX69B&#43;ghkL9uai8j1uZw&#43;2eCYIdb1ELlz00=" crossorigin="anonymous"></script>
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/neodyme/"><span>Neodyme Documentation</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-1/" class="">
+      Chapter 1</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-2/" class="active">
+      Chapter 2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-3/" class="">
+      Chapter 3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-4/" class="">
+      Chapter 4</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-5/" class="">
+      Chapter 5</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-6/" class="">
+      Chapter 6</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-7/" class="">
+      Chapter 7</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-8/" class="">
+      Chapter 8</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-9/" class="">
+      Chapter 9</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/neodyme/docs/chapter-10/" class="">
+      Chapter 10</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/neodyme/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Chapter 2</h3>
+
+  <label for="toc-control">
+    
+    <img src="/neodyme/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-moving-beyond-toy-applications">The Problem: Moving Beyond Toy Applications</a></li>
+    <li><a href="#why-databases-are-hard-and-why-they-dont-have-to-be">Why Databases Are Hard (And Why They Don&rsquo;t Have to Be)</a></li>
+    <li><a href="#the-sqlmodel-solution-bringing-python-to-databases">The SQLModel Solution: Bringing Python to Databases</a></li>
+    <li><a href="#building-your-first-database-model">Building Your First Database Model</a>
+      <ul>
+        <li><a href="#step-1-understanding-the-foundation">Step 1: Understanding the Foundation</a></li>
+        <li><a href="#step-2-creating-input-and-output-models">Step 2: Creating Input and Output Models</a></li>
+      </ul>
+    </li>
+    <li><a href="#connecting-to-the-database-the-async-way">Connecting to the Database: The Async Way</a>
+      <ul>
+        <li><a href="#step-3-creating-tables-automatically">Step 3: Creating Tables Automatically</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-repository-pattern-clean-data-access">The Repository Pattern: Clean Data Access</a>
+      <ul>
+        <li><a href="#step-4-implementing-user-specific-logic">Step 4: Implementing User-Specific Logic</a></li>
+      </ul>
+    </li>
+    <li><a href="#hands-on-building-your-first-database-endpoint">Hands-On: Building Your First Database Endpoint</a>
+      <ul>
+        <li><a href="#step-1-define-your-models">Step 1: Define Your Models</a></li>
+        <li><a href="#step-2-set-up-database-connection">Step 2: Set Up Database Connection</a></li>
+        <li><a href="#step-3-create-the-api-endpoint">Step 3: Create the API Endpoint</a></li>
+        <li><a href="#step-4-test-your-database-api">Step 4: Test Your Database API</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-power-of-type-driven-development">The Power of Type-Driven Development</a></li>
+    <li><a href="#architecture-overview-how-the-pieces-fit-together">Architecture Overview: How the Pieces Fit Together</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#sqlmodel-and-database-patterns">SQLModel and Database Patterns</a></li>
+        <li><a href="#repository-pattern-and-clean-architecture">Repository Pattern and Clean Architecture</a></li>
+        <li><a href="#database-design-and-performance">Database Design and Performance</a></li>
+        <li><a href="#security-and-best-practices">Security and Best Practices</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-building-complete-user-workflows">Next: Building Complete User Workflows</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="chapter-2-i-need-to-store-data-that-persists">Chapter 2: &ldquo;I Need to Store Data That Persists&rdquo;<a class="anchor" href="#chapter-2-i-need-to-store-data-that-persists">#</a></h1>
+<p>You&rsquo;ve built an API that handles HTTP requests beautifully. But there&rsquo;s a problem: every time someone restarts your server, all data disappears. Your users create accounts, add content, make purchases—and poof, it&rsquo;s all gone.</p>
+<p>This isn&rsquo;t just inconvenient; it&rsquo;s business-critical. Imagine telling your customers: &ldquo;Sorry, our server restarted, so we lost all your data. Please recreate your account.&rdquo; Your company would be out of business faster than you can say &ldquo;database backup.&rdquo;</p>
+<h2 id="the-problem-moving-beyond-toy-applications">The Problem: Moving Beyond Toy Applications<a class="anchor" href="#the-problem-moving-beyond-toy-applications">#</a></h2>
+<p>Let me ask you a question: Have you ever tried to build a &ldquo;real&rdquo; application, only to realize that storing data properly is incredibly complicated?</p>
+<p>Here&rsquo;s what seems like it should be simple:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># What you want to do</span>
+</span></span><span style="display:flex;"><span>users <span style="color:#f92672">=</span> []  <span style="color:#75715e"># Store users in memory</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/users/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(user_data):
+</span></span><span style="display:flex;"><span>    users<span style="color:#f92672">.</span>append(user_data)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> user_data</span></span></code></pre></div><p>But in production, this approach fails catastrophically because:</p>
+<ul>
+<li><strong>Data disappears on restart</strong> - Every deployment, crash, or server restart wipes out all user data, orders, and content</li>
+<li><strong>No concurrent access</strong> - Multiple API instances can&rsquo;t share the same in-memory list, leading to inconsistent data across servers</li>
+<li><strong>Memory limitations</strong> - Your server runs out of RAM when you have more than a few thousand records</li>
+<li><strong>No data validation</strong> - Users can send malformed data that corrupts your entire dataset</li>
+<li><strong>No relationships</strong> - You can&rsquo;t link users to their orders, posts to their authors, or any complex data structures</li>
+<li><strong>No transactions</strong> - If something goes wrong halfway through an operation, you&rsquo;re left with corrupted, half-updated data</li>
+</ul>
+<p>The real question isn&rsquo;t &ldquo;How do I store data?&rdquo; It&rsquo;s &ldquo;How do I store data reliably, efficiently, and safely?&rdquo;</p>
+<h2 id="why-databases-are-hard-and-why-they-dont-have-to-be">Why Databases Are Hard (And Why They Don&rsquo;t Have to Be)<a class="anchor" href="#why-databases-are-hard-and-why-they-dont-have-to-be">#</a></h2>
+<p>Traditional database programming feels like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Traditional database code - painful and error-prone</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sqlite3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(email, name, password):
+</span></span><span style="display:flex;"><span>    conn <span style="color:#f92672">=</span> sqlite3<span style="color:#f92672">.</span>connect(<span style="color:#e6db74">&#39;app.db&#39;</span>)
+</span></span><span style="display:flex;"><span>    cursor <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Raw SQL - one typo breaks everything</span>
+</span></span><span style="display:flex;"><span>        cursor<span style="color:#f92672">.</span>execute(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;INSERT INTO users (email, full_name, hashed_password, created_at) VALUES (?, ?, ?, ?)&#34;</span>,
+</span></span><span style="display:flex;"><span>            (email, name, hash_password(password), datetime<span style="color:#f92672">.</span>now())
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        conn<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get the created user - more raw SQL</span>
+</span></span><span style="display:flex;"><span>        cursor<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#34;SELECT * FROM users WHERE email = ?&#34;</span>, (email,))
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> cursor<span style="color:#f92672">.</span>fetchone()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;id&#39;</span>: result[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;email&#39;</span>: result[<span style="color:#ae81ff">1</span>], 
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;full_name&#39;</span>: result[<span style="color:#ae81ff">2</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Hope you remember the column order!</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        conn<span style="color:#f92672">.</span>rollback()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> e
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">finally</span>:
+</span></span><span style="display:flex;"><span>        conn<span style="color:#f92672">.</span>close()</span></span></code></pre></div><p><strong>What&rsquo;s wrong with this approach?</strong></p>
+<ul>
+<li><strong>SQL injection vulnerabilities</strong> - Malicious users can destroy your database with crafted input</li>
+<li><strong>Manual connection management</strong> - Forget to close a connection and you leak resources until your server crashes</li>
+<li><strong>No type safety</strong> - Misspell a column name and you get runtime errors in production</li>
+<li><strong>Brittle code</strong> - Change the database schema and you have to update SQL strings scattered throughout your codebase</li>
+<li><strong>No async support</strong> - Each database call blocks your entire API, destroying performance</li>
+<li><strong>Manual error handling</strong> - Forget to wrap something in try/catch and unhandled exceptions crash your server</li>
+</ul>
+<p>This is why many developers avoid databases or use oversimplified solutions that don&rsquo;t scale.</p>
+<h2 id="the-sqlmodel-solution-bringing-python-to-databases">The SQLModel Solution: Bringing Python to Databases<a class="anchor" href="#the-sqlmodel-solution-bringing-python-to-databases">#</a></h2>
+<p>What if you could work with databases using the same Python skills you already have? SQLModel makes this possible by combining:</p>
+<ul>
+<li><strong>Pydantic validation</strong> - Automatic data validation using the same type hints you learned in Chapter 1</li>
+<li><strong>SQLAlchemy power</strong> - Battle-tested database toolkit used by thousands of companies</li>
+<li><strong>Async support</strong> - Non-blocking database operations that scale with your traffic</li>
+<li><strong>Type safety</strong> - Catch database-related bugs at development time, not in production</li>
+</ul>
+<p>But here&rsquo;s the key insight: SQLModel isn&rsquo;t just another ORM. It&rsquo;s designed specifically to work with FastAPI&rsquo;s type system, meaning your database models automatically become your API models too.</p>
+<p>Let&rsquo;s see how neodyme implements this properly.</p>
+<h2 id="building-your-first-database-model">Building Your First Database Model<a class="anchor" href="#building-your-first-database-model">#</a></h2>
+<h3 id="step-1-understanding-the-foundation">Step 1: Understanding the Foundation<a class="anchor" href="#step-1-understanding-the-foundation">#</a></h3>
+<p>Before we dive into code, let&rsquo;s understand what we&rsquo;re building. In neodyme, every database model follows a specific pattern that solves real-world problems:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s models/user.py (simplified)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> Field, SQLModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserBase</span>(SQLModel):
+</span></span><span style="display:flex;"><span>    email: str <span style="color:#f92672">=</span> Field(unique<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    full_name: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    is_active: bool <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(UserBase, table<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    id: int <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    hashed_password: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    created_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow, nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    updated_at: datetime <span style="color:#f92672">=</span> Field(
+</span></span><span style="display:flex;"><span>        default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow,
+</span></span><span style="display:flex;"><span>        nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>        sa_column_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;onupdate&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow},
+</span></span><span style="display:flex;"><span>    )</span></span></code></pre></div><p><strong>Let&rsquo;s break down why every piece matters:</strong></p>
+<ol>
+<li>
+<p><strong><code>UserBase</code> with shared fields</strong>: This contains fields that appear in multiple contexts (API requests, responses, database records). By defining them once, you prevent bugs where the API and database have different field definitions.</p>
+</li>
+<li>
+<p><strong><code>email: str = Field(unique=True, index=True, max_length=255)</code></strong>:</p>
+<ul>
+<li><code>unique=True</code> prevents duplicate accounts and generates a database constraint that catches violations automatically</li>
+<li><code>index=True</code> creates a database index for fast email lookups (essential for login performance)</li>
+<li><code>max_length=255</code> prevents someone from submitting gigabyte-sized email strings that could crash your server</li>
+</ul>
+</li>
+<li>
+<p><strong><code>id: int | None = Field(default=None, primary_key=True)</code></strong>:</p>
+<ul>
+<li><code>None</code> as default because the database generates the ID automatically</li>
+<li><code>primary_key=True</code> tells the database this field uniquely identifies each record</li>
+<li>Auto-incrementing IDs prevent conflicts when multiple users sign up simultaneously</li>
+</ul>
+</li>
+<li>
+<p><strong>Timestamp fields with <code>default_factory=datetime.utcnow</code></strong>:</p>
+<ul>
+<li><code>default_factory</code> calls the function each time, so every record gets the current timestamp</li>
+<li>Using UTC prevents timezone-related bugs that occur when servers and users are in different time zones</li>
+<li><code>onupdate</code> automatically tracks when records are modified, essential for auditing and debugging</li>
+</ul>
+</li>
+</ol>
+<h3 id="step-2-creating-input-and-output-models">Step 2: Creating Input and Output Models<a class="anchor" href="#step-2-creating-input-and-output-models">#</a></h3>
+<p>Raw database models aren&rsquo;t suitable for APIs because they contain fields users shouldn&rsquo;t see or modify. Neodyme creates specialized models for different purposes:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserCreate</span>(UserBase):
+</span></span><span style="display:flex;"><span>    password: str <span style="color:#f92672">=</span> Field(min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserUpdate</span>(SQLModel):
+</span></span><span style="display:flex;"><span>    email: str <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    full_name: str <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    password: str <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>    is_active: bool <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserPublic</span>(UserBase):
+</span></span><span style="display:flex;"><span>    id: int
+</span></span><span style="display:flex;"><span>    created_at: datetime
+</span></span><span style="display:flex;"><span>    updated_at: datetime
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Note: no hashed_password field - never expose this!</span></span></span></code></pre></div><p><strong>Why separate models instead of reusing the database model?</strong></p>
+<ul>
+<li><strong>Security</strong>: <code>UserPublic</code> excludes sensitive fields like <code>hashed_password</code>, preventing accidental exposure of credentials in API responses</li>
+<li><strong>Validation</strong>: <code>UserCreate</code> requires a password but <code>UserUpdate</code> makes it optional, matching real-world usage patterns where users don&rsquo;t always change their password</li>
+<li><strong>API clarity</strong>: Frontend developers know exactly what fields they can send and what they&rsquo;ll receive back, reducing integration bugs and support requests</li>
+<li><strong>Evolution</strong>: You can change database fields without breaking API contracts, and vice versa</li>
+</ul>
+<h2 id="connecting-to-the-database-the-async-way">Connecting to the Database: The Async Way<a class="anchor" href="#connecting-to-the-database-the-async-way">#</a></h2>
+<p>Now let&rsquo;s look at how neodyme handles database connections. Traditional approaches create new connections for every request, which is inefficient and doesn&rsquo;t scale. Neodyme uses connection pooling and async sessions:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s core/database.py (simplified)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.ext.asyncio <span style="color:#f92672">import</span> async_sessionmaker, create_async_engine
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> SQLModel
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel.ext.asyncio.session <span style="color:#f92672">import</span> AsyncSession
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create the engine once when the app starts</span>
+</span></span><span style="display:flex;"><span>engine <span style="color:#f92672">=</span> create_async_engine(
+</span></span><span style="display:flex;"><span>    settings<span style="color:#f92672">.</span>database_url,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">**</span>settings<span style="color:#f92672">.</span>database_engine_options,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create a session factory</span>
+</span></span><span style="display:flex;"><span>async_session_maker <span style="color:#f92672">=</span> async_sessionmaker(
+</span></span><span style="display:flex;"><span>    engine,
+</span></span><span style="display:flex;"><span>    class_<span style="color:#f92672">=</span>AsyncSession,
+</span></span><span style="display:flex;"><span>    expire_on_commit<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_async_session</span>() <span style="color:#f92672">-&gt;</span> AsyncGenerator[AsyncSession, <span style="color:#66d9ef">None</span>]:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">with</span> async_session_maker() <span style="color:#66d9ef">as</span> session:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> session</span></span></code></pre></div><p><strong>Why this approach works better than simple connections:</strong></p>
+<ul>
+<li><strong>Connection pooling</strong>: The engine maintains a pool of database connections that are reused across requests, dramatically reducing connection overhead and preventing &ldquo;too many connections&rdquo; errors under load</li>
+<li><strong>Async operations</strong>: Database queries don&rsquo;t block other requests, allowing your API to handle thousands of concurrent users even with slow database operations</li>
+<li><strong>Automatic cleanup</strong>: The <code>async with</code> pattern ensures connections are returned to the pool even if errors occur, preventing connection leaks that can crash your server</li>
+<li><strong>Configuration</strong>: Engine options can be tuned for production (connection timeouts, pool sizes, etc.) without changing application code</li>
+</ul>
+<h3 id="step-3-creating-tables-automatically">Step 3: Creating Tables Automatically<a class="anchor" href="#step-3-creating-tables-automatically">#</a></h3>
+<p>Instead of writing SQL DDL statements manually, neodyme creates tables from your models:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_db_and_tables</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">with</span> engine<span style="color:#f92672">.</span>begin() <span style="color:#66d9ef">as</span> conn:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> conn<span style="color:#f92672">.</span>run_sync(SQLModel<span style="color:#f92672">.</span>metadata<span style="color:#f92672">.</span>create_all)</span></span></code></pre></div><p><strong>Why automatic table creation is powerful:</strong></p>
+<ul>
+<li><strong>Schema synchronization</strong>: Your database structure automatically matches your model definitions, eliminating the common problem where code and database get out of sync</li>
+<li><strong>Development speed</strong>: New developers can get a working database with one command instead of running complex migration scripts</li>
+<li><strong>Type safety</strong>: Column types, constraints, and indexes are generated from your Python type hints, reducing configuration errors</li>
+</ul>
+<p>But there&rsquo;s a catch: this approach works great for development, but production requires database migrations (which we&rsquo;ll cover in Chapter 4). The automatic approach ensures your development environment always matches your code.</p>
+<h2 id="the-repository-pattern-clean-data-access">The Repository Pattern: Clean Data Access<a class="anchor" href="#the-repository-pattern-clean-data-access">#</a></h2>
+<p>Raw SQL queries scattered throughout your code create maintenance nightmares. Neodyme uses the repository pattern to centralize database access:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s repositories/base.py (simplified)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Generic, TypeVar
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> SQLModel, select
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel.ext.asyncio.session <span style="color:#f92672">import</span> AsyncSession
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ModelType <span style="color:#f92672">=</span> TypeVar(<span style="color:#e6db74">&#34;ModelType&#34;</span>, bound<span style="color:#f92672">=</span>SQLModel)
+</span></span><span style="display:flex;"><span>CreateSchemaType <span style="color:#f92672">=</span> TypeVar(<span style="color:#e6db74">&#34;CreateSchemaType&#34;</span>, bound<span style="color:#f92672">=</span>SQLModel)
+</span></span><span style="display:flex;"><span>UpdateSchemaType <span style="color:#f92672">=</span> TypeVar(<span style="color:#e6db74">&#34;UpdateSchemaType&#34;</span>, bound<span style="color:#f92672">=</span>SQLModel)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaseRepository</span>(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, model: type[ModelType]) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>model <span style="color:#f92672">=</span> model
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self, session: AsyncSession, id: Any) <span style="color:#f92672">-&gt;</span> ModelType <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        statement <span style="color:#f92672">=</span> select(self<span style="color:#f92672">.</span>model)<span style="color:#f92672">.</span>where(self<span style="color:#f92672">.</span>model<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> id)
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>exec(statement)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">.</span>first()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, session: AsyncSession, <span style="color:#f92672">*</span>, obj_in: CreateSchemaType) <span style="color:#f92672">-&gt;</span> ModelType:
+</span></span><span style="display:flex;"><span>        obj_data <span style="color:#f92672">=</span> obj_in<span style="color:#f92672">.</span>model_dump()
+</span></span><span style="display:flex;"><span>        db_obj <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>model(<span style="color:#f92672">**</span>obj_data)
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>add(db_obj)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>refresh(db_obj)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> db_obj</span></span></code></pre></div><p><strong>Why the repository pattern solves critical problems:</strong></p>
+<ul>
+<li><strong>Code reuse</strong>: Common operations like &ldquo;get by ID&rdquo; or &ldquo;create record&rdquo; are implemented once and reused everywhere, eliminating duplicate code and reducing bugs</li>
+<li><strong>Testing</strong>: You can easily mock repositories for unit tests, allowing you to test business logic without hitting an actual database</li>
+<li><strong>Database independence</strong>: Switching from SQLite to PostgreSQL requires changing only the database URL, not scattered SQL queries throughout your code</li>
+<li><strong>Transaction management</strong>: Repositories handle database sessions consistently, preventing the common bug where you forget to commit or rollback transactions</li>
+</ul>
+<h3 id="step-4-implementing-user-specific-logic">Step 4: Implementing User-Specific Logic<a class="anchor" href="#step-4-implementing-user-specific-logic">#</a></h3>
+<p>The base repository handles generic operations, but real applications need domain-specific queries:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># From neodyme&#39;s repositories/user.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepository</span>(BaseRepository[User, UserCreate, UserUpdate]):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_by_email</span>(self, session: AsyncSession, <span style="color:#f92672">*</span>, email: str) <span style="color:#f92672">-&gt;</span> User <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        statement <span style="color:#f92672">=</span> select(User)<span style="color:#f92672">.</span>where(User<span style="color:#f92672">.</span>email <span style="color:#f92672">==</span> email)
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>exec(statement)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">.</span>first()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, session: AsyncSession, <span style="color:#f92672">*</span>, obj_in: UserCreate) <span style="color:#f92672">-&gt;</span> User:
+</span></span><span style="display:flex;"><span>        obj_data <span style="color:#f92672">=</span> obj_in<span style="color:#f92672">.</span>model_dump()
+</span></span><span style="display:flex;"><span>        hashed_password <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_hash_password(obj_data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#34;password&#34;</span>))
+</span></span><span style="display:flex;"><span>        obj_data[<span style="color:#e6db74">&#34;hashed_password&#34;</span>] <span style="color:#f92672">=</span> hashed_password
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        db_obj <span style="color:#f92672">=</span> User(<span style="color:#f92672">**</span>obj_data)
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>add(db_obj)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>refresh(db_obj)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> db_obj
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_hash_password</span>(self, password: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">import</span> hashlib
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> hashlib<span style="color:#f92672">.</span>sha256(password<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>user_repository <span style="color:#f92672">=</span> UserRepository(User)</span></span></code></pre></div><p><strong>Why this pattern is essential for real applications:</strong></p>
+<ul>
+<li><strong>Security</strong>: Password hashing happens automatically in the repository, preventing developers from accidentally storing plain text passwords</li>
+<li><strong>Business logic</strong>: Domain-specific operations like &ldquo;find user by email&rdquo; are centralized and reusable across different parts of your application</li>
+<li><strong>Consistency</strong>: All user creation goes through the same code path, ensuring business rules (like password hashing) are always applied</li>
+<li><strong>Singleton pattern</strong>: <code>user_repository = UserRepository(User)</code> creates a single instance that&rsquo;s imported everywhere, ensuring consistent behavior</li>
+</ul>
+<h2 id="hands-on-building-your-first-database-endpoint">Hands-On: Building Your First Database Endpoint<a class="anchor" href="#hands-on-building-your-first-database-endpoint">#</a></h2>
+<p>Now let&rsquo;s combine everything into a working API endpoint that actually stores data:</p>
+<h3 id="step-1-define-your-models">Step 1: Define Your Models<a class="anchor" href="#step-1-define-your-models">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># models.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> Field, SQLModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserBase</span>(SQLModel):
+</span></span><span style="display:flex;"><span>    email: str <span style="color:#f92672">=</span> Field(unique<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    full_name: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    is_active: bool <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(UserBase, table<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    id: int <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> Field(default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    hashed_password: str <span style="color:#f92672">=</span> Field(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>)
+</span></span><span style="display:flex;"><span>    created_at: datetime <span style="color:#f92672">=</span> Field(default_factory<span style="color:#f92672">=</span>datetime<span style="color:#f92672">.</span>utcnow)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserCreate</span>(UserBase):
+</span></span><span style="display:flex;"><span>    password: str <span style="color:#f92672">=</span> Field(min_length<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserPublic</span>(UserBase):
+</span></span><span style="display:flex;"><span>    id: int
+</span></span><span style="display:flex;"><span>    created_at: datetime</span></span></code></pre></div><p><strong>Stop and think</strong>: Notice how <code>UserCreate</code> requires a password but <code>UserPublic</code> doesn&rsquo;t include <code>hashed_password</code>. This separation prevents security bugs where sensitive data accidentally gets returned to clients.</p>
+<h3 id="step-2-set-up-database-connection">Step 2: Set Up Database Connection<a class="anchor" href="#step-2-set-up-database-connection">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># database.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.ext.asyncio <span style="color:#f92672">import</span> async_sessionmaker, create_async_engine
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel <span style="color:#f92672">import</span> SQLModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>DATABASE_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;sqlite+aiosqlite:///./app.db&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>engine <span style="color:#f92672">=</span> create_async_engine(DATABASE_URL)
+</span></span><span style="display:flex;"><span>async_session_maker <span style="color:#f92672">=</span> async_sessionmaker(engine, expire_on_commit<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_db_and_tables</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">with</span> engine<span style="color:#f92672">.</span>begin() <span style="color:#66d9ef">as</span> conn:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> conn<span style="color:#f92672">.</span>run_sync(SQLModel<span style="color:#f92672">.</span>metadata<span style="color:#f92672">.</span>create_all)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_session</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">with</span> async_session_maker() <span style="color:#66d9ef">as</span> session:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> session</span></span></code></pre></div><p><strong>Why SQLite for development</strong>: SQLite requires zero setup, stores data in a single file, and supports the same SQL features you&rsquo;ll use in production with PostgreSQL. This eliminates the &ldquo;it works on my machine&rdquo; problem that occurs when development and production use different databases.</p>
+<h3 id="step-3-create-the-api-endpoint">Step 3: Create the API Endpoint<a class="anchor" href="#step-3-create-the-api-endpoint">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># main.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, Depends
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlmodel.ext.asyncio.session <span style="color:#f92672">import</span> AsyncSession
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> models <span style="color:#f92672">import</span> User, UserCreate, UserPublic
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> database <span style="color:#f92672">import</span> create_db_and_tables, get_session
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> hashlib
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.on_event</span>(<span style="color:#e6db74">&#34;startup&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">startup</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> create_db_and_tables()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/users/&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(
+</span></span><span style="display:flex;"><span>    user_in: UserCreate,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_session)
+</span></span><span style="display:flex;"><span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Hash the password</span>
+</span></span><span style="display:flex;"><span>    hashed_password <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha256(user_in<span style="color:#f92672">.</span>password<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create user data</span>
+</span></span><span style="display:flex;"><span>    user_data <span style="color:#f92672">=</span> user_in<span style="color:#f92672">.</span>model_dump()
+</span></span><span style="display:flex;"><span>    user_data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#34;password&#34;</span>)  <span style="color:#75715e"># Remove plain text password</span>
+</span></span><span style="display:flex;"><span>    user_data[<span style="color:#e6db74">&#34;hashed_password&#34;</span>] <span style="color:#f92672">=</span> hashed_password
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Save to database</span>
+</span></span><span style="display:flex;"><span>    db_user <span style="color:#f92672">=</span> User(<span style="color:#f92672">**</span>user_data)
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>add(db_user)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>refresh(db_user)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> UserPublic<span style="color:#f92672">.</span>model_validate(db_user)</span></span></code></pre></div><p><strong>Let&rsquo;s understand what happens here:</strong></p>
+<ol>
+<li><strong><code>user_in: UserCreate</code></strong> - FastAPI automatically validates the incoming JSON against your UserCreate model, rejecting requests with missing fields, wrong types, or passwords that are too short</li>
+<li><strong><code>session: AsyncSession = Depends(get_session)</code></strong> - FastAPI automatically provides a database session for this request and ensures it&rsquo;s cleaned up afterward, even if errors occur</li>
+<li><strong>Password hashing</strong> - The plain text password is immediately hashed and the original is discarded, ensuring passwords are never stored in plain text</li>
+<li><strong><code>session.commit()</code></strong> - Changes are saved to the database atomically—either the entire user creation succeeds or nothing is saved</li>
+<li><strong><code>UserPublic.model_validate(db_user)</code></strong> - The database object is converted to the public API format, automatically excluding sensitive fields</li>
+</ol>
+<h3 id="step-4-test-your-database-api">Step 4: Test Your Database API<a class="anchor" href="#step-4-test-your-database-api">#</a></h3>
+<p>Start your server and visit <code>http://localhost:8000/docs</code>. You&rsquo;ll see your endpoint with automatic documentation showing exactly what fields are required and what the response looks like.</p>
+<p>Try creating a user:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;test@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;full_name&#34;</span>: <span style="color:#e6db74">&#34;Test User&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;securepassword123&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>The response will show:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;test@example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;full_name&#34;</span>: <span style="color:#e6db74">&#34;Test User&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;is_active&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;created_at&#34;</span>: <span style="color:#e6db74">&#34;2024-01-01T12:00:00&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Notice what&rsquo;s missing</strong>: The password and hashed_password fields are not in the response, demonstrating how the model separation protects sensitive data automatically.</p>
+<h2 id="the-power-of-type-driven-development">The Power of Type-Driven Development<a class="anchor" href="#the-power-of-type-driven-development">#</a></h2>
+<p>Here&rsquo;s what you&rsquo;ve achieved with this approach:</p>
+<p><strong>Automatic Validation</strong>: Try sending invalid data—wrong email format, missing fields, passwords that are too short. FastAPI rejects these requests before they reach your code, providing helpful error messages that guide users to fix their input.</p>
+<p><strong>Documentation in Sync</strong>: Your API documentation automatically shows the correct request and response formats because it&rsquo;s generated from the same models that handle the actual data.</p>
+<p><strong>Database Safety</strong>: The type system prevents common bugs like trying to insert strings into integer columns or forgetting required fields.</p>
+<p><strong>Performance</strong>: Async database operations mean your API can handle multiple user registrations simultaneously without blocking.</p>
+<p>But there&rsquo;s more. Let&rsquo;s look at error handling:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> HTTPException
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/users/&#34;</span>, response_model<span style="color:#f92672">=</span>UserPublic)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_user</span>(
+</span></span><span style="display:flex;"><span>    user_in: UserCreate,
+</span></span><span style="display:flex;"><span>    session: AsyncSession <span style="color:#f92672">=</span> Depends(get_session)
+</span></span><span style="display:flex;"><span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Check if user already exists</span>
+</span></span><span style="display:flex;"><span>    existing_user <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> session<span style="color:#f92672">.</span>exec(
+</span></span><span style="display:flex;"><span>        select(User)<span style="color:#f92672">.</span>where(User<span style="color:#f92672">.</span>email <span style="color:#f92672">==</span> user_in<span style="color:#f92672">.</span>email)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> existing_user<span style="color:#f92672">.</span>first():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(
+</span></span><span style="display:flex;"><span>            status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">400</span>, 
+</span></span><span style="display:flex;"><span>            detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Email already registered&#34;</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ... rest of creation logic</span></span></span></code></pre></div><p><strong>Why explicit error handling matters</strong>: Without this check, the database would reject the duplicate email (because of the unique constraint), but users would get a generic 500 error instead of a helpful message explaining what went wrong.</p>
+<h2 id="architecture-overview-how-the-pieces-fit-together">Architecture Overview: How the Pieces Fit Together<a class="anchor" href="#architecture-overview-how-the-pieces-fit-together">#</a></h2>
+<p>Here&rsquo;s how data flows through neodyme&rsquo;s architecture:</p>
+<pre tabindex="0"><code>API Request (JSON)
+        │
+        ▼
+   FastAPI Endpoint
+        │
+        ▼
+  UserCreate Model ────► Validation
+        │
+        ▼
+  Repository Layer ────► Business Logic
+        │
+        ▼
+   Database Session ───► SQLModel/SQLAlchemy
+        │
+        ▼
+   Database (SQLite/PostgreSQL)
+        │
+        ▼
+   User Model (Database)
+        │
+        ▼
+  UserPublic Model ────► Serialization  
+        │
+        ▼
+  API Response (JSON)</code></pre><p><strong>Each layer has a specific responsibility:</strong></p>
+<ul>
+<li><strong>API Layer</strong>: Handles HTTP concerns, request routing, and response formatting</li>
+<li><strong>Validation Layer</strong>: Ensures data integrity before it reaches business logic</li>
+<li><strong>Repository Layer</strong>: Encapsulates database operations and domain-specific queries</li>
+<li><strong>Database Layer</strong>: Handles persistence, transactions, and data storage</li>
+<li><strong>Serialization Layer</strong>: Converts between internal models and external API formats</li>
+</ul>
+<p>This separation means you can change any layer without affecting the others. Need to switch from SQLite to PostgreSQL? Change the database URL. Need to add new validation rules? Modify the models. Need to add caching? Wrap the repository layer.</p>
+<h2 id="what-youve-learned">What You&rsquo;ve Learned<a class="anchor" href="#what-youve-learned">#</a></h2>
+<p>By the end of this chapter, you understand:</p>
+<p>✅ <strong>Why in-memory storage fails in production</strong> - and the specific problems that occur when data isn&rsquo;t persistent<br>
+✅ <strong>How SQLModel bridges Python and databases</strong> - using type hints for validation, documentation, and schema generation<br>
+✅ <strong>The model separation pattern</strong> - and why UserCreate, User, and UserPublic solve different problems<br>
+✅ <strong>Async database operations</strong> - and how they enable high-concurrency applications<br>
+✅ <strong>The repository pattern</strong> - and why centralizing database access improves maintainability<br>
+✅ <strong>Connection pooling and session management</strong> - and how proper resource management prevents production failures</p>
+<p>More importantly, you&rsquo;ve built your first API that actually stores data safely and efficiently.</p>
+<h2 id="building-blocks-for-next-chapters">Building Blocks for Next Chapters<a class="anchor" href="#building-blocks-for-next-chapters">#</a></h2>
+<p>This database foundation gives us:</p>
+<ul>
+<li><strong>HTTP handling</strong> ← Chapter 1: FastAPI basics</li>
+<li><strong>Data persistence</strong> ← You are here</li>
+<li><strong>User management</strong> ← Chapter 3: Building complete user workflows</li>
+<li><strong>Data validation</strong> ← Chapter 3: Request/response validation</li>
+<li><strong>Error handling</strong> ← Chapter 6: Professional error management</li>
+</ul>
+<h2 id="exercises">Exercises<a class="anchor" href="#exercises">#</a></h2>
+<ol>
+<li><strong>Add a get endpoint</strong>: Create <code>GET /users/{user_id}</code> that returns a single user</li>
+<li><strong>Add validation</strong>: What happens if you try to create a user with an invalid email?</li>
+<li><strong>Test uniqueness</strong>: Try creating two users with the same email address</li>
+<li><strong>Explore the database</strong>: Look at the SQLite file that was created—how is your data stored?</li>
+<li><strong>Add fields</strong>: Add a <code>phone_number</code> field to your User model and see how it affects the API docs</li>
+</ol>
+<h2 id="resources-for-deeper-learning">Resources for Deeper Learning<a class="anchor" href="#resources-for-deeper-learning">#</a></h2>
+<h3 id="sqlmodel-and-database-patterns">SQLModel and Database Patterns<a class="anchor" href="#sqlmodel-and-database-patterns">#</a></h3>
+<ul>
+<li><strong>SQLModel Official Documentation</strong>: Comprehensive guide to SQLModel features and patterns - <a href="https://sqlmodel.tiangolo.com/">https://sqlmodel.tiangolo.com/</a></li>
+<li><strong>SQLAlchemy 2.0 Tutorial</strong>: Deep dive into the underlying database toolkit - <a href="https://docs.sqlalchemy.org/en/20/tutorial/">https://docs.sqlalchemy.org/en/20/tutorial/</a></li>
+<li><strong>Async SQLAlchemy</strong>: Guide to asynchronous database operations - <a href="https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html">https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html</a></li>
+</ul>
+<h3 id="repository-pattern-and-clean-architecture">Repository Pattern and Clean Architecture<a class="anchor" href="#repository-pattern-and-clean-architecture">#</a></h3>
+<ul>
+<li><strong>Repository Pattern Explained</strong>: Why and how to implement data access layers - <a href="https://deviq.com/design-patterns/repository-pattern">https://deviq.com/design-patterns/repository-pattern</a></li>
+<li><strong>Clean Architecture in Python</strong>: Structuring applications for maintainability - <a href="https://github.com/cosmic-python/book">https://github.com/cosmic-python/book</a></li>
+</ul>
+<h3 id="database-design-and-performance">Database Design and Performance<a class="anchor" href="#database-design-and-performance">#</a></h3>
+<ul>
+<li><strong>Database Indexing Explained</strong>: Why indexes matter for query performance - <a href="https://use-the-index-luke.com/">https://use-the-index-luke.com/</a></li>
+<li><strong>PostgreSQL vs SQLite</strong>: When to use which database - <a href="https://www.sqlite.org/whentouse.html">https://www.sqlite.org/whentouse.html</a></li>
+</ul>
+<h3 id="security-and-best-practices">Security and Best Practices<a class="anchor" href="#security-and-best-practices">#</a></h3>
+<ul>
+<li><strong>Password Hashing Best Practices</strong>: Why bcrypt is better than SHA256 - <a href="https://auth0.com/blog/hashing-passwords-one-way-road-to-security/">https://auth0.com/blog/hashing-passwords-one-way-road-to-security/</a></li>
+<li><strong>SQL Injection Prevention</strong>: How ORMs protect against common attacks - <a href="https://owasp.org/www-community/attacks/SQL_Injection">https://owasp.org/www-community/attacks/SQL_Injection</a></li>
+</ul>
+<h3 id="why-these-resources-matter">Why These Resources Matter<a class="anchor" href="#why-these-resources-matter">#</a></h3>
+<ul>
+<li><strong>SQLModel specifics</strong>: Understanding the framework&rsquo;s design decisions helps you use it effectively</li>
+<li><strong>Repository pattern</strong>: Essential for building maintainable applications that can evolve over time</li>
+<li><strong>Database performance</strong>: Knowing how indexes work prevents performance disasters in production</li>
+<li><strong>Security practices</strong>: Understanding why certain patterns exist helps you avoid common vulnerabilities</li>
+</ul>
+<p><strong>Pro Tip</strong>: Start with the SQLModel documentation to understand the framework&rsquo;s philosophy, then explore the advanced topics as your application grows in complexity.</p>
+<h2 id="next-building-complete-user-workflows">Next: Building Complete User Workflows<a class="anchor" href="#next-building-complete-user-workflows">#</a></h2>
+<p>You can store users in a database, but a real application needs complete workflows: registration, login, profile updates, password changes, and account management. In Chapter 3, we&rsquo;ll build these features using the foundation you&rsquo;ve established.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Preview of Chapter 3</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/auth/register/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register_user</span>(user: UserCreate) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Complete registration workflow with validation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/auth/login/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">login</span>(credentials: UserCredentials) <span style="color:#f92672">-&gt;</span> TokenResponse:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Secure authentication with JWT tokens</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.put</span>(<span style="color:#e6db74">&#34;/users/me/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_profile</span>(
+</span></span><span style="display:flex;"><span>    updates: UserUpdate,
+</span></span><span style="display:flex;"><span>    current_user: User <span style="color:#f92672">=</span> Depends(get_current_user)
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">-&gt;</span> UserPublic:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Profile updates with authorization</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span></span></span></code></pre></div><p>We&rsquo;ll explore how the database patterns you learned scale to handle complex user interactions, and why proper validation becomes even more critical as your API grows.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/neodyme/docs/chapter-1/" class="flex align-center">
+        <img src="/neodyme/icons/backward.svg" class="book-icon" alt="Previous" title="Chapter 1" />
+        <span>Chapter 1</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/neodyme/docs/chapter-3/" class="flex align-center">
+        <span>Chapter 3</span>
+        <img src="/neodyme/icons/forward.svg" class="book-icon" alt="Next" title="Chapter 3" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+
+ 
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem-moving-beyond-toy-applications">The Problem: Moving Beyond Toy Applications</a></li>
+    <li><a href="#why-databases-are-hard-and-why-they-dont-have-to-be">Why Databases Are Hard (And Why They Don&rsquo;t Have to Be)</a></li>
+    <li><a href="#the-sqlmodel-solution-bringing-python-to-databases">The SQLModel Solution: Bringing Python to Databases</a></li>
+    <li><a href="#building-your-first-database-model">Building Your First Database Model</a>
+      <ul>
+        <li><a href="#step-1-understanding-the-foundation">Step 1: Understanding the Foundation</a></li>
+        <li><a href="#step-2-creating-input-and-output-models">Step 2: Creating Input and Output Models</a></li>
+      </ul>
+    </li>
+    <li><a href="#connecting-to-the-database-the-async-way">Connecting to the Database: The Async Way</a>
+      <ul>
+        <li><a href="#step-3-creating-tables-automatically">Step 3: Creating Tables Automatically</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-repository-pattern-clean-data-access">The Repository Pattern: Clean Data Access</a>
+      <ul>
+        <li><a href="#step-4-implementing-user-specific-logic">Step 4: Implementing User-Specific Logic</a></li>
+      </ul>
+    </li>
+    <li><a href="#hands-on-building-your-first-database-endpoint">Hands-On: Building Your First Database Endpoint</a>
+      <ul>
+        <li><a href="#step-1-define-your-models">Step 1: Define Your Models</a></li>
+        <li><a href="#step-2-set-up-database-connection">Step 2: Set Up Database Connection</a></li>
+        <li><a href="#step-3-create-the-api-endpoint">Step 3: Create the API Endpoint</a></li>
+        <li><a href="#step-4-test-your-database-api">Step 4: Test Your Database API</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-power-of-type-driven-development">The Power of Type-Driven Development</a></li>
+    <li><a href="#architecture-overview-how-the-pieces-fit-together">Architecture Overview: How the Pieces Fit Together</a></li>
+    <li><a href="#what-youve-learned">What You&rsquo;ve Learned</a></li>
+    <li><a href="#building-blocks-for-next-chapters">Building Blocks for Next Chapters</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#resources-for-deeper-learning">Resources for Deeper Learning</a>
+      <ul>
+        <li><a href="#sqlmodel-and-database-patterns">SQLModel and Database Patterns</a></li>
+        <li><a href="#repository-pattern-and-clean-architecture">Repository Pattern and Clean Architecture</a></li>
+        <li><a href="#database-design-and-performance">Database Design and Performance</a></li>
+        <li><a href="#security-and-best-practices">Security and Best Practices</a></li>
+        <li><a href="#why-these-resources-matter">Why These Resources Matter</a></li>
+      </ul>
+    </li>
+    <li><a href="#next-building-complete-user-workflows">Next: Building Complete User Workflows</a></li>
+  </ul>
+</nav>
+
+
+
+  </div>
+</aside>
+
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

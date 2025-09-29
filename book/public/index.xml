@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Neodyme Documentation</title>
+    <link>https://mi-skam.github.io/neodyme/</link>
+    <description>Recent content on Neodyme Documentation</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="https://mi-skam.github.io/neodyme/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Chapter 1</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-1/</guid>
+      <description>&lt;h1 id=&#34;chapter-1-i-need-a-web-api-that-actually-works&#34;&gt;Chapter 1: &amp;ldquo;I Need a Web API That Actually Works&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-1-i-need-a-web-api-that-actually-works&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Picture this: You&amp;rsquo;ve just been asked to build an API for your company&amp;rsquo;s new mobile app. &amp;ldquo;Simple enough,&amp;rdquo; you think. &amp;ldquo;I&amp;rsquo;ve done the Flask tutorial.&amp;rdquo; But then the questions start coming:&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;&amp;ldquo;Will it generate documentation automatically?&amp;rdquo;&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;&amp;ldquo;Can it handle 1000 concurrent users?&amp;rdquo;&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;&amp;ldquo;How do we validate the JSON requests?&amp;rdquo;&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;&amp;ldquo;What about type safety?&amp;rdquo;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;Suddenly, that simple Flask tutorial doesn&amp;rsquo;t seem so helpful anymore.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 2</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-2/</guid>
+      <description>&lt;h1 id=&#34;chapter-2-i-need-to-store-data-that-persists&#34;&gt;Chapter 2: &amp;ldquo;I Need to Store Data That Persists&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-2-i-need-to-store-data-that-persists&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;You&amp;rsquo;ve built an API that handles HTTP requests beautifully. But there&amp;rsquo;s a problem: every time someone restarts your server, all data disappears. Your users create accounts, add content, make purchases—and poof, it&amp;rsquo;s all gone.&lt;/p&gt;&#xA;&lt;p&gt;This isn&amp;rsquo;t just inconvenient; it&amp;rsquo;s business-critical. Imagine telling your customers: &amp;ldquo;Sorry, our server restarted, so we lost all your data. Please recreate your account.&amp;rdquo; Your company would be out of business faster than you can say &amp;ldquo;database backup.&amp;rdquo;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 3</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-3/</guid>
+      <description>&lt;h1 id=&#34;chapter-3-i-need-to-validate-data-without-going-crazy&#34;&gt;Chapter 3: &amp;ldquo;I Need to Validate Data Without Going Crazy&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-3-i-need-to-validate-data-without-going-crazy&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;You can store users in a database now, but there&amp;rsquo;s a problem lurking beneath the surface. Users are creative, malicious, or simply make mistakes. They&amp;rsquo;ll send you emails like &amp;ldquo;not-an-email&amp;rdquo;, names that are 10,000 characters long, passwords that are empty strings, or JSON that&amp;rsquo;s completely malformed.&lt;/p&gt;&#xA;&lt;p&gt;Without proper validation, these inputs will crash your server, corrupt your data, or worse—give attackers a way to exploit your system. The question isn&amp;rsquo;t whether bad data will come in; it&amp;rsquo;s how gracefully your API handles it when it does.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 4</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-4/</guid>
+      <description>&lt;h1 id=&#34;chapter-4-i-need-my-database-to-evolve-over-time&#34;&gt;Chapter 4: &amp;ldquo;I Need My Database to Evolve Over Time&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-4-i-need-my-database-to-evolve-over-time&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Your user management system works perfectly—in development. But there&amp;rsquo;s a looming problem that will eventually destroy your application: database schema changes. You&amp;rsquo;ll need to add new fields, modify existing ones, create new tables, and update constraints. Without proper migrations, these changes will break production systems and lose customer data.&lt;/p&gt;&#xA;&lt;p&gt;Imagine this scenario: You deploy a new version of your app that expects a &lt;code&gt;phone_number&lt;/code&gt; field on users, but the production database doesn&amp;rsquo;t have that column yet. Your app crashes immediately. Users can&amp;rsquo;t log in, new registrations fail, and you&amp;rsquo;re scrambling to fix it while your business loses money by the minute.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 5</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-5/</guid>
+      <description>&lt;h1 id=&#34;chapter-5-i-need-clean-architecture-that-scales&#34;&gt;Chapter 5: &amp;ldquo;I Need Clean Architecture That Scales&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-5-i-need-clean-architecture-that-scales&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Your user management system works, but there&amp;rsquo;s a growing problem. As you add features, your code becomes increasingly tangled. Business logic is mixed with database queries, which are mixed with HTTP handling, which are mixed with external service calls. Making a simple change requires touching multiple files, and every change breaks something unexpected.&lt;/p&gt;&#xA;&lt;p&gt;You&amp;rsquo;ve hit the complexity wall that destroys most applications. The question isn&amp;rsquo;t whether this will happen—it&amp;rsquo;s whether you&amp;rsquo;ll be ready with an architecture that keeps complexity manageable as your application grows.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 6</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-6/</guid>
+      <description>&lt;h1 id=&#34;chapter-6-i-need-to-handle-errors-like-a-professional&#34;&gt;Chapter 6: &amp;ldquo;I Need to Handle Errors Like a Professional&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-6-i-need-to-handle-errors-like-a-professional&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Your service layer architecture is working beautifully. Complex workflows are organized, dependencies are injected cleanly, and testing is straightforward. But then users start reporting mysterious 500 errors, customer support can&amp;rsquo;t explain what went wrong, and you spend hours debugging issues that should have been caught immediately.&lt;/p&gt;&#xA;&lt;p&gt;The harsh reality of production systems is that &lt;strong&gt;everything that can go wrong, will go wrong&lt;/strong&gt;—and usually at the worst possible moment. The question isn&amp;rsquo;t whether errors will occur; it&amp;rsquo;s whether your error handling will help or hinder you when they do.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 7</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-7/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-7/</guid>
+      <description>&lt;h1 id=&#34;chapter-7-i-need-security-that-actually-protects&#34;&gt;Chapter 7: &amp;ldquo;I Need Security That Actually Protects&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-7-i-need-security-that-actually-protects&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Your neodyme application is running beautifully. Users can register, the service layer coordinates complex workflows, and errors are handled professionally. But then your security audit arrives with a damning report:&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;&amp;ldquo;Passwords are stored in plain text. Sessions never expire. No rate limiting on login attempts. Any user can access any other user&amp;rsquo;s data.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;Suddenly, you realize that your perfectly functional application is a security disaster waiting to happen. One data breach, one credential stuffing attack, one privilege escalation exploit, and your users&amp;rsquo; data—and your reputation—are gone forever.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 8</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-8/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-8/</guid>
+      <description>&lt;h1 id=&#34;chapter-8-i-need-configuration-that-works-everywhere&#34;&gt;Chapter 8: &amp;ldquo;I Need Configuration That Works Everywhere&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-8-i-need-configuration-that-works-everywhere&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Your neodyme application is secure, well-architected, and handles errors professionally. But now you&amp;rsquo;re facing the deployment reality that breaks so many applications: your code needs to run in multiple environments with different settings.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Development uses SQLite, but production needs PostgreSQL. Your local email uses a test SMTP server, but production requires authenticated SendGrid. Security keys that work on your laptop definitely shouldn&amp;rsquo;t be used in production.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 9</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-9/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-9/</guid>
+      <description>&lt;h1 id=&#34;chapter-9-i-need-tests-that-give-me-confidence&#34;&gt;Chapter 9: &amp;ldquo;I Need Tests That Give Me Confidence&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-9-i-need-tests-that-give-me-confidence&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Your neodyme application has solid architecture, professional error handling, and bulletproof configuration management. But now you&amp;rsquo;re facing a developer&amp;rsquo;s eternal dilemma: How do you know your code actually works?&lt;/p&gt;&#xA;&lt;p&gt;You&amp;rsquo;ve probably written some tests, but they fall into one of these categories: tests so slow you avoid running them, tests so brittle they break when you refactor, or tests so shallow they pass while your application has obvious bugs. Each failed deployment teaches you that your test suite isn&amp;rsquo;t giving you the confidence you need.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 10</title>
+      <link>https://mi-skam.github.io/neodyme/docs/chapter-10/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://mi-skam.github.io/neodyme/docs/chapter-10/</guid>
+      <description>&lt;h1 id=&#34;chapter-10-i-need-deployment-that-actually-works&#34;&gt;Chapter 10: &amp;ldquo;I Need Deployment That Actually Works&amp;rdquo;&lt;a class=&#34;anchor&#34; href=&#34;#chapter-10-i-need-deployment-that-actually-works&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Your neodyme application is secure, well-tested, and properly configured. But now comes the moment of truth: getting it running reliably in production. You&amp;rsquo;ve probably deployed applications before, only to discover they work perfectly on your laptop but fail mysteriously in production.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;&amp;ldquo;It works on my machine&amp;rdquo; becomes &amp;ldquo;why does the container keep crashing?&amp;rdquo; Database connections fail, environment variables are missing, health checks timeout, and the application that passed all tests can&amp;rsquo;t even start in production.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
